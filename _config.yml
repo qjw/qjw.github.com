@@ -1,10 +1,2 @@
-auto:	          true
-
-markdown:         rdiscount
-pygments:         true
-paginate:         6
-permalink:        /:title
 baseurl:          /qjw.github.com
-
 title:            qjw.com
-url:              http://qjw.com
