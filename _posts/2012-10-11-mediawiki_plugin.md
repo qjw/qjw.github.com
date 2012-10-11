@@ -22,4 +22,4 @@ http://www.mediawiki.org/wiki/Extension:FCKeditor_(Official)
 ####配置
 require_once(“$IP/extensions/FCKeditor/FCKeditor.php”);
 
-安装见[这里](from http://mkv.cn/2223/install-fckeditor-for-mediawiki)
+安装见[这里](http://mkv.cn/2223/install-fckeditor-for-mediawiki)
