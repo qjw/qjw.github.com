@@ -24,4 +24,3 @@ require_once(“$IP/extensions/FCKeditor/FCKeditor.php”);
 
 
 * from http://mkv.cn/2223/install-fckeditor-for-mediawiki
-* markdown在线编辑器 http://dillinger.io/
