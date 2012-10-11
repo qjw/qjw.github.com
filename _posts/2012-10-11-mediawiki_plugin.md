@@ -10,9 +10,9 @@ svn co http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SyntaxHighlig
 ####官网
 http://www.mediawiki.org/wiki/Extension:SyntaxHighlight_GeSHi
 ####配置
-*require_once( "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
-*$wgSyntaxHighlightDefaultLang = "c";
-*$wgSyntaxHighlightDefaultLang = "cpp";
+* require_once( "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
+* $wgSyntaxHighlightDefaultLang = "c";
+* $wgSyntaxHighlightDefaultLang = "cpp";
 
 ##富文本编辑器
 ####下载源码
