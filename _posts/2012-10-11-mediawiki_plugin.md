@@ -1,6 +1,7 @@
 ---
 layout: default
 title: MediaWiki常用插件
+category: www
 ---
 # MediaWiki常用插件
 

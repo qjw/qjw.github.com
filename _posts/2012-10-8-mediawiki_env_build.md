@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 搭建一个简单的Mediawiki环境
+category: www
 ---
 #搭建一个简单的Mediawiki环境
 

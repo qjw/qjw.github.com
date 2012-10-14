@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 搭建Github Page注意点
+category: github
 ---
 #搭建Github Page注意点
 

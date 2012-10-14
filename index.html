@@ -1,10 +1,20 @@
 ---
 layout:           default
 ---
-
-<p>邱金武的博客</p>
+<h4>邱金武的博客</h4>
 <ul>
  {% for post in site.posts %}
-  <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+  <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
  {% endfor %}
 </ul>
+ 
+ 
+<h4>Category</h4>
+<ul>
+    {% for category in site.categories %}
+    <li>
+	<a href="/categories/{{ category | first }}/" title="查看此类别的所有文章">{{ category | first }} {{ category | last | size }}</a>
+    </li>
+    {% endfor %}
+</ul>
+ 
