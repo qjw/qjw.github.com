@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 菜单基本用法
-category: windows
+category: wingui
 ---
 
 #Sample

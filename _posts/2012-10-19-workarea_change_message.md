@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 工作区大小变化的相关消息
-category: windows
+category: wingui
 ---
 
 #分辨率改变[WM_DISPLAYCHANGE](http://msdn.microsoft.com/en-us/library/windows/desktop/dd145210\(v=vs.85\).aspx)

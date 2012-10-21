@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 后台关闭MessageBox
-category: windows
+category: wingui
 ---
 
 
