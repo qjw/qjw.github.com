@@ -136,13 +136,17 @@ tooltip有一个结构[TOOLINFO](http://msdn.microsoft.com/en-us/library/windows
 它根据不同的平台而又不同的大小，为了不至于出错，可以强制使用最新的版本
 
         #if defined _M_IX86
-          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' \
+            version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
         #elif defined _M_IA64
-          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' \
+            version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
         #elif defined _M_X64
-          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' \
+            version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
         #else
-          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+          #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' \
+            version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
         #endif
 
 ##参考：
@@ -150,6 +154,7 @@ tooltip有一个结构[TOOLINFO](http://msdn.microsoft.com/en-us/library/windows
 2. <http://blog.csdn.net/flyflyking/article/details/6272361>
 3. <http://topic.csdn.net/u/20090928/17/07ebf98f-a802-4359-a190-9fed8b3d0790.html>
 4. <http://topic.csdn.net/t/20021020/13/1109608.html>
+4. <http://blog.csdn.net/shihaojie1219/article/details/5788987>
 
 
 

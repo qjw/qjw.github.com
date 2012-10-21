@@ -12,12 +12,13 @@ $(document).ready(function(){
     prettyPrint()
 })
 </script>
+导航：[<a href="/categories/{{page.categories}}/">{{page.categories}}</a>]->[<a href="{{page.url}}">{{page.title}}</a>]
 
 {{ content }}
 
 
 <div id=float_top_right>
-<h4>&nbsp;Category</h4>
+<h4>&nbsp;分类浏览[{{page.categories}}]</h4>
 <ul>
     {% for category in site.categories %}
     <li>
