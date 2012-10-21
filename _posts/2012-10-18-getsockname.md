@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 获得socket连接使用的IP地址
-category: socket
+category: network
 ---
 
 ###见[getsockname/Windows](http://msdn.microsoft.com/en-us/library/windows/desktop/ms738543\(v=vs.85\).aspx)或[getsockname/Linux](http://linux.die.net/man/2/getsockname)

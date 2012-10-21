@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Markdown学习资料
-category: jekyll
+category: www
 ---
 ###相关网址
 * markdown在线编辑器 [http://dillinger.io/](http://dillinger.io/)

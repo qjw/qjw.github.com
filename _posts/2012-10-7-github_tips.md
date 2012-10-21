@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 搭建Github Page注意点
-category: github
+category: www
 ---
 #搭建Github Page注意点
 

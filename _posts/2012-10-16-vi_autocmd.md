@@ -1,7 +1,7 @@
 ---
 layout: post
 title: VI自动化命令(autocmd)
-category: vim
+category: bash
 ---
 
 ##Vi自动化命令

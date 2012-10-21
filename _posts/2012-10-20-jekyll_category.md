@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 为Jekyll博客添加category分类
-category: jekyll
+category: www
 ---
 
 ####原文:<http://www.pizn.me/2012/02/23/use-category-plugin-for-jekyll-blog.html>

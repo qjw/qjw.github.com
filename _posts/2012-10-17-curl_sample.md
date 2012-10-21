@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Curl小牛试刀
-category: cpp
+category: network
 ---
 
         #include <string>
