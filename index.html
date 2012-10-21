@@ -1,5 +1,5 @@
 ---
-layout:           default
+layout:           index
 ---
 <h4>邱金武的博客</h4>
 <ul>
@@ -9,12 +9,15 @@ layout:           default
 </ul>
  
  
-<h4>Category</h4>
+<div id=float_top_right>
+<h4>&nbsp;Category</h4>
 <ul>
     {% for category in site.categories %}
     <li>
-	<a href="/categories/{{ category | first }}/" title="查看此类别的所有文章">{{ category | first }} {{ category | last | size }}</a>
+    <a href="/categories/{{ category | first }}/" title="查看此类别的所有文章">
+        {{ category | first }}({{ category | last | size }})</a>
     </li>
     {% endfor %}
 </ul>
+</div>
  

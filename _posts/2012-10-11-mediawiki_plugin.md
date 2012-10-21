@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: MediaWiki常用插件
 category: www
 ---

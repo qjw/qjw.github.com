@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: 搭建一个简单的Mediawiki环境
 category: www
 ---

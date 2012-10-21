@@ -5,6 +5,8 @@ category: js
 ---
 
 
+##动态插入jquery
+
         (function(){
             var scip = document.createElement("script");
 
@@ -16,3 +18,11 @@ category: js
             x.appendChild(scip);
         })()
 
+
+##修改让其浮动在右上
+        $("#float").css({ top: "10px",right: "10px", width: "300", position: "fixed", background: "#99ff00" });
+
+        
+##参考
+1. <http://www.cnblogs.com/regedit/archive/2008/03/11/1100170.html>
+1. <http://code.google.com/p/jquery-scroll-follow/>

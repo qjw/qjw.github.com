@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: Markdown学习资料
 category: jekyll
 ---
