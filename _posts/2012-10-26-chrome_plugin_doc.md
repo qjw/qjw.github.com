@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Chrome插件开发学习笔记
-category: wtl
+category: js
 ---
 
 #[概述](http://open.chrome.360.cn/extension_dev/overview.html)
