@@ -4,6 +4,7 @@ title: 简单的日志接口
 category: cpp
 ---
 
+#C
         #include <tchar.h>
         #include <Windows.h>
         #include <stdarg.h>
@@ -38,3 +39,49 @@ category: cpp
             LogError("fjasldfadf %s %d",_T("fadfad"),1234);
             return 0;
         }
+        
+        
+#CPP
+
+        #include <tchar.h>
+        #include <Windows.h>
+        #include <sstream>
+
+        class Message
+        {
+        public:
+            ~Message()
+            {
+                OutputDebugString(m_stream_.str().c_str());
+            }
+
+        #if defined _UNICODE
+            std::wostringstream m_stream_;
+        #else
+            std::ostringstream m_stream_;
+        #endif
+        };
+
+        #define LogError() \
+            Message().m_stream_ << \
+                _T("E") << \
+                _T("|") << \
+                _T(__FILE__) << \
+                _T("|") << \
+                __LINE__ << \
+                _T("|")
+        #define LogInfo() \
+            Message().m_stream_ << \
+                _T("I") << \
+                _T("|") << \
+                _T(__FILE__) << \
+                _T("|") << \
+                __LINE__ << \
+                _T("|")
+
+        int _tmain(int argc, _TCHAR* argv[])
+        {
+            LogError() << _T("fjasldfadf") << 12345;
+            return 0;
+        }
+
