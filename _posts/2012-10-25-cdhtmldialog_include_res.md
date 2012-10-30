@@ -8,6 +8,7 @@ category: windows
         
 1. 找到文件在资源中对应的id号（一个数字）
 1. 在Html中使用"#ID"
+1. **前提是所有的资源都放在同一个类型之下，例如frontpage**
    
 ---
 
