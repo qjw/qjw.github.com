@@ -62,3 +62,12 @@ category: cpp
             return oss.str();
         }
 
+#忽略大小写比较
+1. strcmpi for windows
+1. strcasecmp for linux
+
+##参考
+1. <http://linux.die.net/man/3/strcasecmp>
+1. <http://msdn.microsoft.com/en-us/library/ms235392(v=VS.80).aspx>
+1. <http://msdn.microsoft.com/en-us/library/k59z8dwe(v=vs.80).aspx>
+
