@@ -13,7 +13,7 @@ category: www
 * 对于其他名字的Repositor，必须明确的设置baseurl属性，路径为Repository的名称
 * jekyll --server --auto 或者 jekyll --server --no-auto结合起来做本地调试
 
-Git基本操作（备份）
+###Git基本操作（备份）
 * git clone https://github.com/username/Repository.git
 * cd Repository
 * git add "some file"

@@ -44,4 +44,5 @@ category: windows
 
 #参考
 1. <http://stackoverflow.com/questions/478875/how-to-change-the-name-of-a-thread>
+2. <http://msdn.microsoft.com/en-us/library/xcb2z8hs.aspx>
 
