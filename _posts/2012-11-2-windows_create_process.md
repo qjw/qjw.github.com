@@ -73,6 +73,10 @@ Windows创建进程的API是[CreateProcess](http://msdn.microsoft.com/en-us/libr
 
 若程序和参数分开，那么程序路径放在lpApplicationName，参数放在lpCommandLine。**同时必须保证lpCommandLine前面有一个空格**
         
+##从其他桌面启动
+**为了从另一个Desktop启动，可以对lpStartupInfo的STARTUPINFO结构成员[lpDesktop](http://msdn.microsoft.com/en-us/library/windows/desktop/ms686331\(v=vs.85\).aspx)赋值为特定的桌面名称**。线程Desktop相关见[这里](http://msdn.microsoft.com/en-us/library/windows/desktop/ms686744\(v=vs.85\).aspx)
+
+        
 #GetExitCodeProcess 
 当我们需要获取程序返回值时，使用[GetExitCodeProcess](http://msdn.microsoft.com/en-us/library/windows/desktop/ms683189\(v=vs.85\).aspx)
 
@@ -80,6 +84,8 @@ Windows创建进程的API是[CreateProcess](http://msdn.microsoft.com/en-us/libr
 对于一般的情况，[ShellExecuteEx](http://msdn.microsoft.com/en-us/library/windows/desktop/bb762154\(v=vs.85\).aspx)相比CreateProcess更加容易使用，**特别是依赖UAC时，就必须使用ShellExecuteEx了，此时CreateProcess会返回错误码ERROR_ELEVATION_REQUIRED**,具体细节见[这里](http://technet.microsoft.com/en-us/library/cc722422\(v=ws.10\).aspx)。它有个兄弟函数[ShellExecute](http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153\(v=vs.85\).aspx)。Sample见[这里](http://msdn.microsoft.com/zh-cn/library/windows/desktop/bb776886\(v=vs.85\).aspx)
 
 为了获得进程句柄，**需要附带标志位[SEE_MASK_NOCLOSEPROCESS](http://msdn.microsoft.com/en-us/library/windows/desktop/bb759784\(v=vs.85\).aspx)**
+
+**我们可以通过CreateProcess附带[CREATE_SUSPENDED](http://msdn.microsoft.com/en-us/library/windows/desktop/ms684863\(v=vs.85\).aspx)标志，并判断是否返回错误ERROR_ELEVATION_REQUIRED来判断某个可执行文件是否需要使用管理员启动**
 
 ShellExecuteEx不支持CreateProcess那种将程序和参数放到同一字符串中直接运行的用法，**你必须将程序名称传给SHELLEXECUTEINFO结构的lpFile，参数传给lpParameters。参数无前面空格的要求**
 
@@ -111,6 +117,8 @@ ShellExecuteEx不支持CreateProcess那种将程序和参数放到同一字符�
         sei.lpVerb = _T("runas");
         sei.lpDirectory = NULL;
         ShellExecuteEx(&sei);
+        
+当需要提权时，**我们可以将自己退出，在退出之前，用runas启动一个新的自身实例**。
 
 #Bug
 当我们用ShellExecuteEx去启动某个程序时，若需要提权，那么uac会弹出一个对话框来用户确认，**在这个对话框返回之前，ShellExecuteEx函数不会返回，也就是调用ShellExecuteEx的线程会被阻塞，若该线程有其他后台逻辑，慎用**。
