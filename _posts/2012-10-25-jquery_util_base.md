@@ -59,7 +59,14 @@ or
         $("#id").hide();
         $("#id").show();
         
+
+#删除函数绑定
+
+        $("#id").off("click");
         
+#禁止选择
+
+        $("#id").attr('unselectable','on').css('MozUserSelect','none');
         
 #参考
 1. <http://book.51cto.com/art/200904/119229.htm>
@@ -67,4 +74,5 @@ or
 1. <http://www.jb51.net/article/19366.htm>
 1. <http://topic.csdn.net/u/20100521/17/c559305f-4e84-4b78-90a7-05b98e65017c.html>
 1. <http://www.w3school.com.cn/jquery/traversing_each.asp>
+1. <http://stackoverflow.com/questions/2700000/how-to-disable-text-selection-using-jquery>
 

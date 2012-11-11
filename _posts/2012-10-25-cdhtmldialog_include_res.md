@@ -1,7 +1,7 @@
 ---
 layout: post
 title: CDHtmlDialog使用的html包含其他文件
-category: windows
+category: js
 ---
 
 我们使用CDHtmlDialog时，可以指定一个Html（通过资源ID）来显示内容，不过这个Html文件可能包含其他的内容，比如其他html，js，css或者图片文件等。这是你可以一个本地路径，或者一个网络上的url。不过如何引用资源里面的另一个文件呢？
