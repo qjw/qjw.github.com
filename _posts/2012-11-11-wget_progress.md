@@ -39,7 +39,8 @@ category: bash
         the arg is :arg   95
         the arg is :arg  100
         
-        
+**这里发现一个问题，管道经过awk之后，数据就丢了，所以那些命令放在awk里面**
+
 #参考
 1. <http://stackoverflow.com/questions/4686464/howto-show-wget-progress-bar-only>
 1. <http://imtx.me/archives/436.html>

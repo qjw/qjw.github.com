@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Linux下等待所有进程结束
-category: bash
+category: linux
 ---
 
 为了避免在信号中做过多的逻辑，以及互斥，可以考虑建一个unix sock，然后将进程退出的必需信息作为报文发送出去。在主线程中用select等待即可。用pipe若同时写可能会有乱序问题。
