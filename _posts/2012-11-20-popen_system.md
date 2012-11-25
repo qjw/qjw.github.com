@@ -34,8 +34,7 @@ system函数在内部会临时忽略(SIG_IGN)SIGINT和SIGQUIT信号，同时阻�
         // do sth
         sigprocmask(SIG_SETMASK, &saveblock, (sigset_t *)0);
 
-
-
+对于其他手动调用的wait函数，也必须在实现阻塞SIGCHLD信号。
 
 
 
