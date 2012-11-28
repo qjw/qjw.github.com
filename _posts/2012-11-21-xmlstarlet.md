@@ -118,6 +118,75 @@ category: bash
     #2|346|Text Value
     #1|123|String Value
     
+    
+##编辑
+    #!/bin/bash
+    # -L 直接编辑文件
+
+    # 删除
+    xmlstarlet ed -d "/dir/f" xml.xml
+    # 进一步匹配属性，同样是删除"/dir/d"
+    xmlstarlet ed -d "/dir/d[@n='g']" xml.xml
+    # 删除属性
+    xmlstarlet ed -d "/dir/f/@n" xml.xml
+    # 可连续操作
+    xmlstarlet ed -d "/dir/d/@n" -d "dir/f/@m" xml.xml
+
+    # 重命名
+    xmlstarlet ed -r "/dir" -v "xxx" xml.xml
+    # 注意-v只需要指定一个名称，而不是全路径
+    xmlstarlet ed -r "/dir/f" -v "d" xml.xml
+    # 重命名属性
+    xmlstarlet ed -r "/dir/d/@p" -v "ppp" xml.xml
+
+    # 移动
+    # 将所有的f元素移动的特定的d节点下，若匹配多个d节点，不会生效。
+    xmlstarlet ed -m "/dir/f" "/dir/d[@n='e']" xml.xml
+    echo '<x id="1"><a/><b/></x>' | xml ed -m "//b" "//a"
+    #<x id="1">
+    #  <a>
+    #    <b/>
+    #  </a>
+    #</x>
+
+    # 更新值
+    # 更新所有的/dir/f内容（value）为"aa"
+    xmlstarlet ed -u "/dir/f" -v "aa" xml.xml
+    # 更新属性
+    xmlstarlet ed -u "/dir/f/@p" -v "test" xml.xml
+    
+    # 插入子节点（总是插入到最后一个）
+    echo '<x id="1"></x>' | xmlstarlet ed -s "/x" -t elem -n "test" -v "value"
+    #<x id="1">
+    #  <test>value</test>
+    #</x>
+    echo '<x id="1"></x>' | xmlstarlet ed -s "/x" -t attr -n "test" -v "value"
+    #<x id="1" test="value"/>
+    
+    # 一个常见的问题，我插入一个子节点之后，希望继续往该节点插入内容，
+    # 但此时有多个这样的节点，我们需要借助last()
+    echo '<x id="1"><a/></x>' | \
+        xmlstarlet ed -s "/x" -t elem -n "a" -v "" \
+        -s "/x/a[last()]" -t elem -n 'b' -v 'value'
+    #<x id="1">
+    #  <a/>
+    #  <a><b>value</b></a>
+    #</x>
+    
+    # 在前/后插入兄弟
+    echo '<x ><a/></x>' | \
+        xmlstarlet ed -i "/x/a[last()]" -t elem -n a -v "value"
+    #<x>
+    #  <a>value</a>
+    #  <a/>
+    #</x>
+    echo '<x ><a/></x>' | \
+        xmlstarlet ed -a "/x/a[last()]" -t elem -n a -v "value"
+    #<x>
+    #  <a/>
+    #  <a>value</a>
+    #</x>
+    
 ##参考
 1. <http://www.ibm.com/developerworks/cn/xml/x-starlet.html>
 1. <http://xmlstar.sourceforge.net/doc/UG/xmlstarlet-ug.html>
