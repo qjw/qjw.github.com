@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Bash脚本简单化
-category: cpp
+category: bash
 ---
 
 通常一个完善的脚本都需要判断各种异常，所以很多人往往就是一堆

@@ -88,6 +88,10 @@ category: bash
     xmlstarlet sel -t -m "/dir/f[.='xml.xml']" -v @a xml.xml
     #20121125T074646Z
 
+####attribute替代@
+    #!/bin/bash
+    xmlstarlet sel -t -m "/dir/f[attribute::n='d']" -v . -n xml/xml.xml
+    
 ####拼装
     <xml>
       <table>
@@ -187,7 +191,70 @@ category: bash
     #  <a>value</a>
     #</x>
     
+##xlst
+    <xml>
+    <table>
+    <rec id="1">
+    <numField>123</numField>
+    <stringField>String Value</stringField>
+    </rec>
+    <rec id="2">
+    <numField>346</numField>
+    <stringField>Text Value</stringField>
+    </rec>
+    <rec id="3">
+    <numField>-23</numField>
+    <stringField>stringValue</stringField>
+    </rec>
+    </table>
+    </xml>
+    
+    <xml>
+    <table>
+    <rec id="10">
+    <numField>1230</numField>
+    <stringField>String Value</stringField>
+    </rec>
+    <rec id="20">
+    <numField>3460</numField>
+    <stringField>Text Value</stringField>
+    </rec>
+    <rec id="30">
+    <numField>230</numField>
+    <stringField>stringValue</stringField>
+    </rec>
+    </table>
+    </xml>
+    
+    <?xml version="1.0" encoding="utf-8"?>
+    <xsl:stylesheet version="1.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+      <xsl:output method ="xml" version ="1.0" encoding ="utf-8" indent="yes"/>
+      <xsl:variable name ="temp" select ="document('b.xml')/xml/table"/>
+      <xsl:template match="/">
+        <xsl:call-template name ="rec"/>
+      </xsl:template>
+
+      <xsl:template name ="rec">
+        <xml>
+        <table>
+          <xsl:for-each select="/xml/table">
+              <xsl:copy-of  select ="./*"/>
+              <xsl:copy-of select="$temp[*]/*"/>
+          </xsl:for-each>
+          </table>
+        </xml>
+      </xsl:template>
+    </xsl:stylesheet>
+    
+---
+
+    #!/bin/bash
+    xmlstarlet tr c.xsl a.xml
+
 ##参考
 1. <http://www.ibm.com/developerworks/cn/xml/x-starlet.html>
 1. <http://xmlstar.sourceforge.net/doc/UG/xmlstarlet-ug.html>
 1. <http://www.w3schools.com/xpath/xpath_syntax.asp>
+1. <http://stackoverflow.com/questions/11618715/xmlstarlet-to-insert-tags>
+1. <http://blog.csdn.net/belinda_pjm/article/details/2313886>
