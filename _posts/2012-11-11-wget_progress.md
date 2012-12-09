@@ -13,6 +13,13 @@ category: bash
                 sed -u -e "s,\%,,g" |\
                 awk '{printf("'"${arg}"'%5s\n",$2) | "xargs -i ./a.out {} \n" }'
                 
+        # 上面的方案会导致arg和progress作为一个参数存在
+        wget --progress=dot "$1" 2>&1 | \
+                grep --line-buffered "%" |\
+                sed -u -e "s,\.,,g" |\
+                sed -u -e "s,\%,,g" |\
+                awk '{printf($2) | "xargs -i ./a.out '"${app_id_}"' {} \n" }'
+                
 ---    
 
         #include <iostream>

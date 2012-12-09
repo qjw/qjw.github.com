@@ -89,6 +89,7 @@ category: bash
     #20121125T074646Z
 
 ####attribute替代@
+此用法不具兼容性
     #!/bin/bash
     xmlstarlet sel -t -m "/dir/f[attribute::n='d']" -v . -n xml/xml.xml
     
