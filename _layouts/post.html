@@ -1,5 +1,6 @@
 ---
 layout: default
+comments: true
 ---
 
 <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
@@ -16,6 +17,23 @@ $(document).ready(function(){
 
 {{ content }}
 
+<br>
+<br>
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 <div id=float_top_right>
 <h4>&nbsp;分类浏览[{{page.categories}}]</h4>
