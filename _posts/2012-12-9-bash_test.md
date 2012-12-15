@@ -24,7 +24,9 @@ category: bash
         qjw@qjw-VirtualBox /tmp $ which [
         /usr/bin/[
 
-3. [[]]能用正则，而[]不行 
+3. [[]]能用正则，而[]不行
+
+当使用"=" 或者"=="时，右边匹配"通配符"，若使用"=~"时，右边匹配"正则表达式"，无论"通配符"还是"正则表达式"都**不要**用双引号'"'括起来。
 
         #!/bin/bash
         [ "test.php" == *.php ] && echo true || echo false 
@@ -42,3 +44,4 @@ category: bash
 
 ##参考
 1. <http://www.xclinux.cn/?p=808>
+1. <http://zengrong.net/post/1563.htm>
