@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  僵尸进程极其预防
+title:  僵尸进程及其预防
 category: linux
 ---
 
