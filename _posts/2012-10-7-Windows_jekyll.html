@@ -70,8 +70,10 @@ Windows上搭建Jekyll测试平台，为了方便，使用<a href="https://githu
 </li>
 
 <li>
-<p>若使用Jekyll本地环境出现乱码，参见<a href="http://news.cwan.com/guonei/201210/178274.shtml">这里</a>
+<p>若使用Jekyll本地环境出现乱码，参见<a href="http://liufeiyu.cn/github/2012/12/04/how-to-use-git-to-post-articles.html">这里</a>
 (C:\Ruby193\lib\ruby\gems\1.9.1\gems\jekyll-0.11.2\lib\jekyll\convertible.rb)
+
+将self.content = File.read(File.join(base, name)) 改成 self.content = File.read(File.join(base, name), :encoding => "utf-8")
 </p>
 </li>
 
