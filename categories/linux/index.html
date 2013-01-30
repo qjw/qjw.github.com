@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: linux</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/linux/">linux</a>]</strong>
+<h2>分类浏览:&nbsp;&nbsplinux</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/linux/2012/11/20/popen_system.html">System,Popen的陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/20/linux_job_control.html">Linux 进程组</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/20/fopen_INTER.html">fread/fwrite信号中断处理</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/20/exit_sub_process.html">Linux正确的退出子进程</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/13/bash_declare_option.html">Bash Declare妙用</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/12/zombie_process.html">僵尸进程及其预防</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/11/11/wait_all_process_linux.html">Linux下等待所有进程结束</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/linux/2012/10/24/linux_timer.html">Linux下的定时器</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

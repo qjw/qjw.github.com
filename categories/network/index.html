@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: network</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/network/">network</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspnetwork</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/network/2012/12/30/winhttp_error.html">winhttp的陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/network/2012/10/29/winhttp_tips.html">异步Winhttp 使用及其注意点</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/network/2012/10/25/sock_ipv4_6_unix_base.html">封装Ipv4/6/Unix Socket的接口</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/network/2012/10/18/winhttp_sample.html">Winhttp练笔</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/network/2012/10/18/getsockname.html">获得socket连接使用的IP地址</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/network/2012/10/17/curl_sample.html">Curl小牛试刀</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

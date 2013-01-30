@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: bash</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/bash/">bash</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspbash</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/bash/2013/01/30/fd_file_handle.html">fd,FILE*,HANDLE相互转换</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2013/01/29/get_time_offset.html">获得开机时间</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2013/01/29/get_exe_path.html">获得正在执行的程序路径</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2013/01/28/putty.html">PuTTY妙用</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2013/01/28/find_exec_shell_function.html">find -exec a shell function</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2013/01/28/bash_func_line_file.html">bash中打印行号，函数和文件名</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/30/popen_deamon_script.html">popen调用脚本陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/set_nounset.html">Bash访问未定义变量报错</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/perl_validator_schema.html">perl使用Validator::Schema校验xml</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/perl_libxslt.html">perl使用XML::Libxslt转换xml</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/perl_libxml.html">perl使用XML::Libxml读写xml</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/bash_test.html">bash两种比较符的区别</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/09/bash_functions.html">打印Bash函数调用栈</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/12/01/perl_xml.html">perl使用XML::XPath读取xml</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/21/xmlstarlet.html">xmlstarlet笔记</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/21/bash_simple.html">Bash脚本简单化</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/20/trap_signal.html">脚本里捕获信号</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/20/pipefail.html">Shell管道失败后立即返回</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/13/sed_study.html">sed学习笔记</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/13/find_sample.html">find的一些用法</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/12/unix_tree_command.html">unix下的tree命令</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/12/find_xargs_file_util.html">两个有意思的小脚本</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/11/wget_progress.html">获得wget的进度</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/11/10/cron_trigger_random.html">让cron在某个每天某个时间段随机触发的工具脚本</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/16/vi_autocmd.html">VI自动化命令(autocmd)</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/15/vi_config.html">VI配置</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/15/find_man.html">find命令中文手册</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/14/bash4.html">Bash学习-陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/14/Regex.html">正则表达式30分钟入门教程</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/13/bash3.html">Bash学习-字符串操作</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/13/bash2.html">Bash学习-入门2</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/13/bash1.html">Bash学习-入门</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/bash/2012/10/11/vim_ctrl_v.html">解决Windows下GVim Ctrl+V不能使用的bug</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

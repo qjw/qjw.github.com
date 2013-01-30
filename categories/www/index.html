@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: www</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/www/">www</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspwww</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/www/2012/12/09/install_disqus_on_jekyll.html">给Jekeyll添加评论系统</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/20/jekyll_category.html">为Jekyll博客添加category分类</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/14/markdown1.html">Markdown 快速入门</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/12/google-code-prettify.html">google-code-prettify简介</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/11/mediawiki_plugin.html">MediaWiki常用插件</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/11/markdown_resource.html">Markdown学习资料</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/08/mediawiki_env_build.html">搭建一个简单的Mediawiki环境</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/07/github_tips.html">搭建Github Page注意点</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/www/2012/10/07/Windows_jekyll.html">Windows上搭建Jekyll测试平台</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
