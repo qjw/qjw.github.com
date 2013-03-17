@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  POSIX多线程程序设计 几种线程模型范例
-category: bash
+category: linux
 ---
 
 最近看了下《POSIX多线程程序设计》，其中第4章"使用线程的几种方式"提到的几种线程模型很经典，这里将其范例摘抄至此。
