@@ -266,6 +266,12 @@ category: windows
             return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
         }
 
+#Bug
+正常情况下，Mouse Up会正常触发，但是一些特殊的情况，例如按下Win键，或者Atl+Ctrl切换到其他程序，那么可能导致mouse up丢失。所以在web中必须监听**onlosecapture**事件。类似于Windows的窗口消息**WM_CAPTURECHANGED**。
+
+
 #参考
 1. <http://www.cnblogs.com/thinkingfor/archive/2010/11/08/1871736.html>
 1. <http://stackoverflow.com/questions/1685326/responding-to-the-onmousemove-event-outside-of-the-browser-window-in-ie/1745382#1745382>
+1. <http://msdn.microsoft.com/en-us/library/ie/ms536943\(v=vs.85\).aspx>
+1. <http://msdn.microsoft.com/en-us/library/windows/desktop/ms645605\(v=vs.85\).aspx>

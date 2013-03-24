@@ -491,3 +491,33 @@ UpdateLayeredWindow直接根据DC中的Alpha通道来实现透明效果，它很
         
 经测试，这种方案在拖动时，两个窗口交接处有明显的刷新不一致存在。
 
+##Bug
+在一些非32位图像模式下，该函数会有些问题，解决办法就是强制创建32位的Bitmap
+							
+	CBitmap bitmap;
+	BITMAPINFOHEADER bmih;
+	bmih.biSize                  = sizeof (BITMAPINFOHEADER) ;
+	bmih.biWidth                 = 384 ;
+	bmih.biHeight                = 256 ;
+	bmih.biPlanes                = 1 ;
+	bmih.biBitCount              = 32 ;  //注意32位
+	bmih.biCompression           = BI_RGB ;
+	bmih.biSizeImage             = 0 ;
+	bmih.biXPelsPerMeter         = 0 ;
+	bmih.biYPelsPerMeter         = 0 ;
+	bmih.biClrUsed               = 0 ;
+	bmih.biClrImportant          = 0 ;
+	bitmap.CreateDIBitmap(dc,&bmih);
+	
+为了避免绘图汇到左上角，需要在调用UpdateLayeredWindow时，明确指定左上角坐标
+	CRect rect_;
+	GetWindowRect(rect_);
+	
+	CPoint topleft(rect_.left,rect_.top);
+	CPoint 	pt_(0,0);
+	CSize	size_(m_res_->GetWidth(),m_res_->GetHeight());
+	::UpdateLayeredWindow(pT->m_hWnd,dc_,&topleft,&size_,mem_dc_,&pt_,0,&pb_,ULW_ALPHA );
+							
+##参考
+1. <http://www.wuroom.com/post/100/>
+
