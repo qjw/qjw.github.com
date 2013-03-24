@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  自定义渲染gif实现异性效果
+title:  自定义渲染gif实现全透明异型效果
 category: wingui
 ---
 

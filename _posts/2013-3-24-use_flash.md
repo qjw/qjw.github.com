@@ -7,6 +7,9 @@ category: wingui
 见[shockwaveflash.h](https://code.google.com/p/flexcppbridge/source/browse/trunk/examples/flexrun/shockwaveflash.h?r=2)和[shockwaveflash.cpp](https://code.google.com/p/flexcppbridge/source/browse/trunk/examples/flexrun/shockwaveflash.cpp?r=2)
 
 ##使用MFC
+
+添加Flash控件时，在编辑对话框资源，单击右键添加ActiveX控件，这里选择 ShockwaveFlash 1.0控件。
+
 	class CPlayFlashDlg : public CDialog
 	{
 		enum { IDD = IDD_PLAYFLASH_DIALOG };
@@ -613,3 +616,4 @@ category: wingui
 
 ##参考
 1. <http://www.vckbase.com/index.php/cv/410>
+1. <http://blog.csdn.net/benny5609/article/details/2261018>
