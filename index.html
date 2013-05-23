@@ -3,6 +3,7 @@ layout:           index
 title:  		  邱金武的博客
 ---
 <h4>邱金武的博客</h4>
+
 <ol>
  {% for post in site.posts %}
   <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -11,6 +12,20 @@ title:  		  邱金武的博客
  
  
 <div id=float_top_right>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
 <h4>&nbsp;分类浏览</h4>
 <ol>
     {% for category in site.categories %}
@@ -21,4 +36,7 @@ title:  		  邱金武的博客
     {% endfor %}
 </ol>
 </div>
+
+    
+
  
