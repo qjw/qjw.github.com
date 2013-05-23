@@ -3,3 +3,4 @@ markdown:         rdiscount
 safe:             false
 author:           邱金武
 baseurl:          /
+permalink:        /blog/:year/:month/:day/:title
