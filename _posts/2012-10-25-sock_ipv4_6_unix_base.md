@@ -258,6 +258,11 @@ category: network
                     return false;
                 }else{
                     this->SetFd(fd);
+					if (fcntl(fd, F_SETFD, fcntl(fd, F_SETFD) | FD_CLOEXEC) == -1)
+					{
+						this->Close();
+						return false;
+					}
                     return true;
                 }
             }
