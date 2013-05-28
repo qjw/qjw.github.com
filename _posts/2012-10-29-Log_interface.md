@@ -85,3 +85,11 @@ category: cpp
             return 0;
         }
 
+##其他
+若以下写法编译不过，可以用后者替代
+
+	WriteLog(_T("E|%s|%d|")##_T(VAR)##_T("\n"),_T(__FILE__),__LINE__,__VA_ARGS__)	
+	WriteLog(_T("E|%s|%d|") _T(VAR) _T("\n"),_T(__FILE__),__LINE__,__VA_ARGS__)
+	
+即使用**空格**做取代连接符**##**
+
