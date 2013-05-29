@@ -6,7 +6,7 @@ category: linux
 	
 在Linux下，句柄默认会被继承，这经常导致一些很难查的问题，可以通过fcntl函数禁止继承
 
-	if (fcntl(fd, F_SETFD, fcntl(fd, F_SETFD) | FD_CLOEXEC) == -1)
+	if (fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC) == -1)
 	{
 		this->Close();
 		return false;

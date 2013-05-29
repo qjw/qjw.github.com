@@ -93,3 +93,8 @@ category: cpp
 	
 即使用**空格**做取代连接符**##**
 
+	#define CHECK(expr,ret) \
+		do{ int ret_ = 0; \
+			if((ret_ = (expr)) != ret) \
+				printf("expr \"" #expr "\" run fail with ret '%d',expect '%d'\n",ret_,ret); \
+		}while(0)
