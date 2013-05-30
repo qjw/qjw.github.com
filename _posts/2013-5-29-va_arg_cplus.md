@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  可变参数极其陷阱
+title:  可变参数及其陷阱
 category: cpp
 ---
 
