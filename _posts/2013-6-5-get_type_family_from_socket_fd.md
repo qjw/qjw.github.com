@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  C语言前置声明
+title:  从socket句柄获得family和type
 category: cpp
 ---
 
-##从socket获得family和type
+##Linux
 
 	#include <cstdio>
 	#include <sys/socket.h>
