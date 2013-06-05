@@ -34,6 +34,8 @@ Windows下安装**cygwin**并且选择**[doxygen](http://www.stack.nl/~dimitri/d
 	EXTRACT_LOCAL_METHODS  = YES
 	// 将源码一并打包
 	SOURCE_BROWSER         = YES
+	// 不要排序
+	SORT_MEMBER_DOCS       = NO
 	
 运行**doxygen xx.conf**生成网页版的文档。
 
