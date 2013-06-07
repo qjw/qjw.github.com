@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  从socket句柄获得family和type
-category: cpp
+category: network
 ---
 
 ##Linux
