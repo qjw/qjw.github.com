@@ -131,3 +131,7 @@ unix域 socket在*nix下是一种很受欢迎的IPC，不过有个小问题，�
 	
 	
 若使用netstat查询端口情况，通过**abstract_namespace**的方式创建的unix域socket bind之后，路径前有一个**@**
+
+##参考
+1. <http://blog.eduardofleury.com/archives/2007/09/13>
+1. <http://blog.csdn.net/xnwyd/article/details/7359506>
