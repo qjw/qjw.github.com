@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  DBUS学习笔记之消息
+title:  DBUS学习笔记之 DBusMessage
 category: network
 ---
 
