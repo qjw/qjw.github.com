@@ -9,18 +9,20 @@ DBusConnection是Dbus对连接的抽象，站在socket的角度上，我们可�
 DBusConnection维护着两条队列，发送队列和接收队列。
 
 ##生命周期
-通常我们使用**[dbus_bus_get](http://dbus.freedesktop.org/doc/api/html/group__DBusBus.html#ga77ba5250adb84620f16007e1b023cf26)**来创建一个连接，第一个参数我们制定类型，
+通常我们使用**[dbus_bus_get](http://dbus.freedesktop.org/doc/api/html/group__DBusBus.html#ga77ba5250adb84620f16007e1b023cf26)**来创建一个连接，第一个参数我们指定类型，
 
 1. **DBUS_BUS_SESSION** ：The login session bus.
 1. **DBUS_BUS_SYSTEM** ：The systemwide bus.
 
-你也可以使用**[dbus_connection_open](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#gacd32f819820266598c6b6847dfddaf9c)**打开已有的连接。
+和dbus_bus_get相比，**[dbus_bus_get_private](http://dbus.freedesktop.org/doc/api/html/group__DBusBus.html#ga9c62186f19cf3bd3c7c604bdcefb4e09)**总是创建一个全新的DBusConnection，而dbus_bus_get总是去尝试打开一个已有的DBusConnection，并使用引用技术管理。
+
+你也可以使用**[dbus_connection_open](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#gacd32f819820266598c6b6847dfddaf9c)**或者**[dbus_connection_open_private](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga434e3fc7ee420fd30e2f05e57ff26b1d)**打开已有的连接。
 
 和其他DBus对象一样，DBusConnection也使用**引用技术**，所以**[dbus_connection_unref](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga6385ff09bc108238c4429e7c195dab25)**即可销毁连接。
 
 DBusConnection也可以使用DBusMessage类似的**私有数据**，具体见**[dbus_connection_allocate_data_slot](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga728b15c71a492ad244e5a480f1156088)**系列函数。
 
-默认情况下，若DBusConnection受到一个**disconnect信号**，会调用_exit()终止函数，可以使用**[dbus_connection_set_exit_on_disconnect](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga19091beb74f1504b0e862a7ad10e71cd)**修改此行为。
+默认情况下，若DBusConnection收到一个**disconnect信号**，会调用_exit()终止函数，可以使用**[dbus_connection_set_exit_on_disconnect](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga19091beb74f1504b0e862a7ad10e71cd)**修改此行为。
 
 ##发送消息
 通常我们可以使用**[dbus_connection_send](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#gae1cb64f4cf550949b23fd3a756b2f7d0)**发送消息，不过和send,sendto之类的socket函数不一样的是，它并不会立即发送数据，而只是简单地将Message扔到**发送队列**。待主循环下次运行时被发送出去。为了强制立即发送，可以紧跟着一个**[dbus_connection_flush](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#ga10e68d9d2f41d655a4151ddeb807ff54)**。
@@ -86,7 +88,7 @@ DBusConnection也可以使用DBusMessage类似的**私有数据**，具体见**[
 ##异步接收
 然而更多的时候，我们希望挂在其他主循环工作，例如一个GUI事件循环，或者一个socket多路IO等待(epoll/select)。此时我们就必须使用异步方式。
 
-具体做法是，使用[dbus_connection_set_watch_functions](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#gaebf031eb444b4f847606aa27daa3d8e6)注册DBusWatch监视函数。当DBus创建句柄（例如socket句柄），那么注册的会调会被处罚，此时我们可以将这些句柄加入到我们自己的事件循环中，例如下例中的libevent。
+具体做法是，使用[dbus_connection_set_watch_functions](http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html#gaebf031eb444b4f847606aa27daa3d8e6)注册DBusWatch监视函数。当DBus创建句柄（例如socket句柄），那么注册的会调会被触发，此时我们可以将这些句柄加入到我们自己的事件循环中，例如下例中的libevent。
 
 当使用自定义的消息循环监听到IO事件后，我们需要调用**[dbus_watch_handle](http://dbus.freedesktop.org/doc/api/html/group__DBusWatch.html#gac2acdb1794450ac01a43ec4c3e07ebf7)**来通知dbus，这个过程可以理解为“外部接口告诉DBus有数据可以读取，然后Dbus就读取这些数据并解析之，最后塞入接收队列”。
 
@@ -238,7 +240,30 @@ DBusConnection也可以使用DBusMessage类似的**私有数据**，具体见**[
 		return 0;
 	}
 
+##调试工具
+
+dbus-send可以用来发送消息和方法调用
+
+	dbus-send  --session --type=signal /test/signal/Object test.signal.Type.Test string:"hello world"
 	
+---
+
+    //步骤3:发送一个信号
+    if((msg = dbus_message_new_signal ("/test/signal/Object","test.signal.Type","Test")) == NULL){                                   
+        fprintf(stderr,"Message NULL\n");
+        return -1; 
+    }   
+    //给这个信号（messge）具体的内容 
+	const char* sigvalue = "hello world"
+    dbus_message_iter_init_append (msg,&arg);
+    if(!dbus_message_iter_append_basic (&arg,DBUS_TYPE_STRING,&sigvalue)){
+        fprintf(stderr,"Out Of Memory!\n");
+        return -1; 
+    } 
+	
+dbus-monitor可以监视总线上流动的消息。
+
+
 ##参考
 1. <http://dbus.freedesktop.org/doc/api/html/group__DBusConnection.html>
 1. <http://stackoverflow.com/questions/9378593/dbuswatch-and-dbustimeout-examples>
