@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Socket 工具程序
-category: other
+category: network
 ---
 
 经常要测试socket程序，写几个工具来发送/接收报文
