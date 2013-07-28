@@ -6,6 +6,8 @@ category: network
 
 经常要测试socket程序，写几个工具来发送/接收报文
 
+##IPv4 UDP客户端
+
 	#ifdef WIN32
 	#define _CRT_SECURE_NO_WARNINGS
 	#include <winsock2.h>
@@ -97,8 +99,7 @@ category: network
 		return 0;
 	}
 	
-	
----
+##IPv4 UDP服务器
 
 	#ifdef WIN32
 	#define _CRT_SECURE_NO_WARNINGS
@@ -332,7 +333,7 @@ category: network
 		return 0;
 	}
 	
----
+##IPv4 RAW客户端
 
 
 	#ifdef WIN32
@@ -470,6 +471,367 @@ category: network
 		}
 		return 0;
 	}
+	
+##IPv6 UDP客户端
+
+	#ifdef WIN32
+	#define _CRT_SECURE_NO_WARNINGS
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
+	#else
+	#include <sys/socket.h>
+	#include <sys/ioctl.h>
+	#include <net/if.h>
+	#include <netinet/in.h>
+	#include <arpa/inet.h>
+	#include <netpacket/packet.h>
+	#include <netinet/in.h>
+	#include <linux/if_ether.h>
+	#include <ifaddrs.h>
+
+	#endif
+	#include <stdio.h>
+	#include <string.h>
+	#include <stdlib.h> 
+	#include <errno.h>
+	#include <assert.h>
+
+	#ifdef WIN32
+	#pragma comment(lib,"Ws2_32.lib")
+	typedef SOCKET socket_t;
+	#else
+	typedef int socket_t;
+	#define  INVALID_SOCKET  -1
+	#define closesocket close
+	#endif
+
+	int main(int argc,const char** argv)
+	{
+
+	#ifdef WIN32
+		WSADATA wsaData = {0};
+		WSAStartup(MAKEWORD(2, 2), &wsaData);
+	#endif
+
+		if(argc < 4)
+		{
+			printf("%s des_ip des_port [ src_ip src_port ] content\n",argv[0]);
+			return -1;
+		}
+		socket_t fd_ = socket(AF_INET6,SOCK_DGRAM,0);
+		if(fd_ == INVALID_SOCKET)
+		{
+			printf("socket error '%d|%s'\n",errno,strerror(errno));
+			return -1;
+		}
+		struct sockaddr_in6 addr_;
+		memset(&addr_,0,sizeof(addr_));
+		addr_.sin6_family = AF_INET6;
+		if(1 != inet_pton(AF_INET6, argv[1],(void*)&(addr_.sin6_addr)))
+		{
+			printf("inet_pton fail with ip string '%s'\n",argv[1]);
+			return -1;
+		}
+		addr_.sin6_port = htons(atoi(argv[2]));
+
+		const char* msg_ = argv[3];
+		if(argc > 5)
+		{
+			msg_ = argv[5];
+
+			int flag_ = 1;
+			if(setsockopt(fd_, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&flag_,
+						sizeof(flag_)) < 0)
+			{
+				printf("setsockopt IPV6_V6ONLY failed with fd '%d'\n",fd_);
+				return -1;
+			}
+
+			struct sockaddr_in6 addr2_;
+			addr2_.sin6_family = AF_INET6;
+			if(1 != inet_pton(AF_INET6, argv[3],(void*)&(addr2_.sin6_addr)))
+			{
+				printf("inet_pton fail with ip string '%s'\n",argv[3]);
+				return -1;
+			}
+			addr2_.sin6_port = htons(atoi(argv[4]));
+
+			if(!!bind(fd_,(const struct sockaddr*)&addr2_,sizeof(addr2_)))
+			{
+				printf("bind error '%d|%s'\n",errno,strerror(errno));
+				return -1;
+			}
+		}
+
+		if(sendto(fd_,msg_,strlen(msg_)+1,
+				0,
+				(struct sockaddr*)&addr_,
+				sizeof(addr_)) < 0)
+		{
+			printf("send error '%d|%s'\n",errno,strerror(errno));
+		}
+		return 0;
+	}
+
+##IPv6 UDP服务器
+
+	#include <stdio.h>
+	#include <string.h>
+	#include <stdlib.h> 
+	#include <errno.h>
+	#include <assert.h>
+
+	#ifdef WIN32
+	#define _CRT_SECURE_NO_WARNINGS
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
+	#include <Mswsock.h>
+	#else
+
+	#include <sys/socket.h>
+	#include <sys/ioctl.h>
+	#include <net/if.h>
+	#define  __USE_GNU 
+	#include <netinet/in.h>
+	#include <arpa/inet.h>
+	#include <netpacket/packet.h>
+	#include <netinet/in.h>
+	#include <linux/if_ether.h>
+	#include <ifaddrs.h>
+
+
+	#endif
+
+	#ifdef WIN32
+	#pragma comment(lib,"Ws2_32.lib")
+	typedef SOCKET socket_t;
+	#else
+	typedef int socket_t;
+	#define  INVALID_SOCKET  -1
+	#define closesocket close
+	#endif
+
+
+	int main(int argc,const char** argv)
+	{
+	#ifdef WIN32
+		WSADATA wsaData = {0};
+		WSAStartup(MAKEWORD(2, 2), &wsaData);
+	#endif
+
+		if(argc < 2)
+		{
+			printf("%s port\n",argv[0]);
+			return -1;
+		}
+		socket_t fd_ = socket(AF_INET6,SOCK_DGRAM,0);
+		if(fd_ < 0)
+		{
+			printf("socket error '%d|%s'\n",errno,strerror(errno));
+			return -1;
+		}
+
+		// http://www.spinics.net/lists/linux-man/msg01544.html
+		int flag_ = 1;
+	#ifdef WIN32
+		if(setsockopt(fd_, IPPROTO_IPV6, IPV6_PKTINFO, (char*)&flag_,
+	#else
+		if(setsockopt(fd_, IPPROTO_IPV6, IPV6_RECVPKTINFO, (char*)&flag_,
+	#endif
+					sizeof(flag_)) < 0)
+		{
+			printf("setsockopt error '%d|%s'\n",errno,strerror(errno));
+			return -1;
+		}
+		flag_ = 1;
+		if(setsockopt(fd_, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&flag_,
+					sizeof(flag_)) < 0)
+		{
+			printf("setsockopt IPV6_V6ONLY failed with fd '%d'\n",fd_);
+			return -1;
+		}
+
+
+	#ifndef WIN32
+		struct ifaddrs * ifaddr_ = NULL;
+		if(!!getifaddrs(&ifaddr_))
+		{
+			printf("getifaddrs error '%d|%s'\n",errno,strerror(errno));
+			return -1;
+		}
+
+		while (ifaddr_ != NULL) {
+			if (ifaddr_->ifa_addr &&
+					ifaddr_->ifa_name &&
+					ifaddr_->ifa_addr->sa_family == AF_INET6) 
+			{ 
+				struct ifreq ifstruct_;
+				memset(&ifstruct_,0,sizeof(ifstruct_));
+				int ret_ = snprintf(ifstruct_.ifr_name,
+						sizeof(ifstruct_.ifr_name),
+						"%s",
+						ifaddr_->ifa_name);
+				if (ret_ <= 0 ||
+						ret_ >= sizeof(ifstruct_.ifr_name) ||
+						ioctl(fd_, SIOCGIFINDEX, &ifstruct_) < 0)
+				{
+					printf("snprintf or ioctl error '%d|%s'\n",errno,strerror(errno));
+					return -1;
+				}
+
+				struct sockaddr_in6* addrptr_ =
+					(struct sockaddr_in6*)(ifaddr_->ifa_addr);
+				char ipbuf_[128];
+				printf("eth '%s' with ip '%s' ifindex '%d'\n",
+						ifaddr_->ifa_name,
+						inet_ntop(AF_INET6,(const void*)&(addrptr_->sin6_addr),ipbuf_,sizeof(ipbuf_)),
+						ifstruct_.ifr_ifindex);
+			}
+			ifaddr_ = ifaddr_->ifa_next;
+		}
+		freeifaddrs(ifaddr_);
+	#else
+		GUID guid_wsa_recvmsg_ = WSAID_WSARECVMSG;
+		LPFN_WSARECVMSG lpfn_wsarecvmsg_ = NULL;
+		DWORD outsize_ = 0;
+		WSAIoctl(
+			fd_,
+			SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&guid_wsa_recvmsg_,
+			sizeof(guid_wsa_recvmsg_),
+			&lpfn_wsarecvmsg_,
+			sizeof(lpfn_wsarecvmsg_),
+			&outsize_,
+			NULL,
+			NULL
+			);
+		if (lpfn_wsarecvmsg_ == NULL)
+		{
+			return -1;
+		}
+	#endif
+
+		struct sockaddr_in6 addr_;
+		memset(&addr_,0,sizeof(addr_));
+		addr_.sin6_family = AF_INET6;
+		addr_.sin6_port = htons(atoi(argv[1]));
+		if(1 != inet_pton(AF_INET6, "::",(void*)&(addr_.sin6_addr)))
+		{
+			printf("inet_pton fail with ip string '%s'\n","::");
+			return -1;
+		}
+
+		if(!!bind(fd_,(const struct sockaddr*)&addr_,sizeof(addr_)))
+		{
+			printf("bind error '%d|%s'\n",errno,strerror(errno));
+			return -1;
+		}
+
+
+		struct sockaddr_in6 addr2_;
+		char buf_[65536];
+		char cmbuf_[0x100];
+		do
+		{
+	#ifndef WIN32
+			struct iovec msg_iov_ =
+			{
+				.iov_base = buf_,
+				.iov_len = sizeof(buf_)
+			};
+			struct msghdr mh_ = {
+				.msg_name = &addr2_,
+				.msg_namelen = sizeof(addr2_),
+				.msg_iov = &msg_iov_,
+				.msg_iovlen = 1,
+				.msg_control = cmbuf_,
+				.msg_controllen = sizeof(cmbuf_),
+			};
+			int ret_ = recvmsg(fd_,&mh_,0);
+	#else		
+			WSABUF wsa_bufdata_;
+			WSAMSG wsa_msg_;
+			wsa_bufdata_.buf = buf_;
+			wsa_bufdata_.len = sizeof(buf_);
+			wsa_msg_.name = (sockaddr *)&addr2_;
+			wsa_msg_.namelen = sizeof(addr2_);
+			wsa_msg_.lpBuffers = &wsa_bufdata_;
+			wsa_msg_.dwBufferCount = 1;
+			wsa_msg_.Control.buf = cmbuf_;
+			wsa_msg_.Control.len = sizeof(cmbuf_);
+			wsa_msg_.dwFlags = 0;
+			
+			DWORD recvd_cnt_ = 0;
+			if (0 != lpfn_wsarecvmsg_(fd_, &wsa_msg_, &recvd_cnt_, NULL, NULL))
+			{
+				printf("lpfn_wsarecvmsg_ fail '%d|%s'\n",errno,strerror(errno));
+				continue;
+			}
+			int ret_ = (int)recvd_cnt_;
+	#endif
+			if(ret_ > 0)
+			{
+				struct sockaddr_in6 toaddr_;
+				socklen_t toaddr_len_ = sizeof(toaddr_);
+				if(!!getsockname(fd_,
+							(struct sockaddr*)(&toaddr_),
+							&toaddr_len_))
+				{
+					printf("getsockname error '%d|%s'\n",errno,strerror(errno));
+					return -1;
+				}
+	#ifndef WIN32
+				struct cmsghdr *cmsg_ = CMSG_FIRSTHDR(&mh_);
+				struct in6_pktinfo *pi_ = NULL;
+				for (;cmsg_ != NULL;cmsg_ = CMSG_NXTHDR(&mh_, cmsg_))
+				{
+					if (cmsg_->cmsg_level == IPPROTO_IPV6 &&
+							cmsg_->cmsg_type == IPV6_PKTINFO)
+					{
+						pi_ = (struct in6_pktinfo*)(CMSG_DATA(cmsg_));
+						break;;
+					}
+				}
+				if(!pi_)
+				{
+					printf("invalid in_pktinfo '%d|%s'\n",errno,strerror(errno));
+					continue;
+				}
+	#else			
+				WSACMSGHDR *pcmsg_hdr_ = WSA_CMSG_FIRSTHDR(&wsa_msg_);
+				if(!pcmsg_hdr_ || 
+					IPV6_PKTINFO != pcmsg_hdr_->cmsg_type
+					|| !(WSA_CMSG_DATA(pcmsg_hdr_)))
+				{
+					printf("WSA_CMSG_FIRSTHDR fail '%d|%s'\n",errno,strerror(errno));
+					continue;
+				}
+				IN6_PKTINFO *pi_ = (IN6_PKTINFO *)WSA_CMSG_DATA(pcmsg_hdr_);
+	#endif
+				char ipbuf_[128];
+				printf("recv from [%d|%s] to ",               
+					ntohs(addr2_.sin6_port),                                       
+					inet_ntop(AF_INET6,(void*)&(addr2_.sin6_addr),ipbuf_,sizeof(ipbuf_)));
+				printf("[%d|%s|%d] '%d' | '%s'\n",                                     
+					ntohs(toaddr_.sin6_port),                                      
+					inet_ntop(AF_INET6,(void*)&(pi_->ipi6_addr),ipbuf_,sizeof(ipbuf_)),
+					pi_->ipi6_ifindex,                                             
+					ret_,
+					buf_);
+			}
+			else if(ret_ == 0)
+			{
+				printf("empty recv error '%d|%s'\n",errno,strerror(errno));
+			}
+			else
+			{
+				printf("recv error '%d|%s'\n",errno,strerror(errno));
+			}
+		}while(1);
+		return 0;
+	}
+
+
 
 ##参考
 1. <http://stackoverflow.com/questions/5281409/get-destination-address-of-a-received-udp-packet>
