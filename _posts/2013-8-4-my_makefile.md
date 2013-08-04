@@ -156,4 +156,10 @@ category: other
 	dos:
 		@unix2dos $(SOURCES) $(CPP_SOURCES) $(H_SOURCES)
 
-
+	indent:
+		indent -cdw -nbad -bap -nbc -bl -bli0 -i4 -npcs -nut $(SOURCES) $(CPP_SOURCES) $(H_SOURCES)
+		
+		
+##参考
+1. <http://www.gnu.org/software/indent/manual/html_section/indent_2.html>
+2. <http://sourceforge.net/projects/gcmakefile/>
