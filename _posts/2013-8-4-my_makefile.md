@@ -157,7 +157,7 @@ category: other
 		@unix2dos $(SOURCES) $(CPP_SOURCES) $(H_SOURCES)
 
 	indent:
-		indent -cdw -nbad -bap -nbc -bl -bli0 -i4 -npcs -nut $(SOURCES) $(CPP_SOURCES) $(H_SOURCES)
+		indent -cdw -nbad -bap -nbc -bl -bli0 -i4 -npcs -nut -npsl -bfda -nbfde -l80 $(SOURCES) $(CPP_SOURCES) $(H_SOURCES)
 		
 		
 ##参考
