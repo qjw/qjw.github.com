@@ -17,7 +17,7 @@ category: other
 1. 招商银行 个人银行专业版 <https://www.cmbchina.com/cmbpb/v36/pb.htm>
 1. qq拼音 <http://xf.qq.com/>
 1. Notepad++ Home <http://notepad-plus-plus.org/>
-1. Vim <www.vim.org/download.php>
+1. Vim <http://www.vim.org/download.php>
 1. 7Z <http://www.7-zip.org/>
 
 ##Network Tool
@@ -31,6 +31,7 @@ category: other
 1. NetSarang - Xshell 4 Overview <http://www.netsarang.com/products/xsh_overview.html>
 1. NetSarang - Xftp 4 Overview <http://www.netsarang.com/products/xfp_overview.html>
 1. Wireshark · Download <http://www.wireshark.org/download.html>
+1. HFS <http://www.rejetto.com/hfs/>
 
 ##Runtime&&Tool
 1. Python <http://www.python.org/getit/>
@@ -40,6 +41,7 @@ category: other
 1. Git for Windows <http://msysgit.github.io/>
 1. CMake - Cross Platform Make <http://www.cmake.org/>
 1. SourceForge.net: cppcheck <http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page>
+1. Doxygen <http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.4.windows.x64.bin.zip>
 
 ##IDE
 1. Eclipse Downloads <http://www.eclipse.org/downloads/>
@@ -57,6 +59,7 @@ category: other
 1. ResEdit Resource Editor - free resource editor for Win32 <http://www.resedit.net/>
 1. Visualfc - Visual WTL WinxGUI Qt developer addin - Google Project Hosting <https://code.google.com/p/visualfc/>
 1. Windows Template Library (WTL) | Free software downloads at SourceForge.net <http://sourceforge.net/projects/wtl/>
+1. CHM <http://download.microsoft.com/download/0/A/9/0A939EF6-E31C-430F-A3DF-DFAE7960D564/htmlhelp.exe>
 
 ##Office
 1. LibreOffice <http://www.libreoffice.org/>
@@ -99,6 +102,7 @@ category: other
 1. Beyond Compare <http://www.scootersoftware.com/>
 1. Zim - a desktop wiki <http://zim-wiki.org/>
 1. Everything Search Engine <http://www.voidtools.com/>
+1. Docfetcher <http://docfetcher.sourceforge.net/>
 1. Freeware MagicISO Virtual CD/DVD-ROM(MagicDisc) Overview <http://www.magiciso.com/tutorials/miso-magicdisc-overview.htm>
 1. FreeCommander - freeware file manager <http://www.freecommander.com/>
 1. TCC/LE: Free Windows CMD Replacement Shell <http://jpsoft.com/tccle-cmd-replacement.html%E2%80%8E>

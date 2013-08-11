@@ -10,7 +10,8 @@ category: other
 	apt-get install findutils #find xargs du
 	apt-get install openssh-client openssh-server
 	# libc-bin  ldd
-	apt-get install build-essential gdb
+	# http://www.ibm.com/developerworks/cn/linux/l-tsl/
+	apt-get install build-essential gdb strace ltrace
 	apt-get install vim ctags diffutils patch file
 	apt-get install subversion git
 	apt-get install python2.6 lua5.1 sun-java6-jre
@@ -20,7 +21,7 @@ category: other
 	apt-get install zip p7zip p7zip-rar
 	apt-get install ethtool #ethtool
 	apt-get install xmlstarlet #xmlstarlet
-	apt-get install tree
+	apt-get install tree doxygen
 	apt-get install realpath #realpath
 	apt-get install lrzsz #lz sz
 	apt-get install lsof procps psmisc #top pstree
