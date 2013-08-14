@@ -31,7 +31,7 @@ category: other
 1. NetSarang - Xshell 4 Overview <http://www.netsarang.com/products/xsh_overview.html>
 1. NetSarang - Xftp 4 Overview <http://www.netsarang.com/products/xfp_overview.html>
 1. Wireshark · Download <http://www.wireshark.org/download.html>
-1. HFS <http://www.rejetto.com/hfs/>
+1. CProxy <http://www.xjiasu.com/>
 
 ##Runtime&&Tool
 1. Python <http://www.python.org/getit/>
@@ -50,6 +50,8 @@ category: other
 1. Codeblocks <http://www.codeblocks.org/downloads>
 1. Visual Studio Express 2012 <http://www.microsoft.com/visualstudio/chs/products/visual-studio-express-products>
 1. Source Insight Program Editor and Analyzer <http://www.sourceinsight.com/>
+1. Astah <http://astah.net/>
+1. FreeMind <http://freemind.sourceforge.net/>
 
 ##Windows Develop
 1. Process Explorer <http://technet.microsoft.com/en-us/sysinternals/bb896653.aspx>
@@ -60,6 +62,7 @@ category: other
 1. Visualfc - Visual WTL WinxGUI Qt developer addin - Google Project Hosting <https://code.google.com/p/visualfc/>
 1. Windows Template Library (WTL) | Free software downloads at SourceForge.net <http://sourceforge.net/projects/wtl/>
 1. CHM <http://download.microsoft.com/download/0/A/9/0A939EF6-E31C-430F-A3DF-DFAE7960D564/htmlhelp.exe>
+1. ProcessMonitor <http://technet.microsoft.com/zh-cn/sysinternals/bb896645.aspx>
 
 ##Office
 1. LibreOffice <http://www.libreoffice.org/>
