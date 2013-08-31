@@ -9,13 +9,13 @@ category: other
 1. Chrome 网上应用店 - AdBlock <https://chrome.google.com/webstore/detail/adblock/gighmmpiobklfepjocnamgkkbiglidom?hl=zh-CN>
 1. Firefox <http://firefox.com.cn/download/>
 1. Firebug <http://getfirebug.com/>
-1. qq <http://im.qq.com/qq/all.shtml>
+1. QQ <http://im.qq.com/qq/all.shtml>
 1. 中国移动飞信 <http://download.feixin.10086.cn/pc/>
 1. 飞鸽传书 <http://www.ipmsg.org.cn/>
 1. 迅雷精简版 <http://dl.xunlei.com/mini.html>
-1. qq旋风 <http://download.feixin.10086.cn/pc/>
+1. qq旋风 <http://xf.qq.com/>
 1. 招商银行 个人银行专业版 <https://www.cmbchina.com/cmbpb/v36/pb.htm>
-1. qq拼音 <http://xf.qq.com/>
+1. qq拼音 <http://py.qq.com/>
 1. Notepad++ Home <http://notepad-plus-plus.org/>
 1. Vim <http://www.vim.org/download.php>
 1. 7Z <http://www.7-zip.org/>
@@ -52,6 +52,7 @@ category: other
 1. Source Insight Program Editor and Analyzer <http://www.sourceinsight.com/>
 1. Astah <http://astah.net/>
 1. FreeMind <http://freemind.sourceforge.net/>
+1. Winmerge <http://winmerge.org/>
 
 ##Windows Develop
 1. Process Explorer <http://technet.microsoft.com/en-us/sysinternals/bb896653.aspx>
