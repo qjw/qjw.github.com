@@ -49,7 +49,3 @@ category: bash
 		sleep 1
 	done
 	
-##参考
-1. <http://stackoverflow.com/questions/1881594/use-winmerge-inside-of-git-to-file-diff>
-1. <http://winmerge.org/>
-1. <https://code.google.com/p/msysgit/>
