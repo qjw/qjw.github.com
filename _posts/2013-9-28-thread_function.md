@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cancellation Points
-category: other
+category: cpp
 ---
 
 ##可中断函数

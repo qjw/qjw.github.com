@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 多线程程序fork的陷阱
-category: other
+category: cpp
 ---
 
 在多线程程序中，若fork之后，理解exec，那没啥问题，若仅仅fork，那就难说了
