@@ -28,7 +28,7 @@ category: other
 	apt-get install realpath #realpath
 	apt-get install lrzsz #lz sz
 	apt-get install lsof procps
-	apt-get install dos2unix
+	apt-get install dos2unix dialog
 	apt-get install aptitude
 	apt-get install sudo
 	
