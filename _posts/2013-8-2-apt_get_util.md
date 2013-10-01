@@ -11,7 +11,10 @@ category: other
 	apt-get install openssh-client openssh-server
 	# libc-bin  ldd
 	# http://www.ibm.com/developerworks/cn/linux/l-tsl/
-	apt-get install build-essential gdb strace ltrace
+	apt-get install build-essential gdb strace ltrace 
+	apt-get install psmisc #top vmstat pstree
+	apt-get install sysstat #iostat mpstat sar 
+	apt-get install libmudflap0 libmudflap0-4.4-dev
 	apt-get install vim ctags diffutils patch file
 	apt-get install subversion git
 	apt-get install python2.6 lua5.1 sun-java6-jre
@@ -24,7 +27,7 @@ category: other
 	apt-get install tree doxygen
 	apt-get install realpath #realpath
 	apt-get install lrzsz #lz sz
-	apt-get install lsof procps psmisc #top pstree
+	apt-get install lsof procps
 	apt-get install dos2unix
 	apt-get install aptitude
 	apt-get install sudo
