@@ -1,7 +1,7 @@
 ---
 layout: post
 title: shell dialog简介
-category: cpp
+category: bash
 ---
 
 ##手册
