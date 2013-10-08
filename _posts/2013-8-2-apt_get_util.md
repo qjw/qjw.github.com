@@ -31,6 +31,7 @@ category: other
 	apt-get install dos2unix dialog libfuse-dev fuse-utils
 	apt-get install aptitude
 	apt-get install sudo
+	apt-get install libevent-1.4-2 libevent-dev
 	
 ---
 	

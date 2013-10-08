@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 自用makefile
-category: other
+category: cpp
 ---
 	
 	# 需求

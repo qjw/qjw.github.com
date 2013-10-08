@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cocos2d-x linux下编译
-category: bash
+category: linux
 ---
 
 由于windows 8下,intel那破显卡跟不上,所以用virtualbox装了个xubuntu跑.
