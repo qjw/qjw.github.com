@@ -77,3 +77,5 @@ category: cpp
 ##参考
 1. <http://www.cppblog.com/woaidongmao/archive/2009/06/23/88391.aspx>
 1. <http://www.cnblogs.com/brainy/archive/2012/05/13/2498660.html>
+1. <http://stackoverflow.com/questions/9496101/protocol-buffer-over-socket-in-c>
+1. <http://stackoverflow.com/questions/11640864/length-prefix-for-protobuf-messages-in-c>
