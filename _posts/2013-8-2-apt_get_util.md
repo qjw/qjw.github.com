@@ -34,6 +34,7 @@ category: other
 	apt-get install libevent-1.4-2 libevent-dev
 	apt-get install libprotobuf-dev libprotobuf-c0 libprotobuf-c0-dev 
 	apt-get install libprotobuf6 protobuf-compiler protobuf-c-compiler
+	apt-get install libtcmalloc-minimal0
 	
 ---
 	
