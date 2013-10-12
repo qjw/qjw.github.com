@@ -13,7 +13,7 @@ category: other
 	# http://www.ibm.com/developerworks/cn/linux/l-tsl/
 	apt-get install build-essential gdb strace ltrace 
 	apt-get install psmisc #top vmstat pstree
-	apt-get install sysstat #iostat mpstat sar 
+	apt-get install sysstat #iostat mpstat sar pidstat
 	apt-get install libmudflap0 libmudflap0-4.4-dev
 	apt-get install vim ctags diffutils patch file
 	apt-get install subversion git
