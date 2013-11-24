@@ -75,6 +75,9 @@ Windows上搭建Jekyll测试平台，为了方便，使用<a href="https://githu
 
 将self.content = File.read(File.join(base, name)) 改成 self.content = File.read(File.join(base, name), :encoding => "utf-8")
 </p>
+<p>
+若找不到，则将self.content = File.read_with_options(File.join(base, name)  改成 self.content = File.read_with_options(File.join(base, name), :encoding => "utf-8");
+</p>
 </li>
 
 <li>
