@@ -37,7 +37,7 @@ category: other
 	LOCAL_CFLAGS := -DHAVE_CONFIG_H -DANDROID -fvisibility=hidden
 	include $(BUILD_STATIC_LIBRARY)
 
-若有编译错误，直接注视以下代码
+若有编译错误，直接注释以下代码
 
 	#ifdef _EVENT_HAVE_SYS_EVENTFD_H
 	//#include <sys/eventfd.h>
@@ -82,7 +82,17 @@ category: other
 	LOCAL_SRC_FILES := hello-jni.c
 
 	LOCAL_STATIC_LIBRARIES := event2   ####
+	
+##CPP支持
+若使用诸如protobuf等c++实现的库，使用时，需要在**Application.mk** 增加以下内容
 
+	APP_STL := gnustl_static
+	
+同时可以根据需要在**Android.mk**增加以下内容
+
+	LOCAL_CPPFLAGS += -frtti -std=c++11 -fexceptions
+
+	
 增加代码/cygdrive/d/android/android-ndk-r9c/samples/hello-jni/jni/hello-jni.c
 
 	#include <event2/event.h>
@@ -110,7 +120,7 @@ category: other
 		
 cd到libevent官方源码的根目录，运行以下命令
 
-	./configure --host=arm-linux-androideabi \
+	./configure --host=arm \
 		CC=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-gcc.exe \
 		CPP=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-cpp.exe \
 		CXX=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-g++.exe
