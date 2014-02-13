@@ -14,6 +14,8 @@ category: other
 2. 输入Login/Password，中间选择"Password stored as SHA1 hash"
 3. User can use 选择所有
 
+**新建帐号，最好重启freesshd**
+
 ##使用
 
 	root@qjw-VirtualBox:~# ssh test@192.168.1.7 "cmd /c dir c:\\"
