@@ -37,6 +37,7 @@ category: other
 	apt-get install libtcmalloc-minimal0
 	apt-get install netcat
 	apt-get install rrdtool
+	apt-get install rdesktop grdesktop
 	
 ---
 	
