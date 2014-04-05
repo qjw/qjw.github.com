@@ -17,7 +17,7 @@ category: other
 	apt-get install libmudflap0 libmudflap0-4.4-dev
 	apt-get install vim ctags diffutils patch file
 	apt-get install subversion git
-	apt-get install python2.6 lua5.1 sun-java6-jre
+	apt-get install python2.6 lua5.1 sun-java6-jre nodejs
 	apt-get install wget curl tcpdump dnsutils nmap telnet
 	apt-get install netcat-traditional lftp iputils-ping
 	apt-get install smbfs #@support windows share file system
@@ -37,9 +37,15 @@ category: other
 	apt-get install libtcmalloc-minimal0
 	apt-get install netcat
 	apt-get install rrdtool
-	apt-get install rdesktop grdesktop
-	apt-get install gtkvncviewer gvncviewer
+	apt-get install rdesktop grdesktop #mstsc
+	apt-get install gtkvncviewer gvncviewer #vnc client
 	apt-get install qemu-system-x86 qemu-system-x86-64
+	apt-get install mupdf evince poppler-data #pdf reader
+	apt-get install gnome-mplayer vlc #video player
+	apt-get install eclipse eclipse-cdt
+	apt-get install chromium-browser
+	apt-get install chmsee #chm reader
+	apt-get install g2ipmsg # 飞鸽传书
 	
 ---
 	
