@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>C++ Unicode SBCS 函数对照表</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]->[<a href="/blog/2012/10/31/unicode_mbsc">C++ Unicode SBCS 函数对照表</a>]</strong>
+
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="ProgId" content="Excel.Sheet"/>
+  <meta name="Generator" content="WPS Office ET"/>
+  <!--[if gte mso 9]>
+   <xml>
+    <o:DocumentProperties>
+     <o:Author>king</o:Author>
+     <o:Created>2012-10-31T22:01:00</o:Created>
+     <o:LastSaved>2012-10-31T22:01:47</o:LastSaved>
+    </o:DocumentProperties>
+    <o:CustomDocumentProperties>
+     <o:KSOProductBuildVer dt:dt="string">2052-8.1.0.3199</o:KSOProductBuildVer>
+    </o:CustomDocumentProperties>
+   </xml>
+  <![endif]-->
+  <style>
+<!-- @page
+	{margin:1.00in 0.75in 1.00in 0.75in;
+	mso-header-margin:0.51in;
+	mso-footer-margin:0.51in;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.font0
+	{color:windowtext;
+	font-size:12.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"宋体";
+	mso-generic-font-family:auto;
+	mso-font-charset:134;}
+.font1
+	{color:windowtext;
+	font-size:12.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"宋体";
+	mso-generic-font-family:auto;
+	mso-font-charset:134;}
+.style0
+	{mso-number-format:"General";
+	text-align:general;
+	vertical-align:middle;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-pattern:auto;
+	mso-background-source:auto;
+	color:windowtext;
+	font-size:12.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:宋体;
+	mso-generic-font-family:auto;
+	mso-font-charset:134;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:"Normal";
+	mso-style-id:0;}
+.style16
+	{mso-number-format:"_ * \#\,\#\#0\.00_ \;_ * \\-\#\,\#\#0\.00_ \;_ * \0022-\0022??_ \;_ \@_ ";
+	mso-style-name:"Comma";
+	mso-style-id:3;}
+.style17
+	{mso-number-format:"_ \0022\00A5\0022* \#\,\#\#0\.00_ \;_ \0022\00A5\0022* \\-\#\,\#\#0\.00_ \;_ \0022\00A5\0022* \0022-\0022??_ \;_ \@_ ";
+	mso-style-name:"Currency";
+	mso-style-id:4;}
+.style18
+	{mso-number-format:"_ * \#\,\#\#0_ \;_ * \\-\#\,\#\#0_ \;_ * \0022-\0022_ \;_ \@_ ";
+	mso-style-name:"Comma[0]";
+	mso-style-id:6;}
+.style19
+	{mso-number-format:"0%";
+	mso-style-name:"Percent";
+	mso-style-id:5;}
+.style20
+	{mso-number-format:"_ \0022\00A5\0022* \#\,\#\#0_ \;_ \0022\00A5\0022* \\-\#\,\#\#0_ \;_ \0022\00A5\0022* \0022-\0022_ \;_ \@_ ";
+	mso-style-name:"Currency[0]";
+	mso-style-id:7;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	mso-number-format:"General";
+	text-align:general;
+	vertical-align:middle;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-pattern:auto;
+	mso-background-source:auto;
+	color:windowtext;
+	font-size:12.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:宋体;
+	mso-generic-font-family:auto;
+	mso-font-charset:134;
+	border:none;
+	mso-protection:locked visible;}
+.xl22
+	{mso-style-parent:style0;
+	border:.5pt solid windowtext;}
+.xl23
+	{mso-style-parent:style0;
+	mso-pattern:auto none;
+	background:#00FF00;
+	font-weight:700;
+	border:.5pt solid windowtext;}
+ -->  </style>
+  <!--[if gte mso 9]>
+   <xml>
+    <x:ExcelWorkbook>
+     <x:ExcelWorksheets>
+      <x:ExcelWorksheet>
+       <x:Name>fuck</x:Name>
+       <x:WorksheetOptions>
+        <x:DefaultRowHeight>285</x:DefaultRowHeight>
+        <x:Selected/>
+        <x:Panes>
+         <x:Pane>
+          <x:Number>3</x:Number>
+          <x:ActiveCol>0</x:ActiveCol>
+          <x:ActiveRow>0</x:ActiveRow>
+          <x:RangeSelection>A1:C1</x:RangeSelection>
+         </x:Pane>
+        </x:Panes>
+        <x:ProtectContents>False</x:ProtectContents>
+        <x:ProtectObjects>False</x:ProtectObjects>
+        <x:ProtectScenarios>False</x:ProtectScenarios>
+        <x:Print>
+         <x:ValidPrinterInfo/>
+         <x:PaperSizeIndex>9</x:PaperSizeIndex>
+        </x:Print>
+       </x:WorksheetOptions>
+      </x:ExcelWorksheet>
+     </x:ExcelWorksheets>
+     <x:Iteration/>
+     <x:ProtectStructure>False</x:ProtectStructure>
+     <x:ProtectWindows>False</x:ProtectWindows>
+     <x:WindowHeight>8520</x:WindowHeight>
+     <x:WindowWidth>16100</x:WindowWidth>
+    </x:ExcelWorkbook>
+   </xml>
+  <![endif]-->
+ </head>
+ <body link="blue" vlink="purple">
+  <h4>参考<a href='http://blog.chinaunix.net/uid-25808509-id-3240281.html'>这里</a></h4>
+  <table width="552" border="0" cellpadding="0" cellspacing="0" style='width:414.00pt;border-collapse:collapse;table-layout:fixed;'>
+   <col width="181" style='mso-width-source:userset;mso-width-alt:5792;width:135.75pt;'/>
+   <col width="177" style='mso-width-source:userset;mso-width-alt:5664;width:132.75pt;'/>
+   <col width="194" style='mso-width-source:userset;mso-width-alt:6208;width:145.50pt;'/>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl23" height="19" width="181" style='height:14.25pt;width:135.75pt;' x:str>o</td>
+    <td class="xl23" width="177" style='width:132.75pt;' x:str>SBCS</td>
+    <td class="xl23" width="194" style='width:145.50pt;' x:str>UNICODE</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>TCHAR</td>
+    <td class="xl22" x:str>char</td>
+    <td class="xl22" x:str>wchar_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_TEOF</td>
+    <td class="xl22" x:str>EOF</td>
+    <td class="xl22" x:str>WEOF</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_TINT</td>
+    <td class="xl22" x:str>int</td>
+    <td class="xl22" x:str>wint_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_TSCHAR</td>
+    <td class="xl22" x:str>signed char</td>
+    <td class="xl22" x:str>wchar_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_TUCHAR</td>
+    <td class="xl22" x:str>unsigned char</td>
+    <td class="xl22" x:str>wchar_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_TXCHAR</td>
+    <td class="xl22" x:str>char</td>
+    <td class="xl22" x:str>wchar_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>__T(x)</td>
+    <td class="xl22" x:str>x</td>
+    <td class="xl22" x:str>L</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>__targv</td>
+    <td class="xl22" x:str>__argv</td>
+    <td class="xl22" x:str>__wargv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>__tcserror</td>
+    <td class="xl22" x:str>_strerror</td>
+    <td class="xl22" x:str>__wcserror</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>__tcserror_s</td>
+    <td class="xl22" x:str>_strerror_s</td>
+    <td class="xl22" x:str>__wcserror_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_cgetts</td>
+    <td class="xl22" x:str>_cgets</td>
+    <td class="xl22" x:str>_cgetws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_cgetts_s</td>
+    <td class="xl22" x:str>_cgets_s</td>
+    <td class="xl22" x:str>_cgetws_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_cputts</td>
+    <td class="xl22" x:str>_cputs</td>
+    <td class="xl22" x:str>_cputws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fgettc</td>
+    <td class="xl22" x:str>fgetc</td>
+    <td class="xl22" x:str>fgetwc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fgettc_nolock</td>
+    <td class="xl22" x:str>_fgetc_nolock</td>
+    <td class="xl22" x:str>_fgetwc_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fgettchar</td>
+    <td class="xl22" x:str>_fgetchar</td>
+    <td class="xl22" x:str>_fgetwchar</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fgetts</td>
+    <td class="xl22" x:str>fgets</td>
+    <td class="xl22" x:str>fgetws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fputtc</td>
+    <td class="xl22" x:str>fputc</td>
+    <td class="xl22" x:str>fputwc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fputtc_nolock</td>
+    <td class="xl22" x:str>_fputc_nolock</td>
+    <td class="xl22" x:str>_fputwc_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fputtchar</td>
+    <td class="xl22" x:str>_fputchar</td>
+    <td class="xl22" x:str>_fputwchar</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_fputts</td>
+    <td class="xl22" x:str>fputs</td>
+    <td class="xl22" x:str>fputws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf</td>
+    <td class="xl22" x:str>fprintf</td>
+    <td class="xl22" x:str>fwprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf_l</td>
+    <td class="xl22" x:str>_fprintf_l</td>
+    <td class="xl22" x:str>_fwprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf_p</td>
+    <td class="xl22" x:str>_fprintf_p</td>
+    <td class="xl22" x:str>_fwprintf_p</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf_p_l</td>
+    <td class="xl22" x:str>_fprintf_p_l</td>
+    <td class="xl22" x:str>_fwprintf_p_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf_s</td>
+    <td class="xl22" x:str>fprintf_s</td>
+    <td class="xl22" x:str>fwprintf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftprintf_s_l</td>
+    <td class="xl22" x:str>_fprintf_s_l</td>
+    <td class="xl22" x:str>_fwprintf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftscanf</td>
+    <td class="xl22" x:str>fscanf</td>
+    <td class="xl22" x:str>fwscanf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftscanf_l</td>
+    <td class="xl22" x:str>_fscanf_l</td>
+    <td class="xl22" x:str>_fwscanf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftscanf_s</td>
+    <td class="xl22" x:str>fscanf_s</td>
+    <td class="xl22" x:str>fwscanf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ftscanf_s_l</td>
+    <td class="xl22" x:str>_fscanf_s_l</td>
+    <td class="xl22" x:str>_fwscanf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_get_tpgmptr</td>
+    <td class="xl22" x:str>_get_pgmptr</td>
+    <td class="xl22" x:str>_get_wpgmptr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettc</td>
+    <td class="xl22" x:str>getc</td>
+    <td class="xl22" x:str>getwc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettc_nolock</td>
+    <td class="xl22" x:str>_getc_nolock</td>
+    <td class="xl22" x:str>_getwc_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettch</td>
+    <td class="xl22" x:str>_getch</td>
+    <td class="xl22" x:str>_getwch</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettch_nolock</td>
+    <td class="xl22" x:str>_getch_nolock</td>
+    <td class="xl22" x:str>_getwch_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettchar</td>
+    <td class="xl22" x:str>getchar</td>
+    <td class="xl22" x:str>getwchar</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettchar_nolock</td>
+    <td class="xl22" x:str>_getchar_nolock</td>
+    <td class="xl22" x:str>_getwchar_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettche</td>
+    <td class="xl22" x:str>_getche</td>
+    <td class="xl22" x:str>_getwche</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_gettche_nolock</td>
+    <td class="xl22" x:str>_getche_nolock</td>
+    <td class="xl22" x:str>_getwche_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_getts</td>
+    <td class="xl22" x:str>gets</td>
+    <td class="xl22" x:str>_getws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_getts_s</td>
+    <td class="xl22" x:str>gets_s</td>
+    <td class="xl22" x:str>_getws_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_i64tot</td>
+    <td class="xl22" x:str>_i64toa</td>
+    <td class="xl22" x:str>_i64tow</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_i64tot_s</td>
+    <td class="xl22" x:str>_i64toa_s</td>
+    <td class="xl22" x:str>_i64tow_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istalnum</td>
+    <td class="xl22" x:str>isalnum</td>
+    <td class="xl22" x:str>iswalnum</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istalnum_l</td>
+    <td class="xl22" x:str>_isalnum_l</td>
+    <td class="xl22" x:str>_iswalnum_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istalpha</td>
+    <td class="xl22" x:str>isalpha</td>
+    <td class="xl22" x:str>iswalpha</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istalpha_l</td>
+    <td class="xl22" x:str>_isalpha_l</td>
+    <td class="xl22" x:str>_iswalpha_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istascii</td>
+    <td class="xl22" x:str>__isascii</td>
+    <td class="xl22" x:str>iswascii</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istcntrl</td>
+    <td class="xl22" x:str>iscntrl</td>
+    <td class="xl22" x:str>iswcntrl</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istcntrl_l</td>
+    <td class="xl22" x:str>_iscntrl_l</td>
+    <td class="xl22" x:str>_iswcntrl_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istdigit</td>
+    <td class="xl22" x:str>isdigit</td>
+    <td class="xl22" x:str>iswdigit</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istdigit_l</td>
+    <td class="xl22" x:str>_isdigit_l</td>
+    <td class="xl22" x:str>_iswdigit_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istgraph</td>
+    <td class="xl22" x:str>isgraph</td>
+    <td class="xl22" x:str>iswgraph</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istgraph_l</td>
+    <td class="xl22" x:str>_isgraph_l</td>
+    <td class="xl22" x:str>_iswgraph_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istlower</td>
+    <td class="xl22" x:str>islower</td>
+    <td class="xl22" x:str>iswlower</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istlower_l</td>
+    <td class="xl22" x:str>_islower_l</td>
+    <td class="xl22" x:str>_iswlower_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istprint</td>
+    <td class="xl22" x:str>isprint</td>
+    <td class="xl22" x:str>iswprint</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istprint_l</td>
+    <td class="xl22" x:str>_isprint_l</td>
+    <td class="xl22" x:str>_iswprint_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istpunct</td>
+    <td class="xl22" x:str>ispunct</td>
+    <td class="xl22" x:str>iswpunct</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istpunct_l</td>
+    <td class="xl22" x:str>_ispunct_l</td>
+    <td class="xl22" x:str>_iswpunct_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istspace</td>
+    <td class="xl22" x:str>isspace</td>
+    <td class="xl22" x:str>iswspace</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istspace_l</td>
+    <td class="xl22" x:str>_isspace_l</td>
+    <td class="xl22" x:str>_iswspace_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istupper</td>
+    <td class="xl22" x:str>isupper</td>
+    <td class="xl22" x:str>iswupper</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istupper_l</td>
+    <td class="xl22" x:str>_isupper_l</td>
+    <td class="xl22" x:str>_iswupper_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istxdigit</td>
+    <td class="xl22" x:str>isxdigit</td>
+    <td class="xl22" x:str>iswxdigit</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_istxdigit_l</td>
+    <td class="xl22" x:str>_isxdigit_l</td>
+    <td class="xl22" x:str>_iswxdigit_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_itot</td>
+    <td class="xl22" x:str>_itoa</td>
+    <td class="xl22" x:str>_itow</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_itot_s</td>
+    <td class="xl22" x:str>_itoa_s</td>
+    <td class="xl22" x:str>_itow_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ltot</td>
+    <td class="xl22" x:str>_ltoa</td>
+    <td class="xl22" x:str>_ltow</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_ltot_s</td>
+    <td class="xl22" x:str>_ltoa_s</td>
+    <td class="xl22" x:str>_ltow_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttc</td>
+    <td class="xl22" x:str>putc</td>
+    <td class="xl22" x:str>putwc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttc_nolock</td>
+    <td class="xl22" x:str>_putc_nolock</td>
+    <td class="xl22" x:str>_putwc_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttch</td>
+    <td class="xl22" x:str>_putch</td>
+    <td class="xl22" x:str>_putwch</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttch_nolock</td>
+    <td class="xl22" x:str>_putch_nolock</td>
+    <td class="xl22" x:str>_putwch_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttchar</td>
+    <td class="xl22" x:str>putchar</td>
+    <td class="xl22" x:str>putwchar</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_puttchar_nolock</td>
+    <td class="xl22" x:str>_putchar_nolock</td>
+    <td class="xl22" x:str>_putwchar_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_putts</td>
+    <td class="xl22" x:str>puts</td>
+    <td class="xl22" x:str>_putws</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sctprintf</td>
+    <td class="xl22" x:str>_scprintf</td>
+    <td class="xl22" x:str>_scwprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sctprintf_l</td>
+    <td class="xl22" x:str>_scprintf_l</td>
+    <td class="xl22" x:str>_scwprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sctprintf_p</td>
+    <td class="xl22" x:str>_scprintf_p</td>
+    <td class="xl22" x:str>_scwprintf_p</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sctprintf_p_l</td>
+    <td class="xl22" x:str>_scprintf_p_l</td>
+    <td class="xl22" x:str>_scwprintf_p_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntprintf</td>
+    <td class="xl22" x:str>_snprintf</td>
+    <td class="xl22" x:str>_snwprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntprintf_l</td>
+    <td class="xl22" x:str>_snprintf_l</td>
+    <td class="xl22" x:str>_snwprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntprintf_s</td>
+    <td class="xl22" x:str>_snprintf_s</td>
+    <td class="xl22" x:str>_snwprintf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntprintf_s_l</td>
+    <td class="xl22" x:str>_snprintf_s_l</td>
+    <td class="xl22" x:str>_snwprintf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntscanf</td>
+    <td class="xl22" x:str>_snscanf</td>
+    <td class="xl22" x:str>_snwscanf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntscanf_l</td>
+    <td class="xl22" x:str>_snscanf_l</td>
+    <td class="xl22" x:str>_snwscanf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntscanf_s</td>
+    <td class="xl22" x:str>_snscanf_s</td>
+    <td class="xl22" x:str>_snwscanf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_sntscanf_s_l</td>
+    <td class="xl22" x:str>_snscanf_s_l</td>
+    <td class="xl22" x:str>_snwscanf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf</td>
+    <td class="xl22" x:str>sprintf</td>
+    <td class="xl22" x:str>_swprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf_l</td>
+    <td class="xl22" x:str>_sprintf_l</td>
+    <td class="xl22" x:str>__swprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf_p</td>
+    <td class="xl22" x:str>_sprintf_p</td>
+    <td class="xl22" x:str>_swprintf_p</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf_p_l</td>
+    <td class="xl22" x:str>_sprintf_p_l</td>
+    <td class="xl22" x:str>_swprintf_p_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf_s</td>
+    <td class="xl22" x:str>sprintf_s</td>
+    <td class="xl22" x:str>swprintf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stprintf_s_l</td>
+    <td class="xl22" x:str>_sprintf_s_l</td>
+    <td class="xl22" x:str>_swprintf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stscanf</td>
+    <td class="xl22" x:str>sscanf</td>
+    <td class="xl22" x:str>swscanf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stscanf_l</td>
+    <td class="xl22" x:str>_sscanf_l</td>
+    <td class="xl22" x:str>_swscanf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stscanf_s</td>
+    <td class="xl22" x:str>sscanf_s</td>
+    <td class="xl22" x:str>swscanf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_stscanf_s_l</td>
+    <td class="xl22" x:str>_sscanf_s_l</td>
+    <td class="xl22" x:str>_swscanf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tWinMain</td>
+    <td class="xl22" x:str>WinMain</td>
+    <td class="xl22" x:str>wWinMain</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_taccess</td>
+    <td class="xl22" x:str>_access</td>
+    <td class="xl22" x:str>_waccess</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_taccess_s</td>
+    <td class="xl22" x:str>_access_s</td>
+    <td class="xl22" x:str>_waccess_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tasctime</td>
+    <td class="xl22" x:str>asctime</td>
+    <td class="xl22" x:str>_wasctime</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tasctime_s</td>
+    <td class="xl22" x:str>asctime_s</td>
+    <td class="xl22" x:str>_wasctime_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tchdir</td>
+    <td class="xl22" x:str>_chdir</td>
+    <td class="xl22" x:str>_wchdir</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tchmod</td>
+    <td class="xl22" x:str>_chmod</td>
+    <td class="xl22" x:str>_wchmod</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf</td>
+    <td class="xl22" x:str>_cprintf</td>
+    <td class="xl22" x:str>_cwprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf_l</td>
+    <td class="xl22" x:str>_cprintf_l</td>
+    <td class="xl22" x:str>_cwprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf_p</td>
+    <td class="xl22" x:str>_cprintf_p</td>
+    <td class="xl22" x:str>_cwprintf_p</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf_p_l</td>
+    <td class="xl22" x:str>_cprintf_p_l</td>
+    <td class="xl22" x:str>_cwprintf_p_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf_s</td>
+    <td class="xl22" x:str>_cprintf_s</td>
+    <td class="xl22" x:str>_cwprintf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcprintf_s_l</td>
+    <td class="xl22" x:str>_cprintf_s_l</td>
+    <td class="xl22" x:str>_cwprintf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcreat</td>
+    <td class="xl22" x:str>_creat</td>
+    <td class="xl22" x:str>_wcreat</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscanf</td>
+    <td class="xl22" x:str>_cscanf</td>
+    <td class="xl22" x:str>_cwscanf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscanf_l</td>
+    <td class="xl22" x:str>_cscanf_l</td>
+    <td class="xl22" x:str>_cwscanf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscanf_s</td>
+    <td class="xl22" x:str>_cscanf_s</td>
+    <td class="xl22" x:str>_cwscanf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscanf_s_l</td>
+    <td class="xl22" x:str>_cscanf_s_l</td>
+    <td class="xl22" x:str>_cwscanf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscat</td>
+    <td class="xl22" x:str>strcat</td>
+    <td class="xl22" x:str>wcscat</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscat_s</td>
+    <td class="xl22" x:str>strcat_s</td>
+    <td class="xl22" x:str>wcscat_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcschr</td>
+    <td class="xl22" x:str>strchr</td>
+    <td class="xl22" x:str>wcschr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsclen</td>
+    <td class="xl22" x:str>strlen</td>
+    <td class="xl22" x:str>wcslen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscmp</td>
+    <td class="xl22" x:str>strcmp</td>
+    <td class="xl22" x:str>wcscmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscnlen</td>
+    <td class="xl22" x:str>strnlen</td>
+    <td class="xl22" x:str>wcsnlen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscoll</td>
+    <td class="xl22" x:str>strcoll</td>
+    <td class="xl22" x:str>wcscoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscoll_l</td>
+    <td class="xl22" x:str>_strcoll_l</td>
+    <td class="xl22" x:str>_wcscoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscpy</td>
+    <td class="xl22" x:str>strcpy</td>
+    <td class="xl22" x:str>wcscpy</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscpy_s</td>
+    <td class="xl22" x:str>strcpy_s</td>
+    <td class="xl22" x:str>wcscpy_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcscspn</td>
+    <td class="xl22" x:str>strcspn</td>
+    <td class="xl22" x:str>wcscspn</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsdec</td>
+    <td class="xl22" x:str>_strdec</td>
+    <td class="xl22" x:str>_wcsdec</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsdup</td>
+    <td class="xl22" x:str>_strdup</td>
+    <td class="xl22" x:str>_wcsdup</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsdup_dbg</td>
+    <td class="xl22" x:str>_strdup_dbg</td>
+    <td class="xl22"/>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcserror</td>
+    <td class="xl22" x:str>strerror</td>
+    <td class="xl22" x:str>_wcserror</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcserror_s</td>
+    <td class="xl22" x:str>strerror_s</td>
+    <td class="xl22" x:str>_wcserror_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsftime</td>
+    <td class="xl22" x:str>strftime</td>
+    <td class="xl22" x:str>wcsftime</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsftime_l</td>
+    <td class="xl22" x:str>_strftime_l</td>
+    <td class="xl22" x:str>_wcsftime_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsicmp</td>
+    <td class="xl22" x:str>_stricmp</td>
+    <td class="xl22" x:str>_wcsicmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsicmp_l</td>
+    <td class="xl22" x:str>_stricmp_l</td>
+    <td class="xl22" x:str>_wcsicmp_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsicoll</td>
+    <td class="xl22" x:str>_stricoll</td>
+    <td class="xl22" x:str>_wcsicoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsicoll_l</td>
+    <td class="xl22" x:str>_stricoll_l</td>
+    <td class="xl22" x:str>_wcsicoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsinc</td>
+    <td class="xl22" x:str>_strinc</td>
+    <td class="xl22" x:str>_wcsinc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcslen</td>
+    <td class="xl22" x:str>strlen</td>
+    <td class="xl22" x:str>wcslen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcslwr</td>
+    <td class="xl22" x:str>_strlwr</td>
+    <td class="xl22" x:str>_wcslwr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcslwr_l</td>
+    <td class="xl22" x:str>_strlwr_l</td>
+    <td class="xl22" x:str>_wcslwr_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcslwr_s</td>
+    <td class="xl22" x:str>_strlwr_s</td>
+    <td class="xl22" x:str>_wcslwr_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcslwr_s_l</td>
+    <td class="xl22" x:str>_strlwr_s_l</td>
+    <td class="xl22" x:str>_wcslwr_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnbcnt</td>
+    <td class="xl22" x:str>_strncnt</td>
+    <td class="xl22" x:str>_wcsncnt</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncat</td>
+    <td class="xl22" x:str>strncat</td>
+    <td class="xl22" x:str>wcsncat</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncat_l</td>
+    <td class="xl22" x:str>_strncat_l</td>
+    <td class="xl22" x:str>_wcsncat_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncat_s</td>
+    <td class="xl22" x:str>strncat_s</td>
+    <td class="xl22" x:str>wcsncat_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncat_s_l</td>
+    <td class="xl22" x:str>_strncat_s_l</td>
+    <td class="xl22" x:str>_wcsncat_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccat</td>
+    <td class="xl22" x:str>strncat</td>
+    <td class="xl22" x:str>wcsncat</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccat_l</td>
+    <td class="xl22" x:str>_strncat_l</td>
+    <td class="xl22" x:str>_wcsncat_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccat_s</td>
+    <td class="xl22" x:str>strncat_s</td>
+    <td class="xl22" x:str>wcsncat_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccat_s_l</td>
+    <td class="xl22" x:str>_strncat_s_l</td>
+    <td class="xl22" x:str>_wcsncat_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccmp</td>
+    <td class="xl22" x:str>strncmp</td>
+    <td class="xl22" x:str>wcsncmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccnt</td>
+    <td class="xl22" x:str>_strncnt</td>
+    <td class="xl22" x:str>_wcsncnt</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccoll</td>
+    <td class="xl22" x:str>_strncoll</td>
+    <td class="xl22" x:str>_wcsncoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccoll_l</td>
+    <td class="xl22" x:str>_strncoll_l</td>
+    <td class="xl22" x:str>_wcsncoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccpy</td>
+    <td class="xl22" x:str>strncpy</td>
+    <td class="xl22" x:str>wcsncpy</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccpy_l</td>
+    <td class="xl22" x:str>_strncpy_l</td>
+    <td class="xl22" x:str>_wcsncpy_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccpy_s</td>
+    <td class="xl22" x:str>strncpy_s</td>
+    <td class="xl22" x:str>wcsncpy_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnccpy_s_l</td>
+    <td class="xl22" x:str>_strncpy_s_l</td>
+    <td class="xl22" x:str>_wcsncpy_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncicmp</td>
+    <td class="xl22" x:str>_strnicmp</td>
+    <td class="xl22" x:str>_wcsnicmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncicmp_l</td>
+    <td class="xl22" x:str>_strnicmp_l</td>
+    <td class="xl22" x:str>_wcsnicmp_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncicoll</td>
+    <td class="xl22" x:str>_strnicoll</td>
+    <td class="xl22" x:str>_wcsnicoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncicoll_l</td>
+    <td class="xl22" x:str>_strnicoll_l</td>
+    <td class="xl22" x:str>_wcsnicoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncmp</td>
+    <td class="xl22" x:str>strncmp</td>
+    <td class="xl22" x:str>wcsncmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncoll</td>
+    <td class="xl22" x:str>_strncoll</td>
+    <td class="xl22" x:str>_wcsncoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncoll_l</td>
+    <td class="xl22" x:str>_strncoll_l</td>
+    <td class="xl22" x:str>_wcsncoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncpy</td>
+    <td class="xl22" x:str>strncpy</td>
+    <td class="xl22" x:str>wcsncpy</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncpy_l</td>
+    <td class="xl22" x:str>_strncpy_l</td>
+    <td class="xl22" x:str>_wcsncpy_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncpy_s</td>
+    <td class="xl22" x:str>strncpy_s</td>
+    <td class="xl22" x:str>wcsncpy_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncpy_s_l</td>
+    <td class="xl22" x:str>_strncpy_s_l</td>
+    <td class="xl22" x:str>_wcsncpy_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsncset</td>
+    <td class="xl22" x:str>_strnset</td>
+    <td class="xl22" x:str>_wcsnset</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnextc</td>
+    <td class="xl22" x:str>_strnextc</td>
+    <td class="xl22" x:str>_wcsnextc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnicmp</td>
+    <td class="xl22" x:str>_strnicmp</td>
+    <td class="xl22" x:str>_wcsnicmp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnicmp_l</td>
+    <td class="xl22" x:str>_strnicmp_l</td>
+    <td class="xl22" x:str>_wcsnicmp_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnicoll</td>
+    <td class="xl22" x:str>_strnicoll</td>
+    <td class="xl22" x:str>_wcsnicoll</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnicoll_l</td>
+    <td class="xl22" x:str>_strnicoll_l</td>
+    <td class="xl22" x:str>_wcsnicoll_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsninc</td>
+    <td class="xl22" x:str>_strninc</td>
+    <td class="xl22" x:str>_wcsninc</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnlen</td>
+    <td class="xl22" x:str>strnlen</td>
+    <td class="xl22" x:str>wcsnlen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnset</td>
+    <td class="xl22" x:str>_strnset</td>
+    <td class="xl22" x:str>_wcsnset</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnset_l</td>
+    <td class="xl22" x:str>_strnset_l</td>
+    <td class="xl22" x:str>_wcsnset_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnset_s</td>
+    <td class="xl22" x:str>_strnset_s</td>
+    <td class="xl22" x:str>_wcsnset_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsnset_s_l</td>
+    <td class="xl22" x:str>_strnset_s_l</td>
+    <td class="xl22" x:str>_wcsnset_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcspbrk</td>
+    <td class="xl22" x:str>strpbrk</td>
+    <td class="xl22" x:str>wcspbrk</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsrchr</td>
+    <td class="xl22" x:str>strrchr</td>
+    <td class="xl22" x:str>wcsrchr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsrev</td>
+    <td class="xl22" x:str>_strrev</td>
+    <td class="xl22" x:str>_wcsrev</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsset</td>
+    <td class="xl22" x:str>_strset</td>
+    <td class="xl22" x:str>_wcsset</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsset_l</td>
+    <td class="xl22"/>
+    <td class="xl22" x:str>_wcsset_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsset_s</td>
+    <td class="xl22" x:str>_strset_s</td>
+    <td class="xl22" x:str>_wcsset_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsset_s_l</td>
+    <td class="xl22" x:str>_strset_s_l</td>
+    <td class="xl22" x:str>_wcsset_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsspn</td>
+    <td class="xl22" x:str>strspn</td>
+    <td class="xl22" x:str>wcsspn</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsspnp</td>
+    <td class="xl22" x:str>_strspnp</td>
+    <td class="xl22" x:str>_wcsspnp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsstr</td>
+    <td class="xl22" x:str>strstr</td>
+    <td class="xl22" x:str>wcsstr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstod</td>
+    <td class="xl22" x:str>strtod</td>
+    <td class="xl22" x:str>wcstod</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstod_l</td>
+    <td class="xl22" x:str>_strtod_l</td>
+    <td class="xl22" x:str>_wcstod_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoi64</td>
+    <td class="xl22" x:str>_strtoi64</td>
+    <td class="xl22" x:str>_wcstoi64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoi64_l</td>
+    <td class="xl22" x:str>_strtoi64_l</td>
+    <td class="xl22" x:str>_wcstoi64_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstok</td>
+    <td class="xl22" x:str>strtok</td>
+    <td class="xl22" x:str>wcstok</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstok_l</td>
+    <td class="xl22" x:str>_strtok_l</td>
+    <td class="xl22" x:str>_wcstok_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstok_s</td>
+    <td class="xl22" x:str>strtok_s</td>
+    <td class="xl22" x:str>wcstok_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstok_s_l</td>
+    <td class="xl22" x:str>_strtok_s_l</td>
+    <td class="xl22" x:str>_wcstok_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstol</td>
+    <td class="xl22" x:str>strtol</td>
+    <td class="xl22" x:str>wcstol</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstol_l</td>
+    <td class="xl22" x:str>_strtol_l</td>
+    <td class="xl22" x:str>_wcstol_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoui64</td>
+    <td class="xl22" x:str>_strtoui64</td>
+    <td class="xl22" x:str>_wcstoui64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoui64_l</td>
+    <td class="xl22" x:str>_strtoui64_l</td>
+    <td class="xl22" x:str>_wcstoui64_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoul</td>
+    <td class="xl22" x:str>strtoul</td>
+    <td class="xl22" x:str>wcstoul</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcstoul_l</td>
+    <td class="xl22" x:str>_strtoul_l</td>
+    <td class="xl22" x:str>_wcstoul_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsupr</td>
+    <td class="xl22" x:str>_strupr</td>
+    <td class="xl22" x:str>_wcsupr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsupr_l</td>
+    <td class="xl22" x:str>_strupr_l</td>
+    <td class="xl22" x:str>_wcsupr_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsupr_s</td>
+    <td class="xl22" x:str>_strupr_s</td>
+    <td class="xl22" x:str>_wcsupr_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsupr_s_l</td>
+    <td class="xl22" x:str>_strupr_s_l</td>
+    <td class="xl22" x:str>_wcsupr_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsxfrm</td>
+    <td class="xl22" x:str>strxfrm</td>
+    <td class="xl22" x:str>wcsxfrm</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tcsxfrm_l</td>
+    <td class="xl22" x:str>_strxfrm_l</td>
+    <td class="xl22" x:str>_wcsxfrm_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime</td>
+    <td class="xl22" x:str>ctime</td>
+    <td class="xl22" x:str>_wctime</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime32</td>
+    <td class="xl22" x:str>_ctime32</td>
+    <td class="xl22" x:str>_wctime32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime32_s</td>
+    <td class="xl22" x:str>_ctime32_s</td>
+    <td class="xl22" x:str>_wctime32_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime64</td>
+    <td class="xl22" x:str>_ctime64</td>
+    <td class="xl22" x:str>_wctime64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime64_s</td>
+    <td class="xl22" x:str>_ctime64_s</td>
+    <td class="xl22" x:str>_wctime64_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tctime_s</td>
+    <td class="xl22" x:str>ctime_s</td>
+    <td class="xl22" x:str>_wctime_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tdupenv_s</td>
+    <td class="xl22" x:str>_dupenv_s</td>
+    <td class="xl22" x:str>_wdupenv_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tdupenv_s_dbg</td>
+    <td class="xl22" x:str>_dupenv_s_dbg</td>
+    <td class="xl22" x:str>_wdupenv_s_dbg</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tenviron</td>
+    <td class="xl22" x:str>_environ</td>
+    <td class="xl22" x:str>_wenviron</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecl</td>
+    <td class="xl22" x:str>_execl</td>
+    <td class="xl22" x:str>_wexecl</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecle</td>
+    <td class="xl22" x:str>_execle</td>
+    <td class="xl22" x:str>_wexecle</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texeclp</td>
+    <td class="xl22" x:str>_execlp</td>
+    <td class="xl22" x:str>_wexeclp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texeclpe</td>
+    <td class="xl22" x:str>_execlpe</td>
+    <td class="xl22" x:str>_wexeclpe</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecv</td>
+    <td class="xl22" x:str>_execv</td>
+    <td class="xl22" x:str>_wexecv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecve</td>
+    <td class="xl22" x:str>_execve</td>
+    <td class="xl22" x:str>_wexecve</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecvp</td>
+    <td class="xl22" x:str>_execvp</td>
+    <td class="xl22" x:str>_wexecvp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_texecvpe</td>
+    <td class="xl22" x:str>_execvpe</td>
+    <td class="xl22" x:str>_wexecvpe</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfdopen</td>
+    <td class="xl22" x:str>_fdopen</td>
+    <td class="xl22" x:str>_wfdopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddata32_t</td>
+    <td class="xl22" x:str>_finddata32_t</td>
+    <td class="xl22" x:str>_wfinddata32_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddata32i64_t</td>
+    <td class="xl22" x:str>_finddata32i64_t</td>
+    <td class="xl22" x:str>_wfinddata32i64_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddata64_t</td>
+    <td class="xl22" x:str>__finddata64_t</td>
+    <td class="xl22" x:str>_wfinddata64_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddata64i32_t</td>
+    <td class="xl22" x:str>_finddata64i32_t</td>
+    <td class="xl22" x:str>_wfinddata64i32_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddata_t</td>
+    <td class="xl22" x:str>_finddata_t</td>
+    <td class="xl22" x:str>_wfinddata_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfinddatai64_t</td>
+    <td class="xl22" x:str>_finddatai64_t</td>
+    <td class="xl22" x:str>_wfinddatai64_t</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirst</td>
+    <td class="xl22" x:str>_findfirst</td>
+    <td class="xl22" x:str>_wfindfirst</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirst32</td>
+    <td class="xl22" x:str>_findfirst32</td>
+    <td class="xl22" x:str>_wfindfirst32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirst32i64</td>
+    <td class="xl22" x:str>_findfirst32i64</td>
+    <td class="xl22" x:str>_wfindfirst32i64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirst64</td>
+    <td class="xl22" x:str>_findfirst64</td>
+    <td class="xl22" x:str>_wfindfirst64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirst64i32</td>
+    <td class="xl22" x:str>_findfirst64i32</td>
+    <td class="xl22" x:str>_wfindfirst64i32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindfirsti64</td>
+    <td class="xl22" x:str>_findfirsti64</td>
+    <td class="xl22" x:str>_wfindfirsti64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnext</td>
+    <td class="xl22" x:str>_findnext</td>
+    <td class="xl22" x:str>_wfindnext</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnext32</td>
+    <td class="xl22" x:str>_findnext32</td>
+    <td class="xl22" x:str>_wfindnext32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnext32i64</td>
+    <td class="xl22" x:str>_findnext32i64</td>
+    <td class="xl22" x:str>_wfindnext32i64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnext64</td>
+    <td class="xl22" x:str>_findnext64</td>
+    <td class="xl22" x:str>_wfindnext64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnext64i32</td>
+    <td class="xl22" x:str>_findnext64i32</td>
+    <td class="xl22" x:str>_wfindnext64i32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfindnexti64</td>
+    <td class="xl22" x:str>_findnexti64</td>
+    <td class="xl22" x:str>_wfindnexti64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfopen</td>
+    <td class="xl22" x:str>fopen</td>
+    <td class="xl22" x:str>_wfopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfopen_s</td>
+    <td class="xl22" x:str>fopen_s</td>
+    <td class="xl22" x:str>_wfopen_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfreopen</td>
+    <td class="xl22" x:str>freopen</td>
+    <td class="xl22" x:str>_wfreopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfreopen_s</td>
+    <td class="xl22" x:str>freopen_s</td>
+    <td class="xl22" x:str>_wfreopen_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfsopen</td>
+    <td class="xl22" x:str>_fsopen</td>
+    <td class="xl22" x:str>_wfsopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfullpath</td>
+    <td class="xl22" x:str>_fullpath</td>
+    <td class="xl22" x:str>_wfullpath</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tfullpath_dbg</td>
+    <td class="xl22" x:str>_fullpath_dbg</td>
+    <td class="xl22" x:str>_wfullpath_dbg</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetcwd</td>
+    <td class="xl22" x:str>_getcwd</td>
+    <td class="xl22" x:str>_wgetcwd</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetcwd_dbg</td>
+    <td class="xl22" x:str>_getcwd_dbg</td>
+    <td class="xl22" x:str>_wgetcwd_dbg</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetdcwd</td>
+    <td class="xl22" x:str>_getdcwd</td>
+    <td class="xl22" x:str>_wgetdcwd</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetdcwd_dbg</td>
+    <td class="xl22" x:str>_getdcwd_dbg</td>
+    <td class="xl22" x:str>_wgetdcwd_dbg</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetdcwd_lk_dbg</td>
+    <td class="xl22" x:str>_getdcwd_lk_dbg</td>
+    <td class="xl22" x:str>_wgetdcwd_lk_dbg</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetdcwd_nolock</td>
+    <td class="xl22" x:str>_getdcwd_nolock</td>
+    <td class="xl22" x:str>_wgetdcwd_nolock</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetenv</td>
+    <td class="xl22" x:str>getenv</td>
+    <td class="xl22" x:str>_wgetenv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tgetenv_s</td>
+    <td class="xl22" x:str>getenv_s</td>
+    <td class="xl22" x:str>_wgetenv_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmain</td>
+    <td class="xl22" x:str>main</td>
+    <td class="xl22" x:str>wmain</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmakepath</td>
+    <td class="xl22" x:str>_makepath</td>
+    <td class="xl22" x:str>_wmakepath</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmakepath_s</td>
+    <td class="xl22" x:str>_makepath_s</td>
+    <td class="xl22" x:str>_wmakepath_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmkdir</td>
+    <td class="xl22" x:str>_mkdir</td>
+    <td class="xl22" x:str>_wmkdir</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmktemp</td>
+    <td class="xl22" x:str>_mktemp</td>
+    <td class="xl22" x:str>_wmktemp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tmktemp_s</td>
+    <td class="xl22" x:str>_mktemp_s</td>
+    <td class="xl22" x:str>_wmktemp_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_topen</td>
+    <td class="xl22" x:str>_open</td>
+    <td class="xl22" x:str>_wopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_totlower</td>
+    <td class="xl22" x:str>tolower</td>
+    <td class="xl22" x:str>towlower</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_totlower_l</td>
+    <td class="xl22" x:str>_tolower_l</td>
+    <td class="xl22" x:str>_towlower_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_totupper</td>
+    <td class="xl22" x:str>toupper</td>
+    <td class="xl22" x:str>towupper</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_totupper_l</td>
+    <td class="xl22" x:str>_toupper_l</td>
+    <td class="xl22" x:str>_towupper_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tperror</td>
+    <td class="xl22" x:str>perror</td>
+    <td class="xl22" x:str>_wperror</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tpgmptr</td>
+    <td class="xl22" x:str>_pgmptr</td>
+    <td class="xl22" x:str>_wpgmptr</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tpopen</td>
+    <td class="xl22" x:str>_popen</td>
+    <td class="xl22" x:str>_wpopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf</td>
+    <td class="xl22" x:str>printf</td>
+    <td class="xl22" x:str>wprintf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf_l</td>
+    <td class="xl22" x:str>_printf_l</td>
+    <td class="xl22" x:str>_wprintf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf_p</td>
+    <td class="xl22" x:str>_printf_p</td>
+    <td class="xl22" x:str>_wprintf_p</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf_p_l</td>
+    <td class="xl22" x:str>_printf_p_l</td>
+    <td class="xl22" x:str>_wprintf_p_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf_s</td>
+    <td class="xl22" x:str>printf_s</td>
+    <td class="xl22" x:str>wprintf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tprintf_s_l</td>
+    <td class="xl22" x:str>_printf_s_l</td>
+    <td class="xl22" x:str>_wprintf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tputenv</td>
+    <td class="xl22" x:str>_putenv</td>
+    <td class="xl22" x:str>_wputenv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tputenv_s</td>
+    <td class="xl22" x:str>_putenv_s</td>
+    <td class="xl22" x:str>_wputenv_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tremove</td>
+    <td class="xl22" x:str>remove</td>
+    <td class="xl22" x:str>_wremove</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_trename</td>
+    <td class="xl22" x:str>rename</td>
+    <td class="xl22" x:str>_wrename</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_trmdir</td>
+    <td class="xl22" x:str>_rmdir</td>
+    <td class="xl22" x:str>_wrmdir</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tscanf</td>
+    <td class="xl22" x:str>scanf</td>
+    <td class="xl22" x:str>wscanf</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tscanf_l</td>
+    <td class="xl22" x:str>_scanf_l</td>
+    <td class="xl22" x:str>_wscanf_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tscanf_s</td>
+    <td class="xl22" x:str>scanf_s</td>
+    <td class="xl22" x:str>wscanf_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tscanf_s_l</td>
+    <td class="xl22" x:str>_scanf_s_l</td>
+    <td class="xl22" x:str>_wscanf_s_l</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsearchenv</td>
+    <td class="xl22" x:str>_searchenv</td>
+    <td class="xl22" x:str>_wsearchenv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsearchenv_s</td>
+    <td class="xl22" x:str>_searchenv_s</td>
+    <td class="xl22" x:str>_wsearchenv_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsetlocale</td>
+    <td class="xl22" x:str>setlocale</td>
+    <td class="xl22" x:str>_wsetlocale</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsopen</td>
+    <td class="xl22" x:str>_sopen</td>
+    <td class="xl22" x:str>_wsopen</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsopen_s</td>
+    <td class="xl22" x:str>_sopen_s</td>
+    <td class="xl22" x:str>_wsopen_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnl</td>
+    <td class="xl22" x:str>_spawnl</td>
+    <td class="xl22" x:str>_wspawnl</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnle</td>
+    <td class="xl22" x:str>_spawnle</td>
+    <td class="xl22" x:str>_wspawnle</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnlp</td>
+    <td class="xl22" x:str>_spawnlp</td>
+    <td class="xl22" x:str>_wspawnlp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnlpe</td>
+    <td class="xl22" x:str>_spawnlpe</td>
+    <td class="xl22" x:str>_wspawnlpe</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnv</td>
+    <td class="xl22" x:str>_spawnv</td>
+    <td class="xl22" x:str>_wspawnv</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnve</td>
+    <td class="xl22" x:str>_spawnve</td>
+    <td class="xl22" x:str>_wspawnve</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnvp</td>
+    <td class="xl22" x:str>_spawnvp</td>
+    <td class="xl22" x:str>_wspawnvp</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tspawnvpe</td>
+    <td class="xl22" x:str>_spawnvpe</td>
+    <td class="xl22" x:str>_wspawnvpe</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsplitpath</td>
+    <td class="xl22" x:str>_splitpath</td>
+    <td class="xl22" x:str>_wsplitpath</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tsplitpath_s</td>
+    <td class="xl22" x:str>_splitpath_s</td>
+    <td class="xl22" x:str>_wsplitpath_s</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstat</td>
+    <td class="xl22" x:str>_stat</td>
+    <td class="xl22" x:str>_wstat</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstat32</td>
+    <td class="xl22" x:str>_stat32</td>
+    <td class="xl22" x:str>_wstat32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstat32i64</td>
+    <td class="xl22" x:str>_stat32i64</td>
+    <td class="xl22" x:str>_wstat32i64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstat64</td>
+    <td class="xl22" x:str>_stat64</td>
+    <td class="xl22" x:str>_wstat64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstat64i32</td>
+    <td class="xl22" x:str>_stat64i32</td>
+    <td class="xl22" x:str>_wstat64i32</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstati64</td>
+    <td class="xl22" x:str>_stati64</td>
+    <td class="xl22" x:str>_wstati64</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td class="xl22" height="19" style='height:14.25pt;' x:str>_tstof</td>
+    <td class="xl22" x:str>atof</td>
+    <td class="xl22" x:str>_wtof</td>
+   </tr>
+   <tr height="19" style='height:14.25pt;'>
+    <td height="19" colspan="3" style='height:14.25pt;mso-ignore:colspan;'/>
+   </tr>
+  </table>
+ </body>
+</html>
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[windows]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Google Protobuf 自动反射消息</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/cpp/">cpp</a>]->[<a href="/blog/2013/11/24/protobuf_reflection">Google Protobuf 自动反射消息</a>]</strong>
+
+<p>最近翻了下同事<strong><a href="http://www.amazon.cn/Linux%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BC%96%E7%A8%8B-%E4%BD%BF%E7%94%A8muduo-C-%E7%BD%91%E7%BB%9C%E5%BA%93-%E9%99%88%E7%A1%95/dp/B00AYS2KL0/ref=pd_bxgy_b_img_y">《Linux多线程服务端编程:使用muduo C++网络库》</a></strong>一书，发现Google Protobuf支持自动反射，这在一定程度上简化了消息（反）序列化的处理。</p>
+
+<p>文中作者在自己博客也同步更新了文章，见这里<a href="http://blog.csdn.net/solstice/article/details/6300108">http://blog.csdn.net/solstice/article/details/6300108</a></p>
+
+<p>在网络程序中，通常需要对报文进行序列化和反序列化，以适用网络传输。不过这其中还有一个细节，你需要告诉对方，<strong>你传输的是什么包</strong>，对端才知道用什么结构来反序列化。</p>
+
+<p>大多数情况下，我们用一个双方都统一的数字或者字符串来标识报文类型，收包时做一个映射。</p>
+
+<p>现在的问题是，哪天新增了一个新的报文类型，这个映射就必须新增一项，发包的地方也一样。</p>
+
+<p>不过Protobuf内建了这样的映射。</p>
+
+<pre><code>bool init_send_buf_ex(
+        const google::protobuf::Message&amp; msg,
+        char* buf,
+        size_t* bufsize)
+{
+    assert(buf &amp;&amp; bufsize &amp;&amp; *bufsize);
+    google::protobuf::io::ArrayOutputStream aos(
+            buf,
+            *bufsize);
+    google::protobuf::io::CodedOutputStream coded_output(&amp;aos);
+
+    // 写名字长度
+    std::string msgname_ = msg.GetTypeName();
+    if(msgname_.empty() || msgname_.length() &gt;= ProtobufMessageMaxNamelen)
+    {
+        LogError("Invalid message name '%s' when init_send_buf_ex",msgname_.c_str());
+        return false;
+    }
+    coded_output.WriteVarint32(uint32_t(msgname_.length()));
+    // 写名字
+    coded_output.WriteString(msgname_);
+
+    // buffer是否够大
+    if(msg.ByteSize() + coded_output.ByteCount() &gt; *bufsize)
+    {
+        LogError("buf size '%ld' is too small,need '%ld'",
+                *bufsize,
+                msg.ByteSize() + coded_output.ByteCount());
+        return false;
+    }
+    // 序列化
+    msg.SerializeToCodedStream(&amp;coded_output);
+    *bufsize = coded_output.ByteCount();
+    return true;
+}
+</code></pre>
+
+<hr />
+
+<pre><code>/**
+ * @brief 根据名字获取实际的Message对象
+ * @param typeName
+ * @return
+ */
+static google::protobuf::Message* Name2ProtobufMessage(
+        const char* name)
+{
+    assert(name);
+    google::protobuf::Message* message = NULL;
+    const google::protobuf::Descriptor* descriptor =
+            google::protobuf::DescriptorPool::generated_pool()-&gt;FindMessageTypeByName(name);
+    if (descriptor)
+    {
+        const google::protobuf::Message* prototype =
+                google::protobuf::MessageFactory::generated_factory()-&gt;GetPrototype(descriptor);
+        if (prototype)
+        {
+            message = prototype-&gt;New();
+        }
+    }
+    return message;
+}
+
+void LanServerBase::read_imp(int fd)
+{
+    char buf_[1024];
+    struct sockaddr_in addr_;
+    socklen_t addrlen_ = sizeof(addr_);
+
+    int len_ = recvfrom_ex(fd,buf_,sizeof(buf_),0,
+            (struct sockaddr*)&amp;addr_,&amp;addrlen_);
+    if(len_ &lt;= 0)
+    {
+        if(len_ &lt; 0)
+        {
+            LogError("%s %d %s",strerror(errno),errno,"recvfrom_ex");
+        }
+        return;
+    }
+    assert(sizeof(addr_) &lt;= addrlen_);
+    google::protobuf::io::ArrayInputStream ais(buf_,len_);
+    google::protobuf::io::CodedInputStream coded_input(&amp;ais);
+
+    // msg 类型是否合法
+    bool result_ = false;
+
+    // 读取名称长度
+    uint32_t msgname_len_ = 0;
+    result_ = coded_input.ReadVarint32(&amp;msgname_len_);
+    if(!result_ ||
+        0 == msgname_len_ || 
+        ProtobufMessageMaxNamelen &lt;= msgname_len_)
+    {
+        LogError("ReadVarint32 msgname_len fail with size '%d'",msgname_len_);
+        return;
+    }
+
+    // 读取名称
+    std::string msgname_;
+    result_ = coded_input.ReadString(&amp;msgname_,msgname_len_);
+    if(!result_)
+    {
+        LogError("ReadString msgname fail with size '%d'",msgname_len_);
+        return;
+    }
+
+    google::protobuf::Message* msg_ = Name2ProtobufMessage(msgname_.c_str());
+    if(!msg_)
+    {
+        LogError("Name2ProtobufMessage fail with name '%s'",msgname_.c_str());
+        return;
+    }
+
+    if(!msg_-&gt;ParseFromCodedStream(&amp;coded_input))
+    {
+        LogError("ParseFromCodedStream fail with name '%s'",msgname_.c_str());
+        delete msg_;
+        return;
+    }
+    delete msg_;
+}
+</code></pre>
+
+<h2>参考</h2>
+
+<ol>
+<li><a href="http://blog.csdn.net/solstice/article/details/6300108">http://blog.csdn.net/solstice/article/details/6300108</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[cpp]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

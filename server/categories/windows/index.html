@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: windows</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspwindows</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/blog/2014/03/16/windows_console">Windows直接写cmd绘制复杂图形</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2014/03/16/reg_util">注册表工具函数备份</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2014/03/16/hardware_network_adapter">Windows获取物理网卡外设</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/10/js_drag_window">使用js来控制原生窗口的拖拽</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/07/show_window">进程互斥时，拉起已知GUI进程</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/04/windows_handles_study">《Windows核心编程》内核对象学习笔记</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/02/windows_enum_process">Windows 枚举进程</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/02/windows_create_process">Windows 创建进程经验小结</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/31/unicode_mbsc">C++ Unicode SBCS 函数对照表</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/25/change_thread_name_window">修改Windows线程的名称</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/Tooptip_sample">ToolTip基本用法</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/PostMessage-right">PostMessage权限问题</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/18/_endthread__endthreadex">_endthread和_endthreadex陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/18/MsgWaitForMultipleObjectsEx_trap">MsgWaitForMultipleObjectsEx发送垃圾消息的问题</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/18/CloseDesktop_trap">CloseDesktop及其陷阱</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

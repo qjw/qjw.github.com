@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>NDK编译libevent等开源库</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/other/">other</a>]->[<a href="/blog/2013/12/23/ndk_build_3rd_code">NDK编译libevent等开源库</a>]</strong>
+
+<h2>简单编译libevent</h2>
+
+<p>从<strong><a href="https://github.com/ventureresearch/libevent">这里</a></strong>下载修改后的libevent源码，然后在解压后的目录下创建目录<strong>jni</strong>。将当前目录的<strong>Android.mk</strong>拷贝到jni目录下。修改Android.mk如下：</p>
+
+<pre><code>LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libevent2
+LOCAL_MODULE_TAGS:= optional
+LOCAL_SRC_FILES := \
+    ../epoll.c \
+    ../epoll_sub.c \
+    ../evdns.c \
+    ../event.c \
+    ../event_tagging.c \
+    ../evmap.c \
+    ../evrpc.c \
+    ../evthread.c \
+    ../evthread_pthread.c \
+    ../evutil.c \
+    ../evutil_rand.c \
+    ../log.c \
+    ../poll.c \
+    ../select.c \
+    ../signal.c \
+    ../strlcpy.c
+
+LOCAL_C_INCLUDES := \
+    $(LOCAL_PATH) \
+    $(LOCAL_PATH)/../android \
+    $(LOCAL_PATH)/../include 
+LOCAL_CFLAGS := -DHAVE_CONFIG_H -DANDROID -fvisibility=hidden
+include $(BUILD_STATIC_LIBRARY)
+</code></pre>
+
+<p>若有编译错误，直接注释以下代码</p>
+
+<pre><code>#ifdef _EVENT_HAVE_SYS_EVENTFD_H
+//#include &lt;sys/eventfd.h&gt;
+#endif
+</code></pre>
+
+<hr />
+
+<pre><code>qjw@qjw-PC /cygdrive/d/android/android-ndk-r9c/samples/hello-jni/jni/libevent
+$ $NDK_ROOT/ndk-build
+[armeabi] Compile thumb  : event2 &lt;= event.c
+[armeabi] Compile thumb  : event2 &lt;= event_tagging.c
+[armeabi] Compile thumb  : event2 &lt;= evmap.c
+[armeabi] Compile thumb  : event2 &lt;= evrpc.c
+[armeabi] Compile thumb  : event2 &lt;= evthread.c
+[armeabi] Compile thumb  : event2 &lt;= evthread_pthread.c
+[armeabi] Compile thumb  : event2 &lt;= evutil.c
+[armeabi] Compile thumb  : event2 &lt;= evutil_rand.c
+jni/../evutil_rand.c: In function 'ev_arc4random_buf':
+jni/../evutil_rand.c:62:2: warning: 'return' with a value, in function returning void [enabled by default]
+[armeabi] Compile thumb  : event2 &lt;= log.c
+[armeabi] Compile thumb  : event2 &lt;= poll.c
+[armeabi] Compile thumb  : event2 &lt;= select.c
+[armeabi] Compile thumb  : event2 &lt;= signal.c
+[armeabi] Compile thumb  : event2 &lt;= strlcpy.c
+[armeabi] StaticLibrary  : libevent2.a
+</code></pre>
+
+<h2>使用libevent</h2>
+
+<p>修改 /cygdrive/d/android/android-ndk-r9c/samples/hello-jni/jni/Android.mk</p>
+
+<pre><code>LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)    ####
+LOCAL_MODULE    := event2   ####  
+LOCAL_SRC_FILES := $(LOCAL_PATH)/libevent/obj/local/armeabi/libevent2.a   ####
+include $(PREBUILT_STATIC_LIBRARY)   ####
+
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/libevent/include \ ####
+    $(LOCAL_PATH)/libevent/android ####
+LOCAL_MODULE    := hello-jni
+LOCAL_SRC_FILES := hello-jni.c
+
+LOCAL_STATIC_LIBRARIES := event2   ####
+</code></pre>
+
+<h2>CPP支持</h2>
+
+<p>若使用诸如protobuf等c++实现的库，使用时，需要在<strong>Application.mk</strong> 增加以下内容</p>
+
+<pre><code>APP_STL := gnustl_static
+</code></pre>
+
+<p>同时可以根据需要在<strong>Android.mk</strong>增加以下内容</p>
+
+<pre><code>LOCAL_CPPFLAGS += -frtti -std=c++11 -fexceptions
+</code></pre>
+
+<p>增加代码/cygdrive/d/android/android-ndk-r9c/samples/hello-jni/jni/hello-jni.c</p>
+
+<pre><code>#include &lt;event2/event.h&gt;
+#include &lt;signal.h&gt;
+
+void fuck()
+{
+    struct event_base *base;
+    struct event *signal_event;
+    base = event_base_new();
+    signal_event = evsignal_new(base, SIGINT, NULL, (void *)base);
+    event_base_dispatch(base);
+    event_free(signal_event);
+    event_base_free(base);
+}
+</code></pre>
+
+<h2>通用的办法</h2>
+
+<p>运行以下命令生成独立的toolchain</p>
+
+<pre><code>$NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --platform=android-19 \
+    --install-dir=/cygdrive/d/android/toolchain \
+    --system=windows-x86_64
+</code></pre>
+
+<p>cd到libevent官方源码的根目录，运行以下命令</p>
+
+<pre><code>./configure --host=arm \
+    CC=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-gcc.exe \
+    CPP=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-cpp.exe \
+    CXX=/cygdrive/d/android/toolchain/bin/arm-linux-androideabi-g++.exe
+make
+</code></pre>
+
+<p>编译结束后，会在.lib目录下生成libevent_core.a和libevent.a等一堆库文件。</p>
+
+<h2>参考</h2>
+
+<ol>
+<li><a href="http://blog.csdn.net/wjr2012/article/details/6887559">http://blog.csdn.net/wjr2012/article/details/6887559</a></li>
+<li><a href="http://stackoverflow.com/questions/11655911/cross-compiling-libevent-for-android">http://stackoverflow.com/questions/11655911/cross-compiling-libevent-for-android</a></li>
+<li><a href="https://github.com/ventureresearch/libevent">https://github.com/ventureresearch/libevent</a></li>
+<li><a href="http://jituo666.blog.163.com/blog/static/2948172120120423236660/">http://jituo666.blog.163.com/blog/static/2948172120120423236660/</a></li>
+<li><a href="http://blog.csdn.net/smfwuxiao/article/details/6587709">http://blog.csdn.net/smfwuxiao/article/details/6587709</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[other]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

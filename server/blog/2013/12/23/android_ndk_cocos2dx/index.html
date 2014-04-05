@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>android cocos2dx编译</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/other/">other</a>]->[<a href="/blog/2013/12/23/android_ndk_cocos2dx">android cocos2dx编译</a>]</strong>
+
+<p>打开COCOS2D根目录下create-android-project.bat文件（<em>最好用高级点的文本编辑器</em>），修改以下变量到合适的值（<em>加上一行cd /d %~dp0</em>）</p>
+
+<pre><code>@echo off
+cd /d %~dp0
+setlocal
+set _CYGBIN=D:\cygwin\bin
+set _ANDROIDTOOLS=D:\android\adt-bundle-windows-x86_64-20131030\sdk\tools
+set _NDKROOT=D:\android\android-ndk-r9c
+</code></pre>
+
+<p>右键<strong>以管理员运行</strong></p>
+
+<p>输入包名，如com.android.fuck。然后输入工程名称，建议和fuck<strong>保持一致</strong>。</p>
+
+<p>若成功，会在当前目录生成fuck目录，结构如下：</p>
+
+<pre><code>$ tree -L 2
+.
+├── Classes
+│   ├── AppDelegate.cpp
+│   ├── AppDelegate.h
+│   ├── HelloWorldScene.cpp
+│   └── HelloWorldScene.h
+├── proj.android
+│   ├── AndroidManifest.xml
+│   ├── ant.properties
+│   ├── assets
+│   ├── bin
+│   ├── build.xml
+│   ├── build_native.sh
+│   ├── gen
+│   ├── jni
+│   ├── libs
+│   ├── local.properties
+│   ├── ndkgdb.sh
+│   ├── obj
+│   ├── proguard-project.txt
+│   ├── project.properties
+│   ├── res
+│   └── src
+└── Resources
+    ├── CloseNormal.png
+    ├── CloseSelected.png
+    ├── HelloWorld.png
+    └── Icon.png
+
+11 directories, 16 files
+</code></pre>
+
+<p>cd到该目录下，运行$NDK/ndk-build编译。</p>
+
+<p>若编译失败，则修改F:\cocos2d-x-2.1.4\MyGame\proj.android\jni\Application.mk，增加以下内容</p>
+
+<pre><code>jni/../../../cocos2dx/platform/android/CCCommon.cpp: \
+    In function 'void cocos2d::CCLog(char const*, ...)':  
+jni/../../../cocos2dx/platform/android/CCCommon.cpp:44:72: error: \
+    format not a string literal and no format arguments [-Werror=format-security]  
+
+APP_CPPFLAGS += -Wno-error=format-security
+</code></pre>
+
+<hr />
+
+<pre><code>&lt;application android:label="@string/app_name" android:icon="@drawable/icon"&gt; 
+&lt;application android:label="@string/app_name" android:icon="@drawable/ic_launcher"&gt; 
+
+$ /usr/bin/find . -name ic_launcher.png
+./proj.android/res/drawable-hdpi/ic_launcher.png
+./proj.android/res/drawable-ldpi/ic_launcher.png
+./proj.android/res/drawable-mdpi/ic_launcher.png
+./proj.android/res/drawable-xhdpi/ic_launcher.png
+</code></pre>
+
+<hr />
+
+<pre><code>Cannot find module with tag 'CocosDenshion/android' in import path
+
+$(call import-add-path, /cygdrive/f/cocos2d-x-2.1.4) \
+$(call import-add-path, /cygdrive/f/cocos2d-x-2.1.4/cocos2dx/platform/third_party/android/prebuilt) \
+# 这里两点注意，1. 反斜杠，2. cygwin路径
+</code></pre>
+
+<p>见<a href="http://blog.csdn.net/sgwhp/article/details/9663267">http://blog.csdn.net/sgwhp/article/details/9663267</a>回复，或者<a href="http://cocos2d-x.org/forums/6/topics/33525?r=33579#message-33579">http://cocos2d-x.org/forums/6/topics/33525?r=33579#message-33579</a></p>
+
+<p>若无权限，使用文件管理器对错误输出对应的目录增加<strong>完全控制</strong>的权限，亦可在cygwin中<strong>chmod 777 * </strong></p>
+
+<p>若安装失败，</p>
+
+<pre><code>ERROR: packaging of 'F:\client\tsDemo\proj.android\bin\resources.ap_' failed
+
+$ cd "F:\client\tsDemo\proj.android"
+$ ls -la assets
+$ chmod -R 755 assets #或者
+$ find . | xargs -i chmod 777 {}
+</code></pre>
+
+<p>参考<a href="http://www.9miao.com/thread-43656-1-1.html">http://www.9miao.com/thread-43656-1-1.html</a></p>
+
+<p>若无法运行，检查模拟器是否勾选<strong>use host gpu</strong></p>
+
+<p>或者无法获取图片导致断言或堆栈</p>
+
+<pre><code>Get data from file(assets/*) failed
+</code></pre>
+
+<p>手动调用<strong>build_native.sh</strong>生成资源</p>
+
+<h2>参考</h2>
+
+<ol>
+<li><a href="http://www.cnblogs.com/lhming/archive/2012/06/27/2566460.html">http://www.cnblogs.com/lhming/archive/2012/06/27/2566460.html</a></li>
+<li><a href="http://www.cnblogs.com/lhming/archive/2012/06/27/2566467.html">http://www.cnblogs.com/lhming/archive/2012/06/27/2566467.html</a></li>
+<li><a href="http://www.cnblogs.com/zhangzhifeng/archive/2011/12/26/2301866.html">http://www.cnblogs.com/zhangzhifeng/archive/2011/12/26/2301866.html</a></li>
+<li><a href="http://blog.csdn.net/sgwhp/article/details/9663267">http://blog.csdn.net/sgwhp/article/details/9663267</a></li>
+<li><a href="http://www.9miao.com/thread-43656-1-1.html">http://www.9miao.com/thread-43656-1-1.html</a></li>
+<li><a href="http://blog.csdn.net/teng_ontheway/article/details/9625649">http://blog.csdn.net/teng_ontheway/article/details/9625649</a></li>
+<li><a href="http://blog.csdn.net/wangbofei/article/details/7951362">http://blog.csdn.net/wangbofei/article/details/7951362</a></li>
+<li><a href="http://stackoverflow.com/questions/12417748/cocos2dx-android-get-data-from-fileassets-failed">http://stackoverflow.com/questions/12417748/cocos2dx-android-get-data-from-fileassets-failed</a></li>
+<li><a href="http://hi.baidu.com/vvlee/item/bedc32e63d5c6e3b86d9dee8">http://hi.baidu.com/vvlee/item/bedc32e63d5c6e3b86d9dee8</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[other]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

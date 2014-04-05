@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>注册表工具函数备份</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]->[<a href="/blog/2014/03/16/reg_util">注册表工具函数备份</a>]</strong>
+
+<pre><code>#include &lt;Windows.h&gt;
+#include &lt;tchar.h&gt;
+#include &lt;string&gt;
+#include &lt;Shlwapi.h&gt;
+#include &lt;cassert&gt;
+
+#if defined _UNICODE || defined UNICODE
+typedef std::wstring String;
+#else
+typedef std::string String;
+#endif
+
+#pragma comment(lib,"Shlwapi.lib")
+
+class Reg
+{
+public:
+    Reg() : m_handle_(NULL){}
+    ~Reg(){ this-&gt;Close(); }
+
+    // Open/Close
+    /*
+    HKEY_CLASSES_ROOT
+    HKEY_CURRENT_CONFIG
+    HKEY_CURRENT_USER
+    HKEY_LOCAL_MACHINE
+    HKEY_USERS
+    */
+    inline bool Open(HKEY hKey, const String&amp; path)
+    {
+        return OpenImp(hKey, path, KEY_READ);
+    }
+    inline bool OpenWrite(HKEY hKey, const String&amp; path)
+    {
+        return OpenImp(hKey, path, KEY_WRITE);
+    }
+    inline bool OpenReadWrite(HKEY hKey, const String&amp; path)
+    {
+        return OpenImp(hKey, path, KEY_READ | KEY_WRITE);
+    }
+    inline void Close()
+    {
+        if (m_handle_)
+        {
+            RegCloseKey(m_handle_);
+            m_handle_ = NULL;
+        }
+    }
+
+    // CreateDir/DeleteDir
+    inline bool CreateDir(const String&amp; path)
+    {
+        HKEY hKey_;
+        LONG ret_ = RegCreateKey(m_handle_,
+            path.c_str(),
+            &amp;hKey_);
+        if (!ret_)
+        {
+            RegCloseKey(hKey_);
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("CreateDir"), ret_);
+        return false;
+    }
+    inline bool DeleteDir(const String&amp; path)
+    {
+#if 0
+        LONG ret_ = RegDeleteKey(m_handle_, path.c_str());
+        if (!ret_)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("DeleteDir"), ret_);
+        return false;
+#else
+        LSTATUS ret_ = SHDeleteKey(m_handle_, path.c_str());
+        if (ret_ == ERROR_SUCCESS)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("SHDeleteKey"), ret_);
+        return false;
+#endif
+    }
+    bool CopyDir(const String&amp; str, Reg&amp; reg)
+    {
+        LSTATUS ret_ = SHCopyKey(m_handle_,
+            str.c_str(),
+            reg.m_handle_,
+            0);
+        if (ret_ == ERROR_SUCCESS)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("SHCopyKey"), ret_);
+        return false;
+    }
+    bool StatDir(DWORD* dircnt,DWORD* filecnt,
+        DWORD* dirmaxlen, DWORD* filemaxlen)
+    {
+        DWORD dircnt_ = 0, filecnt_ = 0;
+        DWORD dirmaxlen_ = 0, filemaxlen_ = 0;
+        LSTATUS ret_ = RegQueryInfoKey(
+            m_handle_,
+            NULL, NULL, NULL,
+            &amp;dircnt_,
+            &amp;dirmaxlen_, 
+            NULL,
+            &amp;filecnt_,
+            &amp;filemaxlen_,
+            NULL, NULL, NULL);
+        if( ret_ == ERROR_SUCCESS)
+        {
+            if (dircnt) *dircnt = dircnt_;
+            if (filecnt) *filecnt = filecnt_;
+            if (dirmaxlen) *dirmaxlen = dirmaxlen_;
+            if (filemaxlen) *filemaxlen = filemaxlen_;
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegQueryInfoKey"), ret_);
+        return false;
+    }
+    bool GetSubDir(DWORD index,DWORD len,String* str)
+    {
+        assert(str);
+        TCHAR* buf_ = new TCHAR[len + 1];
+        LONG ret_ = RegEnumKey(
+            this-&gt;m_handle_,
+            index,
+            buf_,
+            (len + 1)*sizeof(TCHAR));
+        if (!ret_)
+        {
+            *str = buf_;
+            delete[] buf_;
+            return true;
+        }
+        delete[] buf_;
+        assert(ret_ != ERROR_MORE_DATA);
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegEnumKey"), ret_);
+        return false;
+    }
+    bool GetSubFile(DWORD index, DWORD len, String* str,DWORD* type)
+    {
+        assert(str &amp;&amp; type);
+        DWORD len_ = (len + 1)*sizeof(TCHAR);
+        TCHAR* buf_ = new TCHAR[len + 1];
+        LONG ret_ = RegEnumValue(
+            this-&gt;m_handle_,
+            index,
+            buf_,
+            &amp;len_,
+            0,
+            type,
+            NULL,
+            NULL);
+        if (!ret_)
+        {
+            *str = buf_;
+            delete[] buf_;
+            return true;
+        }
+        delete[] buf_;
+        assert(ret_ != ERROR_MORE_DATA);
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegEnumKey"), ret_);
+        return false;
+    }
+
+    // pwd/cd
+    inline const String&amp; Pwd() const
+    {
+        return this-&gt;m_path_;
+    }
+    bool Goto(const String&amp; path)
+    {
+        if (String::npos != path.find(_T('\\')))
+        {
+            _tprintf(_T("[%s] error path %s\n"), _T("Goto"),path.c_str());
+            return false;
+        }
+        HKEY hKey_;
+        LONG ret_ = RegOpenKeyEx(
+            m_handle_,
+            path.c_str(),
+            0,
+            this-&gt;m_desired_,
+            &amp;hKey_);
+        if (!ret_)
+        {
+            this-&gt;Close();
+            this-&gt;m_handle_ = hKey_;
+            if (this-&gt;m_path_[this-&gt;m_path_.length() - 1] != _T('\\'))
+            {
+                this-&gt;m_path_ += _T('\\');
+            }
+            this-&gt;m_path_ += path;
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegOpenKeyEx"), ret_);
+        return false;
+    }
+    bool GotoParent()
+    {
+        size_t pos_ = this-&gt;m_path_.rfind(_T('\\'));
+        if (pos_ == String::npos)
+        {
+            _tprintf(_T("[%s] error path %s\n"), 
+                _T("GotoParent"),
+                m_path_.c_str());
+            return false;
+        }
+        String newpath_ = m_path_.substr(0, pos_);
+        return OpenImp(m_root_, newpath_, m_desired_);
+    }
+
+    // create/edit
+    bool Write(const String&amp; key, DWORD value)
+    {
+        LONG ret_ = RegSetValueEx(
+            this-&gt;m_handle_,
+            key.c_str(),
+            0,
+            REG_DWORD,
+            (const BYTE*)&amp;value,
+            sizeof(value));
+        if (!ret_)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegSetValue"), ret_);
+        return false;
+    }
+    bool Write(const String&amp; key, const String&amp; str)
+    {
+        LONG ret_ = RegSetValueEx(
+            this-&gt;m_handle_,
+            key.c_str(),
+            0,
+            REG_SZ,
+            (const BYTE*)str.c_str(),
+            (str.size() + 1)*sizeof(TCHAR));
+        if (!ret_)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegSetValue"), ret_);
+        return false;
+    }
+    bool Read(const String&amp; key, DWORD* value)
+    {
+        assert(value);
+        DWORD type_ = 0;
+        DWORD len_ = sizeof(*value);
+        LONG ret_ = RegQueryValueEx(
+            this-&gt;m_handle_,
+            key.c_str(),
+            0,
+            &amp;type_,
+            (LPBYTE)value,
+            &amp;len_);
+        if (!ret_ &amp;&amp; len_ == sizeof(*value) &amp;&amp; type_ == REG_DWORD)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u|%u|%u]\n"), 
+            _T("RegQueryValueEx"), ret_,len_,type_);
+        return false;
+    }
+    bool Read(const String&amp; key, String* value)
+    {
+        assert(value);
+        DWORD type_ = 0;
+        DWORD len_ = 0;
+        LONG ret_ = RegQueryValueEx(
+            this-&gt;m_handle_,
+            key.c_str(),
+            0,
+            &amp;type_,
+            NULL,
+            &amp;len_);
+        if (!ret_ &amp;&amp; type_ == REG_SZ)
+        {
+            assert(len_%sizeof(TCHAR) == 0);
+            TCHAR* ptr_ = new TCHAR[len_ / sizeof(TCHAR)];
+            ret_ = RegQueryValueEx(
+                this-&gt;m_handle_,
+                key.c_str(),
+                0,
+                &amp;type_,
+                (LPBYTE)ptr_,
+                &amp;len_);
+            if (!ret_)
+            {
+                *value = ptr_;
+                delete[] ptr_;
+                return true;
+            }
+            delete[] ptr_;
+        }
+        _tprintf(_T("[%s] error [%u|%u|%u]\n"),
+            _T("RegQueryValueEx"), ret_, len_, type_);
+        return false;
+    }
+    bool Stat(const String&amp; key,DWORD* type,DWORD* len)
+    {
+        assert(type &amp;&amp; len);
+        LONG ret_ = RegQueryValueEx(
+            this-&gt;m_handle_,
+            key.c_str(),
+            0,
+            type,
+            NULL,
+            len);
+        if (!ret_)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u|%u|%u]\n"),
+            _T("RegQueryValueEx"), ret_, *len, *type);
+        return false;
+    }
+    // delete
+    bool Delete(const String&amp; key)
+    {
+        size_t pos_ = key.rfind(_T('\\'));
+        if (pos_ != String::npos)
+        {
+            _tprintf(_T("[%s] error path %s\n"),
+                _T("Delete"),
+                m_path_.c_str());
+            return false;
+        }
+        LONG ret_ = RegDeleteValue(
+            this-&gt;m_handle_,
+            key.c_str());
+        if (!ret_)
+        {
+            return true;
+        }
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegDeleteKey"), ret_);
+        return false;
+    }
+private:
+    bool OpenImp(HKEY hKey, const String&amp; path, REGSAM desired)
+    {
+        LONG ret_ = RegOpenKeyEx(
+            hKey,
+            path.c_str(),
+            0,
+            desired,
+            &amp;m_handle_);
+        if (!ret_)
+        {
+            this-&gt;m_path_ = path;
+            this-&gt;m_desired_ = desired;
+            this-&gt;m_root_ = hKey;
+            return true;
+        }
+        m_handle_ = NULL;
+        _tprintf(_T("[%s] error [%u]\n"), _T("RegOpenKeyEx"), ret_);
+        return false;
+    }
+private:
+    HKEY m_root_;
+    HKEY m_handle_;
+    REGSAM m_desired_;
+    String m_path_;
+};
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    Reg reg_;
+    if (!reg_.OpenReadWrite(HKEY_CURRENT_USER, _T("Software\\Tiled")))
+        return -1;
+    assert(reg_.CreateDir(_T("fuck")));
+    _tprintf(_T("[%s] [%s]\n"), _T("PWD"), reg_.Pwd().c_str());
+
+    assert(reg_.Write(_T("fuck"), 1234));
+    assert(reg_.Goto(_T("fuck")));
+    assert(reg_.Write(_T("fuck"), 12345));
+    assert(reg_.Write(_T("fuck"), 123456));
+    DWORD ret_;
+    assert(reg_.Read(_T("fuck"), &amp;ret_));
+    _tprintf(_T("Read [%u]\n"), ret_);
+    assert(reg_.Write(_T("str"), _T("FUCK")));
+    String str_;
+    assert(reg_.Read(_T("str"), &amp;str_));
+    _tprintf(_T("[%s] [%s]\n"), _T("Read"), str_.c_str());
+    assert(reg_.Delete(_T("fuck")));
+    assert(reg_.Delete(_T("str")));
+    assert(reg_.GotoParent());
+    assert(reg_.Delete(_T("fuck")));
+    _tprintf(_T("[%s] [%s]\n"), _T("PWD"), reg_.Pwd().c_str());
+    assert(reg_.DeleteDir(_T("fuck")));
+
+    Reg reg2_;
+    if (!reg2_.OpenReadWrite(HKEY_CURRENT_USER, _T("Software\\Thunder Network")))
+        return -1;
+    assert(reg_.CreateDir(_T("fuck\\fuck1")));
+    assert(reg_.Goto(_T("fuck")));
+    assert(reg_.Goto(_T("fuck1")));
+    assert(reg_.Write(_T("str"), _T("FUCK")));
+    assert(reg_.Write(_T("fuck"), 123456));
+    assert(reg_.GotoParent());
+    assert(reg_.GotoParent());
+    assert(reg_.CopyDir(_T("fuck"), reg2_));
+    assert(reg_.DeleteDir(_T("fuck")));
+    DWORD dircnt_, filecnt_, dirmaxlen_, filemaxlen_;
+    assert(reg2_.StatDir(&amp;dircnt_, &amp;filecnt_, &amp;dirmaxlen_, &amp;filemaxlen_));
+    for (DWORD i = 0; i &lt; dircnt_; i++)
+    {
+        String dirname_;
+        assert(reg2_.GetSubDir(i, dirmaxlen_, &amp;dirname_));
+        _tprintf(_T("dirname %s\n"), dirname_.c_str());
+    }
+    for (DWORD i = 0; i &lt; filecnt_; i++)
+    {
+        String filename_;
+        DWORD type_;
+        assert(reg2_.GetSubFile(i, filemaxlen_, &amp;filename_, &amp;type_));
+        _tprintf(_T("filename %s %d\n"), filename_.c_str(),type_);
+    }
+    assert(reg2_.DeleteDir(_T("fuck1")));
+    return 0;
+}
+</code></pre>
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[windows]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

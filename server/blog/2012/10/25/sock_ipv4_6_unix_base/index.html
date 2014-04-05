@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>封装Ipv4/6/Unix Socket的接口</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/network/">network</a>]->[<a href="/blog/2012/10/25/sock_ipv4_6_unix_base">封装Ipv4/6/Unix Socket的接口</a>]</strong>
+
+<pre><code>    #ifndef SOCKET_INTERFACE__H_
+    #define SOCKET_INTERFACE__H_
+
+    #include &lt;cassert&gt;
+    #include &lt;cstring&gt;
+    #include &lt;errno.h&gt;
+
+    #include "build_config.h"
+
+    #if defined(OS_WIN)
+    #pragma comment(lib,"Ws2_32.lib")
+    #include &lt;winsock2.h&gt;
+    #include &lt;Ws2tcpip.h&gt;
+    #else
+    #include &lt;sys/socket.h&gt;
+    #include &lt;fcntl.h&gt;
+    #include &lt;unistd.h&gt;
+    #include &lt;sys/ioctl.h&gt;
+    #include &lt;net/if.h&gt;
+    #endif
+
+    #if defined(OS_WIN)
+    bool            NetworkInit(){
+        WORD wVersionRequested;
+        WSADATA wsaData;
+        int err;
+
+        /* Use the MAKEWORD(lowbyte, highbyte) macro declared in Windef.h */
+        wVersionRequested = MAKEWORD(2, 2);
+
+        err = WSAStartup(wVersionRequested, &amp;wsaData);
+        return err == 0;
+    }
+
+    void            NetworkFini(){
+         WSACleanup();
+    }
+    #else
+    inline bool     NetworkInit(){
+        return true;
+    }
+
+    inline void     NetworkFini(){
+    }
+    #endif
+
+    #if defined(OS_LINUX)
+    //获得某个接口的ip地址
+    bool            GetIfAddress(const char* ifname,bool ipv6,void* addr);
+
+    inline bool GetIfv4Address(const char* ifname,struct in_addr* addr){
+            return GetIfAddress(ifname,false,(void* )addr);
+    }
+    inline bool GetIfv6Address(const char* ifname,struct sin6_addr* addr){
+            return GetIfAddress(ifname,true,(void* )addr);
+    }
+    #endif
+
+    #if defined(OS_WIN)
+    typedef SOCKET          SockFd;
+    typedef int             socklen_t;
+    //#define SOCKET_ERROR
+    //#define INVALID_SOCKET
+    #else
+    typedef int             SockFd;
+    //typedef socklen_t;
+    #define SOCKET_ERROR (-1)
+    #define INVALID_SOCKET  (SockFd)(~0)
+    #endif
+
+    class SocketBase{
+    public:
+        SocketBase():m_sock_fd_(INVALID_SOCKET){}
+
+        virtual ~SocketBase(){}
+
+        //Get/Set Fd
+        inline SockFd           Fd() const{
+            return this-&gt;m_sock_fd_;
+        }
+        inline void             SetFd(SockFd fd){
+            this-&gt;m_sock_fd_ = fd;
+        }
+
+        //helper
+        bool                    Listen(int backlog){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            return SOCKET_ERROR != ::listen(m_sock_fd_,backlog);
+        }
+        bool                    GetSockopt(int level, int optname, char *optval, socklen_t *optlen){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(optval &amp;&amp; optlen);
+            return SOCKET_ERROR != ::getsockopt(m_sock_fd_,level,optname,optval,optlen);
+        }
+        bool                    SetSockopt(int level, int optname, const char *optval, socklen_t optlen){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(optval);
+            return SOCKET_ERROR != ::setsockopt(m_sock_fd_,level,optname,optval,optlen);
+        }
+        int                     Recvfrom(char *buf,size_t len,int flags,struct sockaddr *from,socklen_t *fromlen){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(buf &amp;&amp; len &amp;&amp; from &amp;&amp; fromlen);
+            do{
+                int ret = ::recvfrom(m_sock_fd_,buf,len,flags,from,fromlen);
+
+                if(ret != SOCKET_ERROR)
+                    return ret;
+
+                if(ret == SOCKET_ERROR &amp;&amp; EINTR == errno)
+                    continue;
+            }while(0);
+            return SOCKET_ERROR;
+        }
+        int                     Sendto(const char *buf, size_t len, int flags, const struct sockaddr *to, socklen_t tolen){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(buf &amp;&amp; len &amp;&amp; to &amp;&amp; tolen);
+            do{
+                int ret = ::sendto(m_sock_fd_,buf,len,flags,to,tolen);
+
+                if(ret != SOCKET_ERROR)
+                    return ret;
+
+                if(ret == SOCKET_ERROR &amp;&amp; EINTR == errno)
+                    continue;
+            }while(0);
+            return SOCKET_ERROR;
+        }
+
+        bool                    Recv(char* buf,size_t len,size_t* readed){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(buf &amp;&amp; len &amp;&amp; readed);
+            do{
+                int ret = ::recv(m_sock_fd_,buf,len,0);
+                if(ret &gt;= 0){
+                    *readed = (size_t)ret;
+                    return true;
+                }
+                //被信号中断
+                if(ret &lt; 0 &amp;&amp; errno == EINTR)
+                    continue;
+                return false;
+            }while(true);
+            return false;
+        }
+
+        bool                    Send(char* buf,size_t len){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            assert(buf &amp;&amp; len);
+            size_t total_ = 0;
+            do{
+                int ret = ::send(m_sock_fd_,buf + total_,len - total_,0);
+                if(ret &gt; 0){
+                    total_ += (size_t)ret;
+                    if(total_ &gt;= len)
+                        break;
+                }
+                //被信号中断
+                if(ret &lt; 0 ){
+                    if(errno == EINTR)
+                        continue;
+                    else
+                        return false;
+                }
+            }while(true);
+            return true;
+        }
+
+        bool                    SetReuseFlag(bool reuse){
+            int flag = reuse?1:0;
+            return this-&gt;SetSockopt(SOL_SOCKET,SO_REUSEADDR,(const char*)&amp;flag,sizeof(flag));
+        }
+
+        bool                    Shutdown(int how){
+            if(INVALID_SOCKET != m_sock_fd_)
+                return 0 == ::shutdown(m_sock_fd_,how);
+            else
+                return true;
+        }
+
+        void                    Close(){
+
+            if(INVALID_SOCKET != m_sock_fd_){
+    #if defined(OS_WIN)
+                ::closesocket(m_sock_fd_);
+    #else
+                ::close(m_sock_fd_);
+    #endif
+                m_sock_fd_ = INVALID_SOCKET;
+            }
+        }
+
+        bool                    SetBlock(bool flag){
+            assert(INVALID_SOCKET != m_sock_fd_);
+    #if defined(OS_WIN)
+            u_long ul = flag?0:1;
+            return SOCKET_ERROR != ioctlsocket(m_sock_fd_, FIONBIO, &amp;ul);
+    #else
+            int flags = fcntl(m_sock_fd_, F_GETFL, 0);
+            if(flags &gt;= 0){
+                if(!flag &amp;&amp; fcntl(m_sock_fd_, F_SETFL, flags | O_NONBLOCK) &gt;= 0)
+                    return true;
+                if(flag &amp;&amp; fcntl(m_sock_fd_, F_SETFL, flags &amp; ~O_NONBLOCK) &gt;= 0)
+                    return true;
+            }
+            return false;
+    #endif
+        }
+
+    #if defined(OS_LINUX)
+        bool                    GetIfIpaddr(const char* ifname,char* buf,size_t bufsize);
+
+        bool                    GetIfreq(struct ifreq* ifr,const char* ifname,int request);
+    #endif
+
+        bool                    SetSendTimeout(int ms){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            return this-&gt;SetSockopt(SOL_SOCKET,SO_SNDTIMEO,(const char*)&amp;ms,sizeof(ms));
+        }
+
+        bool                    SetRecvTimeout(int ms){
+            assert(INVALID_SOCKET != m_sock_fd_);
+            return this-&gt;SetSockopt(SOL_SOCKET,SO_RCVTIMEO,(const char*)&amp;ms,sizeof(ms));
+        }
+    private:
+        //socket
+        SockFd                  m_sock_fd_;
+    };
+
+
+    template&lt;typename ADDRT,bool TCP,int ID&gt;
+    class SocketBaseEx : public SocketBase{
+    public:
+        //地址类型
+        typedef ADDRT           AddrType;
+
+        //协议类型
+        enum{
+            //协议ID
+            SinFamily = ID,
+            //TCP
+            TcpFlag = TCP,
+        };
+
+        bool                    Socket(){
+            assert(this-&gt;Fd() == INVALID_SOCKET);
+            if(this-&gt;Fd() != INVALID_SOCKET)
+                this-&gt;Close();
+            int type = TCP?SOCK_STREAM:SOCK_DGRAM;
+            SockFd fd = ::socket(ID,type,0);
+            if(INVALID_SOCKET == fd){
+                return false;
+            }else{
+                this-&gt;SetFd(fd);
+                if (fcntl(fd, F_SETFD, fcntl(fd, F_SETFD) | FD_CLOEXEC) == -1)
+                {
+                    this-&gt;Close();
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        SocketBaseEx(){
+            memset(&amp;m_my_addr_,0,sizeof(ADDRT));
+            memset(&amp;m_peer_addr_,0,sizeof(ADDRT));
+        }
+
+        const ADDRT*            MyAddr() const{
+            return &amp;(this-&gt;m_my_addr_);
+        }
+        const ADDRT*            PeerAddr() const{
+            return &amp;(this-&gt;m_peer_addr_);
+        }
+
+        socklen_t               AddrLen() const{
+            return this-&gt;m_addr_len_;
+        }
+
+        bool                    Bind(){
+            assert(INVALID_SOCKET != Fd());
+            return SOCKET_ERROR != ::bind(
+                Fd(),
+                reinterpret_cast&lt;const struct sockaddr*&gt;(&amp;m_my_addr_),
+                sizeof(ADDRT));
+        }
+
+        SockFd                  Accept(){
+            assert(INVALID_SOCKET != Fd());
+            this-&gt;m_addr_len_ = sizeof(ADDRT);
+            return ::accept(
+                Fd(),
+                reinterpret_cast&lt;struct sockaddr*&gt;(&amp;m_peer_addr_),
+                &amp;m_addr_len_);
+        }
+
+
+        bool                    Connect(int ms){
+            assert(INVALID_SOCKET != Fd());
+
+            if(ms &gt; 0)
+            {
+                if(!this-&gt;SetBlock(false))
+                    return false;
+
+                bool ret = ConnectImp(ms);
+
+                if(!this-&gt;SetBlock(true))
+                    return false;
+                return ret;
+            }else{
+                return 0 == ::connect(Fd(),
+                    reinterpret_cast&lt;struct sockaddr*&gt;(&amp;m_peer_addr_),
+                    sizeof(ADDRT));
+            }
+
+        }
+
+        bool                    Recvfrom(char *buf,size_t len,size_t* size){
+            assert(size);
+            this-&gt;m_addr_len_ = sizeof(ADDRT);
+            int ret = SocketBase::Recvfrom(buf,len,0,
+                reinterpret_cast&lt;struct sockaddr*&gt;(&amp;m_peer_addr_),
+                &amp;m_addr_len_);
+            if(ret == SOCKET_ERROR)
+                return false;
+            else
+                *size = static_cast&lt;size_t&gt;(ret);
+            return true;
+        }
+
+
+        bool                    Sendto(const char *buf, size_t len){
+            return this-&gt;Send2addr(buf,len,&amp;m_peer_addr_);
+        }
+
+        bool                    Send2addr(const char *buf, size_t len,const ADDRT* addr){
+            assert(buf &amp;&amp; len &amp;&amp; addr);
+    #if 1
+            int ret = SocketBase::Sendto(buf,len,0,
+                reinterpret_cast&lt;const struct sockaddr*&gt;(addr),
+                sizeof(ADDRT));
+
+            if(ret == SOCKET_ERROR)
+                return false;
+
+            return (int)len &lt;= ret;
+    #else
+            size_t total_ = 0;
+            while(len){
+                int ret = SocketBase::Sendto(buf + total_,len,0,
+                    reinterpret_cast&lt;const struct sockaddr*&gt;(addr),
+                    sizeof(ADDRT));
+
+                if(ret == SOCKET_ERROR)
+                    return false;
+
+                len -= static_cast&lt;size_t&gt;(ret);
+                total_ -= static_cast&lt;size_t&gt;(ret);
+            }
+            return true;
+    #endif
+        }
+
+    private:
+        bool                    ConnectImp(int ms){
+
+            if (::connect(Fd(),
+                reinterpret_cast&lt;struct sockaddr*&gt;(&amp;m_peer_addr_),
+                sizeof(ADDRT)) == 0)
+                return true;
+    #if defined(OS_WIN)
+            if(WSAEWOULDBLOCK !=WSAGetLastError())
+                return false;
+    #else
+            if (errno != EINPROGRESS)
+                return false;
+    #endif
+
+            fd_set set;
+            FD_ZERO(&amp;set);
+            FD_SET(Fd(), &amp;set);
+
+            struct timeval timeout;
+            timeout.tv_sec = ms/1000;
+            timeout.tv_usec = (ms%1000)*1000;
+            int retval = select(Fd() + 1, NULL, &amp;set, NULL, &amp;timeout);
+            if(retval &gt; 0){
+                int error;
+                socklen_t size = sizeof(error);
+                if(GetSockopt(SOL_SOCKET, SO_ERROR, (char*)&amp;error, &amp;size) &amp;&amp;
+                    error == 0)
+                    return true;
+            }
+            return false;
+        }
+
+    protected:
+        ADDRT*                  MyAddr(){
+            return &amp;(this-&gt;m_my_addr_);
+        }
+        ADDRT*                  PeerAddr(){
+            return &amp;(this-&gt;m_peer_addr_);
+        }
+
+    private:
+
+        ADDRT                   m_my_addr_;
+        ADDRT                   m_peer_addr_;
+        socklen_t               m_addr_len_;
+    };
+
+    #endif
+</code></pre>
+
+<hr />
+
+<pre><code>    /*
+     * socket_interface.cpp
+     *
+     *  Created on: 2011-7-29
+     *      Author: king
+     */
+
+    #include "socket_interface.h"
+
+    #if defined(OS_LINUX)
+    #include &lt;ifaddrs.h&gt;
+    #include &lt;arpa/inet.h&gt;
+    #include &lt;cstring&gt;
+    #endif
+
+    #if defined(OS_LINUX)
+
+    bool        GetIfAddress(const char* ifname,bool ipv6,void* addr)
+    {
+        struct ifaddrs *ifaddr;
+        if (getifaddrs(&amp;ifaddr) == -1)
+            return false;
+
+        void* addPtr;
+        bool ret = false;
+        for (struct ifaddrs*ifa = ifaddr; ifa != NULL; ifa = ifa-&gt;ifa_next) {
+            //是否合法
+            if (ifa-&gt;ifa_addr == NULL ||
+                    ifa-&gt;ifa_addr-&gt;sa_data == NULL ||
+                    ifa-&gt;ifa_name == NULL)
+                continue;
+
+            //判断类型
+            addPtr = NULL;
+            if (ifa-&gt;ifa_addr-&gt;sa_family == (ipv6?AF_INET6:AF_INET)) {
+                if(!ipv6)
+                    addPtr = &amp;((struct sockaddr_in *) ifa-&gt;ifa_addr)-&gt;sin_addr;
+                else
+                    addPtr = &amp;((struct sockaddr_in6 *) ifa-&gt;ifa_addr)-&gt;sin6_addr;
+            } else {
+                continue;
+            }
+
+            //是否名称相等
+            if(strcmp(ifname,ifa-&gt;ifa_name) != 0)
+                continue;
+
+    #if 1
+            if(!ipv6)
+                memcpy(addr,addPtr,sizeof(struct in_addr));
+            else
+                memcpy(addr,addPtr,sizeof(struct in6_addr));
+
+            ret = true;
+            break;
+    #else
+            //转换地址
+            if(inet_ntop(ifa-&gt;ifa_addr-&gt;sa_family,addPtr,buf,bufsize) == NULL){
+                continue;
+            } else {
+                ret = true;
+                break;
+            }
+    #endif
+        }
+
+        freeifaddrs(ifaddr);
+        return ret;
+    }
+
+    bool            SocketBase::GetIfIpaddr(const char* ifname,char* buf,size_t bufsize){
+        struct ifreq ifr;
+        if(!GetIfreq(&amp;ifr,ifname,SIOCGIFADDR))
+            return false;
+        struct sockaddr* addr = (struct sockaddr*)(&amp;(ifr.ifr_addr));
+        if(addr-&gt;sa_family == AF_INET){
+            struct sockaddr_in* ptr_ = (struct   sockaddr_in*)(&amp;(ifr.ifr_addr));
+            return inet_ntop(ptr_-&gt;sin_family,&amp;(ptr_-&gt;sin_addr),buf,bufsize);
+        }
+        return false;
+    }
+
+    bool            SocketBase::GetIfreq(struct ifreq* ifr,const char* ifname,int request){
+            strncpy(ifr-&gt;ifr_name,ifname,IFNAMSIZ);
+            return ioctl(m_sock_fd_, request, ifr) != -1;
+    }
+
+    #endif
+</code></pre>
+
+<hr />
+
+<pre><code>    /*
+     * socket_unix.h
+     *
+     *  Created on: 2011-6-29
+     *      Author: king
+     */
+
+    #ifndef SOCKET_UNIX_H_
+    #define SOCKET_UNIX_H_
+
+    #include "socket_interface.h"
+
+    #if defined(OS_LINUX)
+    #include &lt;sys/un.h&gt;
+    #include &lt;unistd.h&gt;
+
+    template&lt;bool TCP&gt;
+    class SocketUnix : public SocketBaseEx&lt;struct sockaddr_un,TCP,AF_UNIX&gt;{
+        typedef SocketBaseEx&lt;struct sockaddr_un,TCP,AF_UNIX&gt; BaseClass;
+    public:
+
+        inline void             SetMyAddr(const char* path){
+            return this-&gt;SetAddr(this-&gt;MyAddr(),path);
+        }
+        inline void             SetPeerAddr(const char* path){
+            return this-&gt;SetAddr(this-&gt;PeerAddr(),path);
+        }
+
+        //virtual
+        bool                        Bind(){
+            unlink(this-&gt;MyAddr()-&gt;sun_path);
+            return BaseClass::Bind();
+        }
+
+    private:
+        void                    SetAddr(struct sockaddr_un* addr,const char* path){
+            assert(path);
+            addr-&gt;sun_family = AF_UNIX;
+            strncpy(addr-&gt;sun_path, path,sizeof(addr-&gt;sun_path));
+        }
+    };
+
+    typedef SocketUnix&lt;true&gt;        SocketUnixTcp;
+    typedef SocketUnix&lt;false&gt;       SocketUnixUdp;
+
+    #endif
+
+
+    #endif /* SOCKET_UNIX_H_ */
+</code></pre>
+
+<hr />
+
+<pre><code>    #ifndef SOCKET_IPV4__H_
+    #define SOCKET_IPV4__H_
+
+    #include "socket_interface.h"
+
+    #if defined(OS_LINUX)
+    #include &lt;netinet/in.h&gt;
+    #include &lt;arpa/inet.h&gt;
+    #endif
+
+    template&lt;bool TCP&gt;
+    class SocketIpv4 : public SocketBaseEx&lt;struct sockaddr_in,TCP,AF_INET&gt;{
+    public:
+        bool                        InitMultiBroadcast(const char* ifname,bool loop,const char* grpip)
+        {
+            assert(grpip);
+
+            //是否换回
+            unsigned char loop_flag = loop?1:0;
+            if(!this-&gt;SetSockopt(IPPROTO_IP,IP_MULTICAST_LOOP,
+                    (const char *)&amp;loop_flag,sizeof(loop_flag)))
+                return false;
+
+            //设置接口
+            struct in_addr addr;
+            if(ifname)
+            {
+                if(!GetIfv4Address(ifname,&amp;addr))
+                    return false;
+            }else
+            {
+                addr.s_addr = INADDR_ANY;
+            }
+            if(!this-&gt;SetSockopt(IPPROTO_IP,IP_MULTICAST_IF,
+                    (const char *)&amp;addr,sizeof(struct in_addr)))
+                return false;
+
+            //设置组播结构
+            struct ip_mreq mreq;
+            memcpy(&amp;mreq.imr_interface,&amp;addr,sizeof(struct in_addr));
+            if(1 != inet_pton(AF_INET, grpip, &amp;(mreq.imr_multiaddr)))
+                return false;
+
+            if(!this-&gt;SetSockopt(IPPROTO_IP,IP_ADD_MEMBERSHIP,
+                    (const char *)&amp;mreq,sizeof(mreq)))
+                return false;
+            return true;
+        }
+
+
+        inline bool             SetMyAddr(unsigned short port,const char* addr){
+            return this-&gt;SetAddr(this-&gt;MyAddr(),port,addr);
+        }
+        inline bool             SetPeerAddr(unsigned short port,const char* addr){
+            return this-&gt;SetAddr(this-&gt;PeerAddr(),port,addr);
+        }
+
+    private:
+        bool                        SetAddr(struct sockaddr_in* addr,unsigned short port,const char* ip){
+            addr-&gt;sin_family    =   AF_INET;
+            addr-&gt;sin_port      =   htons(port);
+            if(!ip){
+                addr-&gt;sin_addr.s_addr   =   INADDR_ANY;
+                return true;
+            }else{
+                return 1 == inet_pton(AF_INET, ip, &amp;(addr-&gt;sin_addr));
+            }
+        }
+    };
+
+    typedef SocketIpv4&lt;true&gt;        SocketIpv4Tcp;
+    typedef SocketIpv4&lt;false&gt;   SocketIpv4Udp;
+
+    #endif
+</code></pre>
+
+<hr />
+
+<pre><code>    /*
+     * socket_ipv6.h
+     *
+     *  Created on: 2011-7-29
+     *      Author: king
+     */
+
+    #ifndef SOCKET_IPV6_H_
+    #define SOCKET_IPV6_H_
+
+    #include "socket_interface.h"
+
+    #if defined(OS_LINUX)
+    #include &lt;netinet/in.h&gt;
+    #endif
+
+    template&lt;bool TCP&gt;
+    class SocketIpv6 : public SocketBaseEx&lt;struct sockaddr_in6,TCP,AF_INET6&gt;{
+    public:
+        bool                        InitMultiBroadcast(const char* ifname,bool loop,const char* grpip)
+        {
+            assert(grpip);
+
+            //是否换回,注意这里必须是uint，ipv4是uchar
+            unsigned int loop_flag = loop?1:0;
+            if(!this-&gt;SetSockopt(IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
+                    (const char*)&amp;loop_flag,sizeof(loop_flag)))
+                return false;
+
+            //设置接口
+            unsigned if_index = 0;
+            if(ifname){
+                if_index = if_nametoindex(ifname);
+                if(!if_index)
+                    return false;
+            }
+            if(!this-&gt;SetSockopt(IPPROTO_IPV6,IPV6_MULTICAST_IF,
+                    (const char*)&amp;if_index,sizeof(if_index)))
+                return false;
+
+            struct ipv6_mreq imr6;
+            imr6.ipv6mr_interface = if_index;
+            if(1 != inet_pton(AF_INET6, grpip, &amp;(imr6.ipv6mr_multiaddr)))
+                return false;
+
+            if(!this-&gt;SetSockopt(IPPROTO_IPV6,IPV6_JOIN_GROUP,
+                    (const char*)&amp;imr6,sizeof(imr6)))
+                return false;
+            return true;
+        }
+
+        inline bool             SetMyAddr(unsigned short port,const char* addr){
+            return this-&gt;SetAddr(this-&gt;MyAddr(),port,addr);
+        }
+        inline bool             SetPeerAddr(unsigned short port,const char* addr){
+            return this-&gt;SetAddr(this-&gt;PeerAddr(),port,addr);
+        }
+
+    private:
+        bool                        SetAddr(struct sockaddr_in6* addr,unsigned short port,const char* ip){
+            addr-&gt;sin6_family   =   AF_INET6;
+            addr-&gt;sin6_port     =   htons(port);
+            if(!ip){
+                addr-&gt;sin6_addr   =   in6addr_any;
+                return true;
+            }else{
+                return 1 == inet_pton(AF_INET6, ip, &amp;(addr-&gt;sin6_addr));
+            }
+        }
+    };
+
+    typedef SocketIpv6&lt;true&gt;        SocketIpv6Tcp;
+    typedef SocketIpv6&lt;false&gt;   SocketIpv6Udp;
+
+    #endif /* SOCKET_IPV6_H_ */
+</code></pre>
+
+<hr />
+
+<pre><code>    #ifndef CLIENT_INTERFACE__H_
+    #define CLIENT_INTERFACE__H_
+
+    #include &lt;cstdio&gt;
+
+    template&lt;typename T&gt;
+    class SockClientS_T : public T{
+    public:
+        ~SockClientS_T(){
+            this-&gt;Close();
+        }
+
+        bool            InitClient(bool bind){
+            //bool ret = this-&gt;SetPeerAddr(12345,"127.0.0.1")
+
+            //if bind == true
+            //bool ret = this-&gt;SetMyAddr(12345,"127.0.0.1")
+            if(!this-&gt;Socket()){
+                perror("");
+                return false;
+            }
+
+            if(bind){
+                if(!this-&gt;SetReuseFlag(true) || !this-&gt;Bind()){
+                    perror("");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    };
+
+    template&lt;typename T&gt;
+    class SockClientL_T : public T{
+    public:
+        ~SockClientL_T(){
+            this-&gt;Close();
+        }
+
+        bool            InitClient(bool bind,int ms){
+
+            if(!this-&gt;Socket()){
+                perror("");
+                return false;
+            }
+
+            if(bind){
+                //if bind == true
+                //bool ret = this-&gt;SetMyAddr(12345,"127.0.0.1")
+                if(!this-&gt;SetReuseFlag(true) || !this-&gt;Bind()){
+                    perror("");
+                    return false;
+                }
+            }
+
+            //bool ret = this-&gt;SetPeerAddr(12345,"127.0.0.1")
+            if(!this-&gt;Connect(ms)){
+                perror("");
+                return false;
+            }
+
+            return true;
+        }
+    };
+
+    #include "socket_ipv4.h"
+    typedef SockClientS_T&lt;SocketIpv4Udp&gt;    SockClientS_Ipv4;
+    typedef SockClientL_T&lt;SocketIpv4Tcp&gt;    SockClientL_Ipv4;
+
+    #if defined(OS_LINUX)
+    #include "socket_unix.h"
+    typedef SockClientS_T&lt;SocketUnixUdp&gt;    SockClientS_Unix;
+    typedef SockClientL_T&lt;SocketUnixTcp&gt;    SockClientL_Unix;
+    #endif
+
+    #include "socket_ipv6.h"
+    typedef SockClientS_T&lt;SocketIpv6Udp&gt;    SockClientS_Ipv6;
+    typedef SockClientL_T&lt;SocketIpv6Tcp&gt;    SockClientL_Ipv6;
+
+    #endif
+</code></pre>
+
+<hr />
+
+<pre><code>    #ifndef SERVER_INTERFACE__H_
+    #define SERVER_INTERFACE__H_
+
+    #include &lt;cstdio&gt;
+
+    template &lt;typename T&gt;
+    class SvrSListener_T{
+    public:
+        typedef typename T::AddrType        AddrType;
+
+        virtual void    OnContentRecvd(const char* buf,size_t size,const AddrType&amp; clt_addr) = 0;
+        virtual void    OnServerClosed(SockFd fd,const AddrType&amp; svr_addr) = 0;
+    };
+
+    template&lt;typename T&gt;
+    class SockServerS_T : public T{
+        enum{
+            DefaultInitBufSize = 4096
+        };
+
+    public:
+        typedef SvrSListener_T&lt;T&gt;   Listener;
+
+        SockServerS_T(Listener* listener,size_t bufsize = DefaultInitBufSize):
+            m_listener_(listener),
+            m_bufsize_(bufsize){
+            m_buffer_ = new char[bufsize];
+            assert(m_buffer_);
+            m_cur_size_ = bufsize;
+        }
+
+        ~SockServerS_T(){
+            this-&gt;Close();
+        }
+
+        bool                    InitServer(){
+            //bool ret = this-&gt;SetMyAddr(12345,"127.0.0.1")
+
+            if(!this-&gt;Socket()){
+                perror("");
+                return false;
+            }
+
+            if(!this-&gt;SetReuseFlag(true) || !this-&gt;Bind()){
+                perror("");
+                return false;
+            }
+
+            return true;
+        }
+
+        void                    StartServer(){
+            size_t readed_;
+            while(true){
+                if(this-&gt;Recvfrom(m_buffer_,m_cur_size_,&amp;readed_)){
+                    if(m_listener_)
+                        m_listener_-&gt;OnContentRecvd(m_buffer_,readed_,*(this-&gt;PeerAddr()));
+
+                    if(readed_ == m_cur_size_)
+                        ResizeBuffer();
+                }else{
+                    break;
+                }
+            }
+
+            if(m_listener_)
+                m_listener_-&gt;OnServerClosed(this-&gt;Fd(),*(this-&gt;MyAddr()));
+        }
+    private:
+        void                    ResizeBuffer(){
+            if(m_buffer_)
+                delete [] m_buffer_;
+            m_cur_size_ += m_bufsize_;
+            m_buffer_ = new char[m_cur_size_];
+            assert(m_buffer_);
+        }
+
+    private:
+        Listener*               m_listener_;
+        size_t                  m_bufsize_;
+        char*                   m_buffer_;
+        size_t                  m_cur_size_;
+    };
+
+
+    template &lt;typename T&gt;
+    class SvrLListener_T{
+    public:
+        typedef typename T::AddrType        AddrType;
+
+        virtual void    OnConnAccept(SockFd fd,const AddrType&amp; clt_addr) = 0;
+        virtual void    OnServerClosed(SockFd fd,const AddrType&amp; svr_addr) = 0;
+    };
+
+
+    template&lt;typename T&gt;
+    class SockServerL_T : public T{
+    public:
+        typedef SvrLListener_T&lt;T&gt;   Listener;
+
+        SockServerL_T(Listener* listener):
+            m_listener_(listener){}
+
+        ~SockServerL_T(){
+            this-&gt;Close();
+        }
+
+        inline void             ResetListener(Listener* listener){
+            this-&gt;m_listener_ = listener;
+        }
+
+        bool                    InitServer(int backlog){
+
+            if(!this-&gt;Socket()){
+                perror("");
+                return false;
+            }
+
+            //bool ret = this-&gt;SetMyAddr(12345,"127.0.0.1")
+            if(!this-&gt;SetReuseFlag(true) || !this-&gt;Bind()){
+                perror("");
+                return false;
+            }
+
+            if(!this-&gt;Listen(backlog)){
+                perror("");
+                return false;
+            }
+
+            return true;
+        }
+
+        void                    StartServer(){
+            SockFd fd;
+            do{
+                fd = this-&gt;Accept();
+                if(fd == SOCKET_ERROR){
+                    perror("");
+                    break;
+                }
+
+                if(m_listener_)
+                    m_listener_-&gt;OnConnAccept(fd,*(this-&gt;PeerAddr()));
+            }while(true);
+            if(m_listener_)
+                m_listener_-&gt;OnServerClosed(this-&gt;Fd(),*(this-&gt;MyAddr()));
+        }
+    private:
+        Listener*               m_listener_;
+    };
+
+    template &lt;typename T&gt;
+    class ConnListener_T : public SvrSListener_T&lt;T&gt;{};
+
+    template&lt;typename T&gt;
+    class SockConnL_T : public SocketBase{
+    private:
+        enum{
+            BUFSIZE = 4096
+        };
+    public:
+        typedef typename T::AddrType    AddrType;
+        typedef ConnListener_T&lt;T&gt;           Listener;
+
+
+        SockConnL_T(Listener* listener,const AddrType&amp; addr,SockFd fd):
+            m_listener_(listener){
+            this-&gt;SetFd(fd);
+            memcpy(&amp;m_addr_,&amp;addr,sizeof(AddrType));
+        }
+
+
+        void                        StartConn(){
+            char buf[BUFSIZE];
+            size_t readed_;
+            while(true)
+            {
+                if(this-&gt;Recv(buf,sizeof(buf),&amp;readed_)){
+                    if(readed_ &amp;&amp; m_listener_)
+                        m_listener_-&gt;OnContentRecvd(buf,readed_,m_addr_);
+                }else{
+                    break;
+                }
+            }
+            if(m_listener_)
+                m_listener_-&gt;OnServerClosed(this-&gt;Fd(),m_addr_);
+        }
+    private:
+        AddrType                    m_addr_;
+        Listener*                   m_listener_;
+    };
+
+    #include "socket_ipv4.h"
+    typedef SockServerS_T&lt;SocketIpv4Udp&gt;    SockServerS_Ipv4;
+    typedef SockServerL_T&lt;SocketIpv4Tcp&gt;    SockServerL_Ipv4;
+    typedef SockConnL_T&lt;SocketIpv4Tcp&gt;      SockConnL_Ipv4;
+
+    typedef SvrSListener_T&lt;SocketIpv4Udp&gt;       SvrSListener_Ipv4;
+    typedef SvrLListener_T&lt;SocketIpv4Tcp&gt;       SvrLListener_Ipv4;
+    typedef ConnListener_T&lt;SocketIpv4Tcp&gt;       ConnListener_Ipv4;
+
+    #if defined(OS_LINUX)
+
+    #include "socket_unix.h"
+    typedef SockServerS_T&lt;SocketUnixUdp&gt;    SockServerS_Unix;
+    typedef SockServerL_T&lt;SocketUnixTcp&gt;    SockServerL_Unix;
+    typedef SockConnL_T&lt;SocketUnixTcp&gt;      SockConnL_Unix;
+
+    typedef SvrSListener_T&lt;SocketUnixUdp&gt;       SvrSListener_Unix;
+    typedef SvrLListener_T&lt;SocketUnixTcp&gt;       SvrLListener_Unix;
+    typedef ConnListener_T&lt;SocketUnixTcp&gt;       ConnListener_Unix;
+    #endif
+
+    #include "socket_ipv6.h"
+    typedef SockServerS_T&lt;SocketIpv6Udp&gt;    SockServerS_Ipv6;
+    typedef SockServerL_T&lt;SocketIpv6Tcp&gt;    SockServerL_Ipv6;
+    typedef SockConnL_T&lt;SocketIpv6Tcp&gt;      SockConnL_Ipv6;
+
+    typedef SvrSListener_T&lt;SocketIpv6Udp&gt;       SvrSListener_Ipv6;
+    typedef SvrLListener_T&lt;SocketIpv6Tcp&gt;       SvrLListener_Ipv6;
+    typedef ConnListener_T&lt;SocketIpv6Tcp&gt;       ConnListener_Ipv6;
+
+    #endif
+</code></pre>
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[network]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

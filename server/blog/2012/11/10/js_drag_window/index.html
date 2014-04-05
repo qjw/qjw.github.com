@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>使用js来控制原生窗口的拖拽</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]->[<a href="/blog/2012/11/10/js_drag_window">使用js来控制原生窗口的拖拽</a>]</strong>
+
+<h2>需求</h2>
+
+<p>为了让Html完全接管窗口，可以创建一个popup的窗口，然后将整个Html嵌入窗口内，在Html绘制模拟的边框和标题栏，通过js事件并控制C后端的逻辑代码实现标题栏拖动窗口，左，上，右，下，左上，右上，右下，左下的拖动大小。</p>
+
+<p><strong>JS代码</strong></p>
+
+<p><strong>res:/#129</strong> 表示jquery-1.8.0.min.js在资源中的路径，129是资源ID</p>
+
+<pre><code>    &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+    &lt;title&gt;Simple drag demo&lt;/title&gt;
+    &lt;style&gt;
+    #rect {
+      cursor:move;
+      background:#eee;
+      border:1px solid #333;
+      padding:10px;
+    }
+    &lt;/style&gt;
+
+    &lt;script type="text/javascript" src="res:/#129"&gt;&lt;/script&gt;
+    &lt;script&gt;
+
+
+    var drag_x;
+    var drag_y;
+
+    function makeDraggable(element,opr,xmodify,ymodify) {
+
+        /* Simple drag implementation */
+        element.onmousedown = function(event) 
+        {   
+            event = event || window.event;
+            drag_x = event.clientX;
+            drag_y = event.clientY;
+
+            document.onmousemove = function(event) 
+            {
+                event = event || window.event;
+                window.external.move(
+                    event.clientX - drag_x,
+                    event.clientY - drag_y,
+                    opr);
+                if(xmodify)
+                {
+                    drag_x = event.clientX;
+                }
+                if(ymodify)
+                {
+                    drag_y = event.clientY;
+                }
+            };
+
+            document.onmouseup = function() 
+            {
+                document.onmousemove = null;
+                if(element.releaseCapture) 
+                { 
+                    element.releaseCapture(); 
+                }
+            };
+
+            if(element.setCapture) 
+            { 
+                element.setCapture(); 
+            }
+
+
+        };
+
+        /* These 3 lines are helpful for the browser to not accidentally 
+        * think the user is trying to "text select" the draggable object
+        * when drag initiation happens on text nodes.
+        * Unfortunately they also break draggability outside the window.
+        */
+        element.unselectable = "on";
+        element.onselectstart = function(){return false};
+        element.style.userSelect = element.style.MozUserSelect = "none";
+    }
+
+    $(function(){
+        makeDraggable($(".title")[0],"move",false,false);
+
+        makeDraggable($(".top")[0],"top",false,false);
+        makeDraggable($(".left")[0],"left",false,false);
+        makeDraggable($(".topleft")[0],"topleft",false,false);
+
+        makeDraggable($(".bottom")[0],"bottom",true,true);
+        makeDraggable($(".right")[0],"right",true,true);
+        makeDraggable($(".bottomright")[0],"bottomright",true,true);
+
+        makeDraggable($(".topright")[0],"topright",true,false);
+        makeDraggable($(".bottomleft")[0],"bottomleft",false,true);
+    });
+    &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+
+    &lt;div id="rect" class="title"&gt;标题栏&lt;/div&gt;
+    &lt;div id="rect" class="left"&gt;左&lt;/div&gt;
+    &lt;div id="rect" class="topleft"&gt;左上&lt;/div&gt;
+    &lt;div id="rect" class="top"&gt;上&lt;/div&gt;
+    &lt;div id="rect" class="topright"&gt;右上&lt;/div&gt;
+    &lt;div id="rect" class="right"&gt;右&lt;/div&gt;
+    &lt;div id="rect" class="bottomright"&gt;右下&lt;/div&gt;
+    &lt;div id="rect" class="bottom"&gt;下&lt;/div&gt;
+    &lt;div id="rect" class="bottomleft"&gt;左下&lt;/div&gt;
+
+    &lt;/body&gt;
+    &lt;/html&gt;
+</code></pre>
+
+<hr />
+
+<pre><code>    // httpappDlg.h : 头文件
+    //
+
+    #pragma once
+
+
+    // ChttpappDlg 对话框
+    class ChttpappDlg : public CDHtmlDialog
+    {
+    // 构造
+    public:
+        ChttpappDlg(CWnd* pParent = NULL);  // 标准构造函数
+
+    // 对话框数据
+        enum { IDD = IDD_HTTPAPP_DIALOG, IDH = IDR_HTML_HTTPAPP_DIALOG };
+
+        protected:
+        virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+        virtual BOOL IsExternalDispatchSafe(){ return TRUE;}
+
+        HRESULT OnButtonOK(IHTMLElement *pElement);
+        HRESULT OnButtonCancel(IHTMLElement *pElement);
+
+        void HttpMove(VARIANT&amp; x,VARIANT&amp; y,VARIANT&amp; opr);
+    // 实现
+    protected:
+        HICON m_hIcon;
+
+        // 生成的消息映射函数
+        virtual BOOL OnInitDialog();
+        afx_msg void OnPaint();
+        afx_msg HCURSOR OnQueryDragIcon();
+        DECLARE_MESSAGE_MAP()
+        DECLARE_DHTML_EVENT_MAP()
+        DECLARE_DISPATCH_MAP()
+    };
+</code></pre>
+
+<hr />
+
+<pre><code>    // httpappDlg.cpp : 实现文件
+    //
+
+    BEGIN_DISPATCH_MAP(ChttpappDlg, CDHtmlDialog)
+        DISP_FUNCTION(ChttpappDlg,"move",HttpMove,VT_EMPTY,VTS_VARIANT VTS_VARIANT VTS_VARIANT)
+    END_DISPATCH_MAP()
+
+    void ChttpappDlg::HttpMove(VARIANT&amp; x,VARIANT&amp; y,VARIANT&amp; opr)
+    {
+        if(x.vt == VT_I4 &amp;&amp; y.vt == VT_I4 &amp;&amp; opr.vt == VT_BSTR)
+        {
+            CString opr_(opr.bstrVal);
+            CPoint point_(x.lVal,y.lVal);
+
+            CRect rect_;
+            this-&gt;GetWindowRect(&amp;rect_);
+            const int min_height_ = 100;
+            const int min_width_ = 200;
+            if(opr_ == "move")
+            {
+                rect_.OffsetRect(point_);
+            }
+            else if(opr_ == "top")
+            {
+                rect_.top += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.top = rect_.bottom - min_height_;
+            }
+            else if(opr_ == "left")
+            {
+                rect_.left += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.left = rect_.right - min_width_;
+            }
+            else if(opr_ == "topleft")
+            {
+                rect_.left += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.left = rect_.right - min_width_;
+                rect_.top += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.top = rect_.bottom - min_height_;
+            }
+            else if(opr_ == "right")
+            {
+                rect_.right += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.right = rect_.left + min_width_;
+            }
+            else if(opr_ == "bottom")
+            {
+                rect_.bottom += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.bottom = rect_.top + min_height_;
+            }
+            else if(opr_ == "bottomright")
+            {
+                rect_.right += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.right = rect_.left + min_width_;
+                rect_.bottom += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.bottom = rect_.top + min_height_;
+            }
+            else if(opr_ == "bottomleft")
+            {
+                rect_.left += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.left = rect_.right - min_width_;
+                rect_.bottom += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.bottom = rect_.top + min_height_;
+            }
+            else if(opr_ == "topright")
+            {
+                rect_.right += point_.x;
+                if(rect_.Width() &lt; min_width_)
+                    rect_.right = rect_.left + min_width_;
+                rect_.top += point_.y;
+                if(rect_.Height() &lt; min_height_)
+                    rect_.top = rect_.bottom - min_height_;
+            }
+            else
+            {
+                return;
+            }
+
+            this-&gt;MoveWindow(rect_.left,
+                rect_.top,
+                rect_.Width(),
+                rect_.Height());
+        }
+    }
+
+    ChttpappDlg::ChttpappDlg(CWnd* pParent /*=NULL*/)
+        : CDHtmlDialog(ChttpappDlg::IDD, ChttpappDlg::IDH, pParent)
+    {
+        m_hIcon = AfxGetApp()-&gt;LoadIcon(IDR_MAINFRAME);
+        EnableAutomation();
+    }
+
+    BOOL ChttpappDlg::OnInitDialog()
+    {
+        CDHtmlDialog::OnInitDialog();
+        SetExternalDispatch(GetIDispatch(TRUE));
+
+        // TODO: 在此添加额外的初始化代码
+
+        return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+    }
+</code></pre>
+
+<h1>Bug</h1>
+
+<p>正常情况下，Mouse Up会正常触发，但是一些特殊的情况，例如按下Win键，或者Atl+Ctrl切换到其他程序，那么可能导致mouse up丢失。所以在web中必须监听<strong>onlosecapture</strong>事件。类似于Windows的窗口消息<strong>WM_CAPTURECHANGED</strong>。</p>
+
+<h1>参考</h1>
+
+<ol>
+<li><a href="http://www.cnblogs.com/thinkingfor/archive/2010/11/08/1871736.html">http://www.cnblogs.com/thinkingfor/archive/2010/11/08/1871736.html</a></li>
+<li><a href="http://stackoverflow.com/questions/1685326/responding-to-the-onmousemove-event-outside-of-the-browser-window-in-ie/1745382#1745382">http://stackoverflow.com/questions/1685326/responding-to-the-onmousemove-event-outside-of-the-browser-window-in-ie/1745382#1745382</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/ie/ms536943(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ie/ms536943(v=vs.85).aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms645605(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/ms645605(v=vs.85).aspx</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[windows]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

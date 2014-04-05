@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: other</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/other/">other</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspother</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/blog/2014/04/05/windows7_install_linuxmint">Windows硬盘安装LinuxMint</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2014/02/09/novnc">使用novnc实现vnc web化</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2014/01/10/freesshd_windows">使用freesshd实现Windows远程控制</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/23/ndk_build_3rd_code">NDK编译libevent等开源库</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/23/android_ndk_cocos2dx">android cocos2dx编译</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/23/android_ndk">android NDK环境搭建</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/22/rrdtool">使用rrdtool制作报表</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/05/google_cpu_profiler_bug">Google CpuProfiler在x64 Linux下的问题</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/11/24/very_sleepy">使用Very Sleepy在Windows下做简单的性能分析</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/11/24/freeSSHd">借助freeSSHD在Windows上创建SSH服务</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/08/31/windows_git_winmerge">在Windows下配合winmerge使用git</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/08/05/common_software">常用软件</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/08/02/apt_get_util">shell常用软件 和 配置</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/07/05/google_earth_photo">解决Google Earth 不能查看照片的bug</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/06/18/eclipse_doxygen">eclipse中自动生成doxygen帮助</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/05/28/virtual_network_port_windows7">在DHCP中使用静态IP地址连接虚拟机</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/10/apt_get_use_proxy">apt-get 使用代理</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/26/goagent_build">使用GAE、GoAgent搭建代理搭建代理</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/11/bike_road">骑行路线规划</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/06/test">你好，世界 master</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

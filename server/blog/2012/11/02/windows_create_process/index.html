@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Windows 创建进程经验小结</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]->[<a href="/blog/2012/11/02/windows_create_process">Windows 创建进程经验小结</a>]</strong>
+
+<h1>CreateProcess</h1>
+
+<p>Windows创建进程的API是<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx">CreateProcess</a>。用法见<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682512(v=vs.85).aspx">Sample</a></p>
+
+<pre><code>    BOOL WINAPI CreateProcess(
+      _In_opt_     LPCTSTR lpApplicationName,
+      _Inout_opt_  LPTSTR lpCommandLine,
+      _In_opt_     LPSECURITY_ATTRIBUTES lpProcessAttributes,
+      _In_opt_     LPSECURITY_ATTRIBUTES lpThreadAttributes,
+      _In_         BOOL bInheritHandles,
+      _In_         DWORD dwCreationFlags,
+      _In_opt_     LPVOID lpEnvironment,
+      _In_opt_     LPCTSTR lpCurrentDirectory,
+      _In_         LPSTARTUPINFO lpStartupInfo,
+      _Out_        LPPROCESS_INFORMATION lpProcessInformation
+    );
+</code></pre>
+
+<hr />
+
+<pre><code>    #include &lt;windows.h&gt;
+    #include &lt;stdio.h&gt;
+    #include &lt;tchar.h&gt;
+
+    void _tmain( int argc, TCHAR *argv[] )
+    {
+        STARTUPINFO si;
+        PROCESS_INFORMATION pi;
+
+        ZeroMemory( &amp;si, sizeof(si) );
+        si.cb = sizeof(si);
+        ZeroMemory( &amp;pi, sizeof(pi) );
+
+        if( argc != 2 )
+        {
+            printf("Usage: %s [cmdline]\n", argv[0]);
+            return;
+        }
+
+        // Start the child process. 
+        if( !CreateProcess( NULL,   // No module name (use command line)
+            argv[1],        // Command line
+            NULL,           // Process handle not inheritable
+            NULL,           // Thread handle not inheritable
+            FALSE,          // Set handle inheritance to FALSE
+            0,              // No creation flags
+            NULL,           // Use parent's environment block
+            NULL,           // Use parent's starting directory 
+            &amp;si,            // Pointer to STARTUPINFO structure
+            &amp;pi )           // Pointer to PROCESS_INFORMATION structure
+        ) 
+        {
+            printf( "CreateProcess failed (%d).\n", GetLastError() );
+            return;
+        }
+
+        // Wait until child process exits.
+        WaitForSingleObject( pi.hProcess, INFINITE );
+
+        // Close process and thread handles. 
+        CloseHandle( pi.hProcess );
+        CloseHandle( pi.hThread );
+    }
+</code></pre>
+
+<h2>参数</h2>
+
+<p>若不带参数，我们可以将程序放到lpApplicationName或者lpCommandLine参数。</p>
+
+<p>若带参数，可以将整个字符串放到lpCommandLine参数。</p>
+
+<p>若程序和参数分开，那么程序路径放在lpApplicationName，参数放在lpCommandLine。<strong>同时必须保证lpCommandLine前面有一个空格</strong></p>
+
+<h2>从其他桌面启动</h2>
+
+<p><strong>为了从另一个Desktop启动，可以对lpStartupInfo的STARTUPINFO结构成员<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx">lpDesktop</a>赋值为特定的桌面名称</strong>。线程Desktop相关见<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686744(v=vs.85).aspx">这里</a></p>
+
+<h1>GetExitCodeProcess</h1>
+
+<p>当我们需要获取程序返回值时，使用<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683189(v=vs.85).aspx">GetExitCodeProcess</a></p>
+
+<h1>ShellExecuteEx</h1>
+
+<p>对于一般的情况，<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762154(v=vs.85).aspx">ShellExecuteEx</a>相比CreateProcess更加容易使用，<strong>特别是依赖UAC时，就必须使用ShellExecuteEx了，此时CreateProcess会返回错误码ERROR_ELEVATION_REQUIRED</strong>,具体细节见<a href="http://technet.microsoft.com/en-us/library/cc722422(v=ws.10).aspx">这里</a>。它有个兄弟函数<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153(v=vs.85).aspx">ShellExecute</a>。Sample见<a href="http://msdn.microsoft.com/zh-cn/library/windows/desktop/bb776886(v=vs.85).aspx">这里</a></p>
+
+<p>为了获得进程句柄，<strong>需要附带标志位<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb759784(v=vs.85).aspx">SEE_MASK_NOCLOSEPROCESS</a></strong></p>
+
+<p><strong>我们可以通过CreateProcess附带<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684863(v=vs.85).aspx">CREATE_SUSPENDED</a>标志，并判断是否返回错误ERROR_ELEVATION_REQUIRED来判断某个可执行文件是否需要使用管理员启动</strong></p>
+
+<p>ShellExecuteEx不支持CreateProcess那种将程序和参数放到同一字符串中直接运行的用法，<strong>你必须将程序名称传给SHELLEXECUTEINFO结构的lpFile，参数传给lpParameters。参数无前面空格的要求</strong></p>
+
+<h2>UAC提权</h2>
+
+<p>用过Vista或者更高版本的Windows系统的人都知道，某些程序起来的时候会弹出一个UAC的对话框，那么自己写的程序怎么让Windows弹出此确认呢？</p>
+
+<p>方法一是在manifest中添加特殊的字段，见<a href="http://blog.csdn.net/limiko/article/details/5713182">这里</a></p>
+
+<pre><code>    &lt;trustInfo xmlns="urn:schemas-microsoft-com:asm.v3"&gt;
+        &lt;security&gt;
+            &lt;requestedPrivileges&gt;
+                &lt;requestedExecutionLevel level="requireAdministrator" uiAccess="false"/&gt;
+            &lt;/requestedPrivileges&gt;
+        &lt;/security&gt;
+    &lt;/trustInfo&gt;
+</code></pre>
+
+<p>在VS2008中只需要动手选择一下就好了,<strong>项目属性->配置属性->连接器->manifest file : 将UAC Execution Level勾选为requireAdministrator</strong></p>
+
+<h2><a href="http://blog.csdn.net/magictong/article/details/4804862">简单绕过UAC</a></h2>
+
+<p>前面的方法大部分情况下能够很好的工作，但是有一些例外，例如开机启动的程序。因为用uac提权需要弹出一个框来用户确认，但是开机启动很显然这做不到，所以系统会直接拦掉。那怎么解决呢？</p>
+
+<p>实际上我们可以用ShellExecuteEx来做到动态提权，对于开机启动的情形，我们可以不使用menifest的requireAdministrator属性，开机用普通用户权限启动，当工作的时候再动态提权。具体参考下面的<strong>runas</strong>。</p>
+
+<pre><code>    SHELLEXECUTEINFO sei = {0};
+    sei.cbSize = sizeof(SHELLEXECUTEINFOW);
+    // ... other option
+    sei.lpFile = your_path;
+    sei.lpVerb = _T("runas");
+    sei.lpDirectory = NULL;
+    ShellExecuteEx(&amp;sei);
+</code></pre>
+
+<p>当需要提权时，<strong>我们可以将自己退出，在退出之前，用runas启动一个新的自身实例</strong>。</p>
+
+<h1>Bug</h1>
+
+<p>当我们用ShellExecuteEx去启动某个程序时，若需要提权，那么uac会弹出一个对话框来用户确认，<strong>在这个对话框返回之前，ShellExecuteEx函数不会返回，也就是调用ShellExecuteEx的线程会被阻塞，若该线程有其他后台逻辑，慎用</strong>。</p>
+
+<h2>消息接管</h2>
+
+<p>笔者曾用一个后台线程处理各种逻辑，通过Windows的消息机制和其他线程通信（避免使用锁）。此线程平时都阻塞在MsgWaitForMultipleObjects函数中。在这些消息处理程序中，就包含ShellExecuteEx的调用，很明显，当弹出UAC对话框时，整个线程被阻塞了。</p>
+
+<p>此时，其他线程还会向它发送消息，并且PostThreadMessage也是成功的，我最初认为ShellExecuteEx返回之后，MsgWaitForMultipleObjects应该能够立即返回并且收到此前被Post的消息。但实际上这些消息虽然Post成功，但就是没有收到，丢弃了还是被其他地方处理掉了？</p>
+
+<p>据查证，这些消息直接被UAC的那个框给处理掉了。</p>
+
+<p>解决办法就是创建一个子线程，在这个子线程中调用ShellExecuteEx，同时WaitForSingleObject这个线程。虽然在ShellExecuteEx返回之前，子线程不会结束，此线程也就是阻塞的，但是ShellExecuteEx返回之后，阻塞过程中被Post的消息是不会丢失的。MsgWaitForMultipleObjects会立即返回并收到那些消息。</p>
+
+<h1>参考</h1>
+
+<ol>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153(v=vs.85).aspx</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762154(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/bb762154(v=vs.85).aspx</a></li>
+<li><a href="http://linux.die.net/man/2/fork">http://linux.die.net/man/2/fork</a></li>
+<li><a href="http://blogs.itecn.net/blogs/winvista/archive/2006/07/25/3021.aspx">http://blogs.itecn.net/blogs/winvista/archive/2006/07/25/3021.aspx</a></li>
+<li><a href="http://blog.csdn.net/magictong/article/details/4804862">http://blog.csdn.net/magictong/article/details/4804862</a></li>
+<li><a href="http://www.shily.net/topic/bypassing-uac-since-the-launch-on-vista-win7/">http://www.shily.net/topic/bypassing-uac-since-the-launch-on-vista-win7/</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[windows]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

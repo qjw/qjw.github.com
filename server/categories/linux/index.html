@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: linux</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/linux/">linux</a>]</strong>
+<h2>分类浏览:&nbsp;&nbsplinux</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/blog/2013/12/22/nc_server">使用NC测试网络或建立服务器</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/12/06/pthread_cond_timedwait_tips">pthread_cond_timedwait 陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/10/05/cocos2dx-linux">Cocos2d-x linux下编译</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/05/22/socket_inherit">防止句柄被子进程继承</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/05/22/dbus_debug">dbus调试方法</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/05/22/LD_PRELOAD">LD_PRELOAD妙用</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/17/pthread_cond_wait_err">Posix条件变量的一个陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/17/programming_with_posix_threads">POSIX多线程程序设计 几种线程模型范例</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/17/flock_error">flock的陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/20/popen_system">System,Popen的陷阱</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/20/linux_job_control">Linux 进程组</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/20/fopen_INTER">fread/fwrite信号中断处理</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/20/exit_sub_process">Linux正确的退出子进程</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/13/bash_declare_option">Bash Declare妙用</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/12/zombie_process">僵尸进程及其预防</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/11/wait_all_process_linux">Linux下等待所有进程结束</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/24/linux_timer">Linux下的定时器</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

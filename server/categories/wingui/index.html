@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: wingui</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/wingui/">wingui</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspwingui</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/blog/2013/04/04/windows8_file">Windows 8文件操作</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/04/03/windows8_lib_base">Windows 8官方Sample框架解析</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/windows8_study5">Windows 8学习笔记5 基本控件</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/windows8_study4">Windows 8学习笔记4 页面导航</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/windows8_study3">Windows 8学习笔记3 生命周期</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/windows8_study2">Windows 8学习笔记2 Promise</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/windows8_study1">Windows 8学习笔记1 本地/Web会话</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/use_gif_image">使用PictureExWnd库渲染gif图片</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/use_gif_custom">自定义渲染gif实现全透明异型效果</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/use_flash">使用shockwaveflash库渲染flash</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2013/03/24/image_from_res">从资源中读取图片</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/icon2bitmap">Icon转换成Bitmap</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/workarea_change_message">工作区大小变化的相关消息</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/tray_menu">托盘菜单基本用法</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/focus_sth">焦点相关的部分tips</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/Menu_sample">菜单基本用法</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/Gdi_object_to_release">Gdi对象释放对照表</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/Close_messagebox">后台关闭MessageBox</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

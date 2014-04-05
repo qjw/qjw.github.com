@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Windows上搭建Jekyll测试平台</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/www/">www</a>]->[<a href="/blog/2012/10/07/Windows_jekyll">Windows上搭建Jekyll测试平台</a>]</strong>
+
+<p>from <a href="http://liqiangvip.github.com/2012/06/08/write-blog-github-jekyll/">这里</a></p>
+
+Windows上搭建Jekyll测试平台，为了方便，使用<a href="https://github.com/pizn/pizn.github.com">pizn</a>的仓库代码</p>
+
+<ol>
+<li>
+<p>先注册申请一个<a href="https://github.com/">GitHub</a>账号</p>
+</li>
+
+<li>
+<p>按照<a href="https://help.github.com/articles/set-up-git">官方教程</a>在本地配置好Git环境下载安装Git工具。其实就是以下几步:<br>1) 在<a href="http://git-scm.com/downloads">此处</a>下载安装最新版本的Git。国内如果访问有困难，可以去<a href="http://code.google.com/p/gitextensions/downloads/list">google code</a>下载。<br>2) 使用<code>git config --global user.name "Your Name Here"</code>设置用来标识你身份的提交用户名 <br>3) 使用<code>git config --global user.email "your_email@youremail.com"</code>设置用来标识你的地址信息（此处并不需要是真实的邮件地址）</p>
+</li>
+
+<li>
+<p>也可以下载<a href="http://code.google.com/p/msysgit/">msysgit</a>
+或者<a href="http://www.syntevo.com/smartgit/index.html">smartgit</a></p>
+</li>
+
+<li>
+<p>Windows平台的用户，可以此处下载安装<a href="http://windows.github.com/">GitHub</a>的客户端，用它可以很方便的管理你的代码仓库。为了更方便的使用GitHub，它还会要求你去下载一个微软的PowerShell程序。</p>
+</li>
+
+<li>
+<p>下面我们先使用piz的blog仓库，打开<a href="https://github.com/liqiangvip/pizn.github.com" title="pizn.github.com">页面</a>，点击右上角的”Fork”按钮，就会在你的仓库那生成一条支线仓库，然后你的仓库中就多了一个pizn.github.com的仓库，点击其页面上的Clone in Windows按钮，就会调用你之前安装好的GitHub客户端，将该仓库的代码下载到本地。默认位置是我的文档下的GitHub文件夹内。</p>
+</li>
+
+<li>
+<p>至此，我们已经拥有了一个作为博客站点的示例代码，下面就需要在本地搭建Jekyll测试平台。</p>
+</li>
+
+<li>
+<p>下载最新的<a href="http://rubyforge.org/frs/?group_id=167">RubyInstaller</a>并安装（<a href="http://files.rubyforge.vm.bytemark.co.uk/rubyinstaller/rubyinstaller-1.9.3-p194.exe">这里</a>），然后在命令行终端下输入<code>gem update --system</code>来升级gem</p>
+</li>
+
+<li>
+<p>下载最新的<a href="https://github.com/oneclick/rubyinstaller/downloads/">DevKit</a>（<a href="http://cloud.github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe">这里</a>）并双击运行解压到C:\DevKit。然后打开终端cmd，输入下列命令进行安装：
+</p>
+
+<p>cd C:\DevKit<br>ruby dk.rb init<br>ruby dk.rb install</p>
+</li>
+
+<li>
+<p>然后就可以使用<code>gem install jekyll</code>安装Jekyll了，并使用<code>jekyll --version</code>检验是否安装成功</p>
+</li>
+
+<li>
+<p>好像最新的jekyll的编码问题不好解决，所以若安装新版本可以退回去。gem uninstall jekyll。gem install jekyll --version "=1.3.0"</p>
+<p><a href="http://hypergroups.github.io/Jekyll-1.4.3%E7%9A%84%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98/">见这里</a></p>
+</li>
+
+<li>
+<p>若无法安装，因为被某匪的墙挡了，可以 gem sources --remove https://rubygems.org/ ，gem sources -a http://ruby.taobao.org/</p>
+<p><a href="http://ruby-china.org/topics/914">见这里</a></p>
+</li>
+
+<li>
+<p>一般而言，还可以安装Rdiscount，这个用来解析Markdown标记的包，使用如下命令：<br><code>gem install rdiscount</code></p>
+</li>
+
+<li>
+<p>现在，所有的工作都完成了，让我们在本地测试看看下载得到的pizn博客站点是否可以成长运行。</p>
+</li>
+
+<li>
+<p>打开终端命令行，进入到你clone得到的pizn.github.com目录下，运行<code>jekyll --server</code></p>
+</li>
+
+<li>
+<p>打开浏览器，输入 http://127.0.0.1:4000 进行访问。</p>
+</li>
+
+<li>
+<p>如果出现问题的话，请参考<a href="http://chxt6896.github.com/blog/2012/02/13/blog-jekyll-native.html">《Jekyll 本地调试之若干问题》</a>。比如本人就遇到过其中的Problem3.</p>
+</li>
+
+<li>
+<p>若使用Jekyll本地环境出现乱码，参见<a href="http://liufeiyu.cn/github/2012/12/04/how-to-use-git-to-post-articles.html">这里</a>
+(C:\Ruby193\lib\ruby\gems\1.9.1\gems\jekyll-0.11.2\lib\jekyll\convertible.rb)
+
+将self.content = File.read(File.join(base, name)) 改成 self.content = File.read(File.join(base, name), :encoding => "utf-8")
+</p>
+<p>
+若找不到，则将self.content = File.read_with_options(File.join(base, name)  改成 self.content = File.read_with_options(File.join(base, name), :encoding => "utf-8");
+</p>
+</li>
+
+<li>
+<p>一个完整的流程见，参见<a href="http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html">这里</a>或<a href="http://beiyuu.com/github-pages/">这里</a></p>
+</li>
+
+
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[www]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Windows 8学习笔记3 生命周期</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/wingui/">wingui</a>]->[<a href="/blog/2013/03/24/windows8_study3">Windows 8学习笔记3 生命周期</a>]</strong>
+
+<h2>Reference</h2>
+
+<ol>
+<li><a href="http://blogs.msdn.com/b/microsoft_press/archive/2012/08/20/free-ebook-programming-windows-8-apps-with-html-css-and-javascript-second-preview.aspx">Programming Windows 8 Apps with HTML, CSS, and JavaScript (Second Preview)</a></li>
+<li><a href="http://code.msdn.microsoft.com/windowsapps/">http://code.msdn.microsoft.com/windowsapps/</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.viewmanagement.applicationviewstate">http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.viewmanagement.applicationviewstate</a></li>
+</ol>
+
+
+<h2>App Activation</h2>
+
+<pre><code>(function () { 
+    "use strict"; 
+
+    var app = WinJS.Application; 
+    var activation = Windows.ApplicationModel.Activation; 
+
+    app.onactivated = function (args) { 
+        if (args.detail.kind === activation.ActivationKind.launch) { 
+            if (args.detail.previousExecutionState !==  
+                activation.ApplicationExecutionState.terminated) { 
+                // TODO: This application has been newly launched. Initialize  
+                // your application here. 
+            } else { 
+                // TODO: This application has been reactivated from suspension.  
+                // Restore application state here. 
+            } 
+            args.setPromise(WinJS.UI.processAll()); 
+        } 
+    }; 
+
+    app.oncheckpoint = function (args) { 
+    }; 
+
+    app.start(); 
+})();
+</code></pre>
+
+<p>If the activation kind is <strong>launch</strong> and the previous state is <strong>notrunning</strong> or <strong>closedByUser</strong>, the app should start up with its default UI and apply any persistent settings (such as those in its Settings panel). With closedByUser, there might be scenarios where the app should perform additional actions (such as updating cached data) after the user explicitly closed the app and left it closed for a while.</p>
+
+<p>If the activation kind is <strong>launch</strong> and the previous state is <strong>terminated</strong>, the app should start up in the same state as when it was last suspended.</p>
+
+<p>For launch and other activation kinds that include additional arguments or parameters (as with secondary tiles, toast notifications, and contracts), it should initialize itself to serve that purpose by using the additional parameters. The app might already be running, so it won’t necessarily initialize its default state again.</p>
+
+<ol>
+<li><strong><a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.applicationmodel.activation.activationkind.aspx">args.detail.kind</a></strong> identifies the type of activation.</li>
+</ol>
+
+
+<table style="border: 1px solid #000000;padding:3px;">
+<tbody><tr><th>Member</th><th>Value</th><th>Description</th></tr>
+<tr><td><strong>Launch</strong> | <strong>launch</strong></td><td>0</td><td>
+<p>The user launched the app or tapped a content tile.</p>
+</td></tr>
+<tr><td><strong>Search</strong> | <strong>search</strong></td><td>1</td><td>
+<p>The user wants to search with the app.</p>
+</td></tr>
+<tr><td><strong>ShareTarget</strong> | <strong>shareTarget</strong></td><td>2</td><td>
+<p>The app is activated as a target for share operations.</p>
+</td></tr>
+<tr><td><strong>File</strong> | <strong>file</strong></td><td>3</td><td>
+<p>An app launched a file whose file type this app is registered to handle.</p>
+</td></tr>
+<tr><td><strong>Protocol</strong> | <strong>protocol</strong></td><td>4</td><td>
+<p>An app launched a URL whose protocol this app is registered to handle.</p>
+</td></tr>
+<tr><td><strong>FileOpenPicker</strong> | <strong>fileOpenPicker</strong></td><td>5</td><td>
+<p>The user wants to pick files that are provided by the app.</p>
+</td></tr>
+<tr><td><strong>FileSavePicker</strong> | <strong>fileSavePicker</strong></td><td>6</td><td>
+<p>The user wants to save a file and selected the app as the location.</p>
+</td></tr>
+<tr><td><strong>CachedFileUpdater</strong> | <strong>cachedFileUpdater</strong></td><td>7</td><td>
+<p>The user wants to save a file that the app provides content management for.</p>
+</td></tr>
+<tr><td><strong>ContactPicker</strong> | <strong>contactPicker</strong></td><td>8</td><td>
+<p>The user wants to pick contacts.</p>
+</td></tr>
+<tr><td><strong>Device</strong> | <strong>device</strong></td><td>9</td><td>
+<p>The app handles AutoPlay.</p>
+</td></tr>
+<tr><td><strong>PrintTaskSettings</strong> | <strong>printTaskSettings</strong></td><td>10</td><td>
+<p>The app handles print tasks.</p>
+</td></tr>
+<tr><td><strong>CameraSettings</strong> | <strong>cameraSettings</strong></td><td>11</td><td>
+<p>The app captures photos or video from an attached camera.</p>
+</td></tr>
+<tr><td><strong>PickerReturned</strong> | <strong>pickerReturned</strong></td><td>1000</td><td>
+<p>Windows Phone only. The application was activated after the completion of a picker.</p>
+</td></tr>
+</tbody></table>
+
+
+<ol>
+<li><strong><a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.applicationmodel.activation.applicationexecutionstate.aspx">args.detail.previousExecutionState</a></strong> identifies the state of the app prior to this activation, which determines whether to reload state.</li>
+</ol>
+
+
+<table  style="border: 1px solid #000000;padding:3px;">
+<tbody><tr><th>Member</th><th>Value</th><th>Description</th></tr>
+<tr><td><strong>NotRunning</strong> | <strong>notRunning</strong></td><td>0</td><td>
+<p>The app is not running.</p>
+</td></tr>
+<tr><td><strong>Running</strong> | <strong>running</strong></td><td>1</td><td>
+<p>The app is running.</p>
+</td></tr>
+<tr><td><strong>Suspended</strong> | <strong>suspended</strong></td><td>2</td><td>
+<p>The app is suspended.</p>
+</td></tr>
+<tr><td><strong>Terminated</strong> | <strong>terminated</strong></td><td>3</td><td>
+<p>The app was terminated after being suspended.</p>
+</td></tr>
+<tr><td><strong>ClosedByUser</strong> | <strong>closedByUser</strong></td><td>4</td><td>
+<p>The app was closed by the user.</p>
+</td></tr>
+</tbody></table>
+
+
+<h2>App Suspending</h2>
+
+<p>When an app is not <strong>visible</strong> (in any view state), it will be <strong>suspended</strong> after <strong>five seconds</strong> to conserve battery power. This means it remains wholly in memory but won’t be scheduled for CPU time and thus won’t have network or disk activity (except when using specifically allowed background tasks). When this happens, the app receives the <strong><a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.webui.webuiapplication.suspending.aspx">Windows.UI.WebUI.WebUIApplication.onsuspending</a></strong> event, which is also exposed through <strong><a href="http://msdn.microsoft.com/en-us/library/windows/apps/br229839.aspx">WinJS.Application.oncheckpoint</a></strong>. Apps must return from this event within the <strong>five-second </strong> period, or Windows will assume the app is hung and terminate it.</p>
+
+<pre><code>    function onSuspending(eventArgs) { /* Your code */ }
+    // addEventListener syntax
+    webUIApplication.addEventListener("suspending", onSuspending);
+    webUIApplication.removeEventListener("suspending", onSuspending);
+    // - or -
+    webUIApplication.onsuspending = onSuspending;
+
+    //////////////////
+
+    WinJS.Application.addEventListener("checkpoint", listenerName);
+    // - or -
+    WinJS.Application.oncheckpoint = listenerName;
+</code></pre>
+
+<p>The best practice is actually to save session state <strong>incrementally (as it changes)</strong> to minimize the work needed within the suspending event, because you have only five seconds to do it.</p>
+
+<h2>App Resuming</h2>
+
+<p>If the user switches back to a suspended app, it receives the <strong><a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.ui.webui.webuiapplication.resuming.aspx">Windows.UI.WebUI.WebUIApplication.onresuming</a></strong> event.</p>
+
+<pre><code>    function onResuming(eventArgs) { /* Your code */ }
+
+    // addEventListener syntax
+    webUIApplication.addEventListener("resuming", onResuming);
+    webUIApplication.removeEventListener("resuming", onResuming);
+    // - or -
+    webUIApplication.onresuming = onResuming;
+</code></pre>
+
+<h2>App ViewState</h2>
+
+<table style="border: 1px solid #000000;padding:3px;">
+<tbody><tr><th>Member</th><th>Value</th><th>Description</th></tr>
+<tr><td><strong>FullScreenLandscape</strong> | <strong>fullScreenLandscape</strong></td><td>0</td><td>
+<p>The current app's view is in full-screen (has no snapped app adjacent to it), and has changed to landscape orientation.</p>
+</td></tr>
+<tr><td><strong>Filled</strong> | <strong>filled</strong></td><td>1</td><td>
+<p>The current app's view has been reduced to a partial screen view as the result of another app snapping.</p>
+</td></tr>
+<tr><td><strong>Snapped</strong> | <strong>snapped</strong></td><td>2</td><td>
+<p>The current app's view has been snapped.</p>
+</td></tr>
+<tr><td><strong>FullScreenPortrait</strong> | <strong>fullScreenPortrait</strong></td><td>3</td><td>
+<p>The current app's view is in full-screen (has no snapped app adjacent to it), and has changed to portrait orientation.</p>
+</td></tr>
+</tbody></table>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[wingui]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

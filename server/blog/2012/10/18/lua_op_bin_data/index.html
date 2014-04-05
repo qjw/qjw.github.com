@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Lua操作二进制</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/lua/">lua</a>]->[<a href="/blog/2012/10/18/lua_op_bin_data">Lua操作二进制</a>]</strong>
+
+<h1>下载Lunary</h1>
+
+<ul>
+<li><a href="http://lunary.luaforge.net/">http://lunary.luaforge.net/</a></li>
+<li><a href="http://lunary.luaforge.net/index.html#download">http://lunary.luaforge.net/index.html#download</a></li>
+<li><a href="http://hg.piratery.net/lunary/archive/tip.zip">http://hg.piratery.net/lunary/archive/tip.zip</a></li>
+</ul>
+
+
+<p>Lunary压缩包里面包含<strong>serial.lua</strong>，以及目录<strong>serial</strong>，目录下包含<strong>optim.c</strong>，<strong>util.lua</strong>（前者包含一些优化功能，一般可不用）
+<strong>serial.lua</strong>依赖<strong>bit</strong>和<strong>strcut</strong></p>
+
+<h1>Lua BitOp</h1>
+
+<ul>
+<li><a href="http://bitop.luajit.org/">http://bitop.luajit.org/</a></li>
+<li><a href="http://bitop.luajit.org/download.html">http://bitop.luajit.org/download.html</a></li>
+<li><a href="http://bitop.luajit.org/download/LuaBitOp-1.0.2.zip">http://bitop.luajit.org/download/LuaBitOp-1.0.2.zip</a></li>
+</ul>
+
+
+<p>这个库没有直接的DLL或者Lua文件可以直接用，需要执行编译，具体可以看压缩包里面的doc/install.html</p>
+
+<h2>在Windows下编译</h2>
+
+<ol>
+<li>Open a "Visual Studio .NET Command Prompt"</li>
+<li>change to the directory where msvcbuild.bat resides and run it:msvcbuild</li>
+</ol>
+
+
+<p>不过在运行之前，有可能因为找不到Lua的头文件而失败，直接编辑这个Bat脚本
+        @setlocal
+        @rem Path to the Lua includes and the library file for the Lua DLL:
+        @set LUA_INC=-I "C:\Program Files (x86)\Lua\5.1\include"
+        @set LUA_LIB="C:\Program Files (x86)\Lua\5.1\lib\lua5.1.lib"</p>
+
+<p>成功编译之后会生成bit.dll</p>
+
+<h1>Lua Strcut</h1>
+
+<ol>
+<li><a href="http://www.inf.puc-rio.br/~roberto/struct/">http://www.inf.puc-rio.br/~roberto/struct/</a></li>
+<li><a href="http://www.inf.puc-rio.br/~roberto/struct/struct-0.2.tar.gz">http://www.inf.puc-rio.br/~roberto/struct/struct-0.2.tar.gz</a></li>
+</ol>
+
+
+<p>下载之后，就只有一个struct.c文件，拷贝BitOp的msvcbuild.bat，修改如下：</p>
+
+<pre><code>    @rem Script to build Lua BitOp with MSVC.
+
+    @rem First change the paths to your Lua installation below.
+    @rem Then open a "Visual Studio .NET Command Prompt", cd to this directory
+    @rem and run this script. Afterwards copy the resulting bit.dll to
+    @rem the directory where lua.exe is installed.
+
+    @if not defined INCLUDE goto :FAIL
+
+    @setlocal
+    @rem Path to the Lua includes and the library file for the Lua DLL:
+    @set LUA_INC=-I "C:/Program Files (x86)/Lua/5.1/include"
+    @set LUA_LIB= "C:\Program Files (x86)/Lua/5.1/lib/lua51.lib"
+
+    @set MYCOMPILE=cl /nologo /MD /O2 /W3 /c %LUA_INC%
+    @set MYLINK=link /nologo
+    @set MYMT=mt /nologo
+
+    %MYCOMPILE% struct.c
+    %MYLINK% /DLL /export:luaopen_struct /out:struct.dll struct.obj %LUA_LIB%
+    if exist struct.dll.manifest^
+      %MYMT% -manifest struct.dll.manifest -outputresource:struct.dll;2
+
+    del *.obj *.exp *.manifest
+
+    @goto :END
+    :FAIL
+    @echo You must open a "Visual Studio .NET Command Prompt" to run this script
+    :END
+</code></pre>
+
+<p>编译之后会生成struct.dll</p>
+
+<h1>Sample</h1>
+
+<pre><code>    require 'serial'
+    out=io.open("text.dat","wb")
+
+        -- 0-255
+        local uint8 = serial.serialize.uint8(0xab)
+        out:write(uint8)
+        -- -127-127
+        local int8 = serial.serialize.sint8(0x12)
+        out:write(int8)
+
+        local uint16 = serial.serialize.uint16(0x1234,"le")
+        out:write(uint16)
+        local sint16 = serial.serialize.sint16(0x1234,"le")
+        out:write(sint16)
+
+        local uint32 = serial.serialize.uint32(0x12345678,"le")
+        out:write(uint32)
+        local sint32 = serial.serialize.sint32(0x12345678,"le")
+        out:write(sint32)
+
+        local struct_desc = {
+            {'name', 'cstring'},
+            {'value', 'uint32', 'le'},
+        }
+
+        local object = {
+            name = "foo",
+            value = 42,
+        }
+        local sobject = serial.serialize.struct(object,struct_desc)
+        out:write(sobject)
+
+    out:close()
+</code></pre>
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[lua]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

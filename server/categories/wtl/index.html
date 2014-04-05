@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Category: wtl</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <strong>导航：[<a href="/">首页</a>]->[<a href="/categories/wtl/">wtl</a>]</strong>
+<h2>分类浏览:&nbsp;&nbspwtl</h2>
+
+
+<ol>
+
+    <li>
+	<h5><a href="/blog/2012/11/03/UpdateLayeredWindow_window">用UpdateLayeredWindow实现任意异形窗口</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/01/windows_res_util">Windows 图片处理的部分工具函数</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/01/SetWindowRgn_window">使用SetWindowRgn实现异型窗口</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/11/01/SetLayeredWindowAttributes_window">使用SetLayeredWindowAttributes绘制半透明/异性窗口</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/25/title_widget_wtl">在标题栏添加控件实现</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/wtl_vs2008">VS2008 Express配置WTL</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/wtl_simple_dialog">用WTL实现一个简单的Dialog模板</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/wtl_free_resource">WTL免费开发环境</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/wtl_for_mfc">WTL匹配MFC的接口</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/20/cbitmap_util">CBitmap工具函数</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/19/wtl_bug">WTL多线程向导的bug</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/16/messagebox_wtl">用WTL实现自定义MessageBox</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/16/layout_wtl">用WTL实现的Layout</a></h5>
+	<p></p>
+	</li>
+
+    <li>
+	<h5><a href="/blog/2012/10/16/custom_dialog">自定义对话框</a></h5>
+	<p></p>
+	</li>
+  
+</ol>
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

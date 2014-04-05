@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Lua直接调用Dll中的函数</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/lua/">lua</a>]->[<a href="/blog/2012/10/18/call_dll_in_lua">Lua直接调用Dll中的函数</a>]</strong>
+
+<h1>下载<a href="http://luaforwindows.googlecode.com/files/LuaForWindows_v5.1.4-45.exe">Lua For Windows</a></h1>
+
+<p>安装之后，目录"Lua\5.1\lua\"目录包含alien.lua和alien目录</p>
+
+<p>或者直接下载<a href="http://alien.luaforge.net">LuaRocks</a></p>
+
+<p>或者见</p>
+
+<ol>
+<li><a href="http://luarocks.org/en/Download">http://luarocks.org/en/Download</a></li>
+<li><a href="http://luarocks.org/releases/">http://luarocks.org/releases/</a></li>
+<li><a href="http://luarocks.org/releases/luarocks-2.0.tar.gz">http://luarocks.org/releases/luarocks-2.0.tar.gz</a></li>
+</ol>
+
+
+<p> LuaRocks is a pure Lua application with no library dependencies. Its current release depends on some helper tools, but you shouldn't worry about them, as they are shipped by default on most Unix systems: LuaRocks requires as a basic Unix toolchain, zip, unzip and either wget (default on most Linux systems) or curl (default on Mac OSX). For Windows, these helper tools are provided by the UnxUtils project; the all-in-one Windows package already includes them, as a convenience.</p>
+
+<h1>调用Windows API实例</h1>
+
+<ol>
+<li><a href="http://lua.iteye.com/blog/451757">http://lua.iteye.com/blog/451757</a></li>
+<li><a href="http://www.hakkaku.net/articles/20090615-459">http://www.hakkaku.net/articles/20090615-459</a></li>
+</ol>
+
+
+<h1>Sample</h1>
+
+<pre><code>    -- http://www.hakkaku.net/articles/20090615-459
+    -- http://blog.csdn.net/kowity/article/details/7256376
+    require "alien"
+
+    MessageBox = alien.User32.MessageBoxA
+    MessageBox:types{ret = 'long', abi = 'stdcall', 'long', 'string', 'string', 'long' }
+    MessageBox(0, "itle for test","LUA call windows api", 0)
+
+    ---------------------------------------------------------------
+
+    local ExpandEnvironmentStrings = alien.Kernel32.ExpandEnvironmentStringsA
+    ExpandEnvironmentStrings:types{ ret = "long", abi = 'stdcall', "string", "pointer", "long" }
+
+    local buffer = alien.buffer(512)
+    ExpandEnvironmentStrings("%USERPROFILE%", buffer, 512)
+    print(tostring(buffer))
+
+    ---------------------------------------------------------------
+
+    EnumWindows = alien.user32.EnumWindows
+    EnumWindows:types {"callback", "pointer", abi="stdcall"}
+
+    GetClassName = alien.user32.GetClassNameA
+    GetClassName:types {"long", "pointer", "int", abi="stdcall" }
+
+    local buf = alien.buffer(512)
+
+    local function enum_func(hwnd, p)
+      GetClassName(hwnd, buf, 511)
+      print (hwnd..":"..tostring(buf))
+      return 1
+    end
+
+    local callback_func = alien.callback(
+            enum_func,
+            {"int", "pointer", abi="stdcall"})
+
+    EnumWindows(callback_func, nil)
+</code></pre>
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[lua]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

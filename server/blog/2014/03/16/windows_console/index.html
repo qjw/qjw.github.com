@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>Windows直接写cmd绘制复杂图形</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/windows/">windows</a>]->[<a href="/blog/2014/03/16/windows_console">Windows直接写cmd绘制复杂图形</a>]</strong>
+
+<h2>源码</h2>
+
+<pre><code>#include &lt;Windows.h&gt;
+#include &lt;tchar.h&gt;
+#include &lt;string&gt;
+#include &lt;time.h&gt;
+#include &lt;cstdint&gt;
+#include &lt;cassert&gt;
+
+class Console
+{
+public:
+    Console() :
+        hStdOutput(INVALID_HANDLE_VALUE)
+    {
+    }
+    bool Open(void)
+    {
+        hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        return INVALID_HANDLE_VALUE != hStdOutput;
+    }
+    inline bool SetTitle(const TCHAR* title) // 设置标题
+    {
+        return TRUE == SetConsoleTitle(title);
+    }
+    bool RemoveCursor(void) // 去处光标
+    {
+        CONSOLE_CURSOR_INFO cci;
+        if (!GetConsoleCursorInfo(hStdOutput, &amp;cci)) return false;
+        cci.bVisible = false;
+        if (!SetConsoleCursorInfo(hStdOutput, &amp;cci)) return false;
+        cci.bVisible = false;
+        return true;
+    }
+    bool SetWindowRect(short x, short y) // 设置窗体尺寸
+    {
+        SMALL_RECT wrt = { 0, 0, x, y };
+        if (!SetConsoleWindowInfo(hStdOutput, TRUE, &amp;wrt)) return false;
+        return true;
+    }
+    bool SetBufSize(short x, short y) // 设置缓冲尺寸
+    {
+        COORD coord = { x, y };
+        if (!SetConsoleScreenBufferSize(hStdOutput, coord)) return false;
+        return true;
+    }
+
+    bool GotoXY(short x, short y) // 移动光标
+    {
+        COORD coord = { x + x, y };
+        if (!SetConsoleCursorPosition(hStdOutput, coord)) return false;
+        return true;
+    }
+    bool SetColor(WORD color) // 设置前景色/背景色
+    {
+        if (!SetConsoleTextAttribute(hStdOutput, color)) return false;
+        //if (!SetConsoleTextAttribute(hStdError, color)) return false;
+        return true;
+    }
+    bool OutputString(const TCHAR* pstr, size_t len = 0) // 输出字符串
+    {
+        DWORD n = 0;
+        return TRUE == WriteConsole(hStdOutput, pstr, len ? len : _tcslen(pstr), &amp;n, NULL);
+    }
+
+    bool OutputStringNoMove(short x, short y, const TCHAR* pstr, size_t len = 0) // 输出字符串
+    {
+        COORD coord = { x + x, y };
+        DWORD n = 0;
+        if (TRUE != WriteConsoleOutputCharacter(hStdOutput, pstr, len ? len : _tcslen(pstr), coord, &amp;n))
+            return false;
+        if (len == 1 &amp;&amp; *pstr == _T('-'))
+        {
+            COORD coord1 = { x + x + 1, y };
+            n = 0;
+            if (TRUE != WriteConsoleOutputCharacter(hStdOutput, pstr, len ? len : _tcslen(pstr), coord1, &amp;n))
+                return false;
+        }
+        return true;
+    }
+private:
+    HANDLE hStdOutput;
+};
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    srand(time(NULL));
+    system("color F0");
+
+    Console console_;
+    if (!console_.Open())
+        return -1;
+    console_.SetTitle(_T("小游戏"));
+    console_.RemoveCursor();
+    console_.SetWindowRect(55 - 1, 40 - 1);
+    console_.SetBufSize(55, 40);
+    const short cheer_size_ = 5;
+    const short cheer_width_ = 6;
+
+    // 横着
+    const short total_ = (cheer_size_ - 1)*cheer_width_;
+    for (short i = 0; i &lt; cheer_size_; i++)
+    {
+        for (short j = 0; j &lt; total_; j++)
+        {
+            console_.OutputStringNoMove(j, i*cheer_width_, _T("-"), 1);
+        }
+    }
+    // 竖直
+    for (short i = 0; i &lt; cheer_size_; i++)
+    {
+        for (short j = 0; j &lt; total_; j++)
+        {
+            console_.OutputStringNoMove(i*cheer_width_, j, _T("|"), 1);
+        }
+    }
+    // 左上 -&gt; 右下
+    for (short i = 0; i &lt; cheer_size_ - 1; i += 2)
+    {
+        for (short j = 0; j &lt; total_ - i*cheer_width_; j++)
+        {
+            console_.OutputStringNoMove(j + i*cheer_width_, j, _T("\\"), 1);
+        }
+    }
+    for (short i = 2; i &lt; cheer_size_ - 1; i += 2)
+    {
+        for (short j = 0; j &lt; total_ - i*cheer_width_; j++)
+        {
+            console_.OutputStringNoMove(j, j + i*cheer_width_, _T("\\"), 1);
+        }
+    }
+    // 左下 -&gt; 右上
+    for (short i = 0; i &lt; cheer_size_ - 1; i += 2)
+    {
+        for (short j = 0; j &lt; total_ - i*cheer_width_; j++)
+        {
+            console_.OutputStringNoMove(total_ - j - i*cheer_width_, j, _T("/"), 1);
+        }
+    }
+    for (short i = 0; i &lt; cheer_size_ - 1; i += 2)
+    {
+        for (short j = 0; j &lt; total_ - i*cheer_width_; j++)
+        {
+            console_.OutputStringNoMove(total_ - j, j + i*cheer_width_, _T("/"), 1);
+        }
+    }
+
+    const WORD red_ = FOREGROUND_RED | FOREGROUND_INTENSITY;
+    const WORD green_ = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+    const WORD plain_ = FOREGROUND_RED |
+        FOREGROUND_GREEN |
+        BACKGROUND_RED |
+        BACKGROUND_GREEN |
+        BACKGROUND_BLUE |
+        BACKGROUND_INTENSITY;
+    uint32_t cnt_ = 0;
+    TCHAR buf_[36];
+    buf_[2] = _T('\0');
+    for (short i = 0; i &lt; cheer_size_; i++)
+    {
+        for (short j = 0; j &lt; cheer_size_; j++)
+        {
+            _sntprintf(buf_, _countof(buf_), _T("%02d"), cnt_);
+
+            if (cnt_ &lt; cheer_size_)
+                console_.SetColor(red_);
+            else if (cnt_ &gt;= cheer_size_*(cheer_size_ - 1))
+                console_.SetColor(green_);
+            else
+                console_.SetColor(plain_);
+
+            console_.GotoXY(j*cheer_width_, i*cheer_width_);
+            console_.OutputString(buf_, 2);
+            cnt_++;
+        }
+    }
+
+    while (true)
+        Sleep(1000);
+    return 0;
+}
+</code></pre>
+
+<h2>结果</h2>
+
+<pre><code>00----------01----------02----------03----------04
+| \         |         / | \         |         / |
+|   \       |       /   |   \       |       /   |
+|     \     |     /     |     \     |     /     |
+|       \   |   /       |       \   |   /       |
+|         \ | /         |         \ | /         |
+05----------06----------07----------08----------09
+|         / | \         |         / | \         |
+|       /   |   \       |       /   |   \       |
+|     /     |     \     |     /     |     \     |
+|   /       |       \   |   /       |       \   |
+| /         |         \ | /         |         \ |
+10----------11----------12----------13----------14
+| \         |         / | \         |         / |
+|   \       |       /   |   \       |       /   |
+|     \     |     /     |     \     |     /     |
+|       \   |   /       |       \   |   /       |
+|         \ | /         |         \ | /         |
+15----------16----------17----------18----------19
+|         / | \         |         / | \         |
+|       /   |   \       |       /   |   \       |
+|     /     |     \     |     /     |     \     |
+|   /       |       \   |   /       |       \   |
+| /         |         \ | /         |         \ |
+20----------21----------22----------23----------24
+</code></pre>
+
+<h2>参考</h2>
+
+<ol>
+<li><a href="http://blog.csdn.net/undefined_behavior/article/details/2067280">http://blog.csdn.net/undefined_behavior/article/details/2067280</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[windows]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

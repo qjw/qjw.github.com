@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>使用GAE、GoAgent搭建代理搭建代理</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <link href="/js/google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('pre').addClass('prettyprint linenums:0') //添加Google code Hight需要的class
+	
+	// 导入Prettify的javascript
+    prettyPrint()
+})
+</script>
+<strong>导航：[<a href="/">首页</a>]->[<a href="/categories/other/">other</a>]->[<a href="/blog/2012/10/26/goagent_build">使用GAE、GoAgent搭建代理搭建代理</a>]</strong>
+
+<h1>开通GAE</h1>
+
+<p>使用Google Account登陆<a href="https://appengine.google.com/">https://appengine.google.com/</a>。创建App，使用默认设置即可。</p>
+
+<ol>
+<li>点击<strong>Create Application</strong>按钮，若第一次使用，可能会要求手机验证，填写手机号码注意加86前缀</li>
+<li><strong>Application Identifier</strong> 选择你自定义的名称，注意后面检测合法性</li>
+<li><strong>Application Title</strong>也随便你怎么写，不过我个人基于维护方便，一般和<strong>Application Identifier</strong>保持一致</li>
+</ol>
+
+
+<h1>下载<a href="https://github.com/phus/goagent/downloads">GoAgent</a></h1>
+
+<p>点击 “Download as zip”，解压到本地即可</p>
+
+<p>我在<a href="http://ishare.iask.sina.com.cn/f/24152878.html">这里</a>下载，版本：<strong>goagent 1.8.4 稳定版</strong></p>
+
+<h1>Google Account应用程序专用验证码</h1>
+
+<p>见 <a href="http://support.google.com/accounts/bin/answer.py?hl=zh-Hans&amp;answer=185833">http://support.google.com/accounts/bin/answer.py?hl=zh-Hans&amp;answer=185833</a></p>
+
+<h1>配置GoAgent</h1>
+
+<h2>gae appid修改</h2>
+
+<p>goagent下载解压后，找到 local 目录下 proxy.ini</p>
+
+<p>修改 [gae] 段 appid= <strong>* 部分 id为你第一步创建的id。</strong>注意等号后面的空格**</p>
+
+<p>找到 server/python 目录下的 app.yaml</p>
+
+<p>修改 application: *** 的值，id为你第一步创建的id。</p>
+
+<h2>上传python主程序到gae</h2>
+
+<p>点击server/upload.bat</p>
+
+<p>按照提示设置</p>
+
+<p><strong>要注意的是这里使用的密码是 第三步中生成的应用程序专用验证码而不是Google Account登录密码</strong></p>
+
+<p>上传成功后查看 <a href="https://appengine.google.com/">https://appengine.google.com/</a> 你刚才创建的app已经有了版本号</p>
+
+<h1>GoAgent代理的使用</h1>
+
+<p>打开主程序 local\goagent.exe，浏览器配置代理ip: 127.0.0.1 端口：8087</p>
+
+<p>为了方便浏览器切换，推荐安装<a href="https://chrome.google.com/webstore/detail/proxy-switchysharp/dpplabbmogkhghncfbfdeeokoefdjegm">SwitchySharp</a>插件。</p>
+
+<h1>其他问题</h1>
+
+<p>我下载的版本，local/proxy.ini默认配置<strong>google_cn</strong>。但是似乎无法连接，修改成google_hk就行了</p>
+
+<pre><code>    path = /fetch.py
+    profile = google_cn
+    #profile = google_hk
+    mulconn = 1
+</code></pre>
+
+<h1>参考</h1>
+
+<ol>
+<li><a href="http://www.6zou.net/tech/how-to-gae_goagent_proxy.html">http://www.6zou.net/tech/how-to-gae_goagent_proxy.html</a></li>
+<li><a href="http://www.itguoke.com/goagent.html">http://www.itguoke.com/goagent.html</a></li>
+<li><a href="http://www.flakegx5.info/?p=270012">http://www.flakegx5.info/?p=270012</a></li>
+<li><a href="http://ishare.iask.sina.com.cn/f/24152878.html">http://ishare.iask.sina.com.cn/f/24152878.html</a></li>
+</ol>
+
+
+
+<br>
+<br>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<hr>
+<br>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'qjw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div id=float_top_right>
+<h4>&nbsp;分类浏览[other]</h4>
+<ul>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ul>
+</div>
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

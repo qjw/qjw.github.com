@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+    var switch_flag_=0
+    $(document).ready(function(){
+            $("#float_top_right").css({ top: "10px",right: "10px", width: "200", position: "fixed", background: "#99ff00" })
+                .css({"border-style": "solid"});
+            $("#float_top_right").prepend("<div id=float_top_right_header>点击切换位置</div>");
+            $("#float_top_right_header").css({ width: "100%"}).css({ height: "20"})
+                .css({ background: "#9900ff" }).css("cursor","pointer")
+            
+            // OnClick做实际的事情
+            $("#float_top_right_header").click(function(event){
+                event.preventDefault();
+                if(switch_flag_){
+                    $("#float_top_right").css({ bottom: ""});
+                    $("#float_top_right").css({ top: "10px"});
+                }else{
+                    $("#float_top_right").css({ top: ""});
+                    $("#float_top_right").css({ bottom: "10px"});
+                }
+                switch_flag_= !switch_flag_;
+            });
+	})
+	</script>
+    <title>邱金武的博客</title>
+</head>
+<body>
+    <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; ">
+        <tbody>
+            <tr>
+                <td>
+                    <h4>邱金武的博客</h4>
+
+<ol>
+ 
+  <li><a href="/blog/2014/04/05/windows7_install_linuxmint">Windows硬盘安装LinuxMint</a></li>
+ 
+  <li><a href="/blog/2014/03/16/windows_console">Windows直接写cmd绘制复杂图形</a></li>
+ 
+  <li><a href="/blog/2014/03/16/reg_util">注册表工具函数备份</a></li>
+ 
+  <li><a href="/blog/2014/03/16/hardware_network_adapter">Windows获取物理网卡外设</a></li>
+ 
+  <li><a href="/blog/2014/02/13/sed_multi_line">sed处理多行数据</a></li>
+ 
+  <li><a href="/blog/2014/02/09/novnc">使用novnc实现vnc web化</a></li>
+ 
+  <li><a href="/blog/2014/01/10/freesshd_windows">使用freesshd实现Windows远程控制</a></li>
+ 
+  <li><a href="/blog/2013/12/23/ndk_build_3rd_code">NDK编译libevent等开源库</a></li>
+ 
+  <li><a href="/blog/2013/12/23/android_ndk_cocos2dx">android cocos2dx编译</a></li>
+ 
+  <li><a href="/blog/2013/12/23/android_ndk">android NDK环境搭建</a></li>
+ 
+  <li><a href="/blog/2013/12/22/rrdtool">使用rrdtool制作报表</a></li>
+ 
+  <li><a href="/blog/2013/12/22/nc_server">使用NC测试网络或建立服务器</a></li>
+ 
+  <li><a href="/blog/2013/12/06/pthread_cond_timedwait_tips">pthread_cond_timedwait 陷阱</a></li>
+ 
+  <li><a href="/blog/2013/12/05/google_cpu_profiler_bug">Google CpuProfiler在x64 Linux下的问题</a></li>
+ 
+  <li><a href="/blog/2013/11/24/very_sleepy">使用Very Sleepy在Windows下做简单的性能分析</a></li>
+ 
+  <li><a href="/blog/2013/11/24/protobuf_reflection">Google Protobuf 自动反射消息</a></li>
+ 
+  <li><a href="/blog/2013/11/24/google_cpu_profiler">Google-perftools  CPU Profiler</a></li>
+ 
+  <li><a href="/blog/2013/11/24/game_resouce">游戏资源（持续更新）</a></li>
+ 
+  <li><a href="/blog/2013/11/24/freeSSHd">借助freeSSHD在Windows上创建SSH服务</a></li>
+ 
+  <li><a href="/blog/2013/11/24/cocos2dx_implement_popScene_with_transition">Cocos2d-x对popScene增加转换特效</a></li>
+ 
+  <li><a href="/blog/2013/11/24/cocos2dx_CCTableView_bugs">Cocos2d-x CCTableView的两个bug</a></li>
+ 
+  <li><a href="/blog/2013/11/24/astar_algorithm">A*算法</a></li>
+ 
+  <li><a href="/blog/2013/10/09/protobuf_hello_world">Protobuf Hello World</a></li>
+ 
+  <li><a href="/blog/2013/10/05/cocos2dx-linux">Cocos2d-x linux下编译</a></li>
+ 
+  <li><a href="/blog/2013/10/01/shell_dialog">shell dialog简介</a></li>
+ 
+  <li><a href="/blog/2013/10/01/pthread_sigmsk">线程信号屏蔽</a></li>
+ 
+  <li><a href="/blog/2013/10/01/pthread_mutex">Posix Mutex</a></li>
+ 
+  <li><a href="/blog/2013/10/01/gprof">GNU性能测试和代码覆盖率</a></li>
+ 
+  <li><a href="/blog/2013/10/01/flock">flock及其陷阱</a></li>
+ 
+  <li><a href="/blog/2013/10/01/direct_io">linux 零拷贝技术</a></li>
+ 
+  <li><a href="/blog/2013/10/01/coroutine_c">Posix纤程库</a></li>
+ 
+  <li><a href="/blog/2013/09/30/thread_gettid">gettid获得线程ID</a></li>
+ 
+  <li><a href="/blog/2013/09/30/mudflap_gcc">使用mudflap检测内存错误</a></li>
+ 
+  <li><a href="/blog/2013/09/30/mcheck">使用mcheck检测内存错误</a></li>
+ 
+  <li><a href="/blog/2013/09/30/bash_text_style">BASH 输出彩色字符</a></li>
+ 
+  <li><a href="/blog/2013/09/30/DrMemory">使用 DrMemory 发现内存编程错误</a></li>
+ 
+  <li><a href="/blog/2013/09/28/thread_function">Cancellation Points</a></li>
+ 
+  <li><a href="/blog/2013/09/28/strace">使用strace跟踪程序的系统调用</a></li>
+ 
+  <li><a href="/blog/2013/09/28/gdb_init">让GDB自动执行命令</a></li>
+ 
+  <li><a href="/blog/2013/09/28/fork_thread">多线程程序fork的陷阱</a></li>
+ 
+  <li><a href="/blog/2013/08/31/windows_git_winmerge">在Windows下配合winmerge使用git</a></li>
+ 
+  <li><a href="/blog/2013/08/31/bash_fresh">Bash中直接刷新</a></li>
+ 
+  <li><a href="/blog/2013/08/05/common_software">常用软件</a></li>
+ 
+  <li><a href="/blog/2013/08/04/my_makefile">自用makefile</a></li>
+ 
+  <li><a href="/blog/2013/08/02/apt_get_util">shell常用软件 和 配置</a></li>
+ 
+  <li><a href="/blog/2013/07/17/socket_sample">Socket 工具程序</a></li>
+ 
+  <li><a href="/blog/2013/07/05/google_earth_photo">解决Google Earth 不能查看照片的bug</a></li>
+ 
+  <li><a href="/blog/2013/06/29/dbus_study3">DBUS学习笔记之 DBusConnection</a></li>
+ 
+  <li><a href="/blog/2013/06/25/dbus_study2">DBUS学习笔记之 DBusMessage</a></li>
+ 
+  <li><a href="/blog/2013/06/23/cpp_macro_itoa">使用宏将数字转换成字符串</a></li>
+ 
+  <li><a href="/blog/2013/06/18/eclipse_doxygen">eclipse中自动生成doxygen帮助</a></li>
+ 
+  <li><a href="/blog/2013/06/18/cpp_macro__VA_ARGS__">使用可变参数宏提高代码整洁性</a></li>
+ 
+  <li><a href="/blog/2013/06/18/__progname">使用__progname变量获取当前程序的名称</a></li>
+ 
+  <li><a href="/blog/2013/06/10/unix_socket_abstract_namespace">UNIX域Socket抽象命名空间（abstract_namespace）</a></li>
+ 
+  <li><a href="/blog/2013/06/10/sendto_sendmsg_writev">使用socket发送多块不连续的内存</a></li>
+ 
+  <li><a href="/blog/2013/06/07/dbus_study">DBUS学习笔记之概述</a></li>
+ 
+  <li><a href="/blog/2013/06/05/recvfrom_accept_address">使用UNIX域协议时，处理源地址的陷阱</a></li>
+ 
+  <li><a href="/blog/2013/06/05/get_type_family_from_socket_fd">从socket句柄获得family和type</a></li>
+ 
+  <li><a href="/blog/2013/06/05/c_pre_define">C语言前置声明</a></li>
+ 
+  <li><a href="/blog/2013/06/02/doxygen_study">doxygen学习笔记</a></li>
+ 
+  <li><a href="/blog/2013/05/30/c_list">C语言双向链表实现</a></li>
+ 
+  <li><a href="/blog/2013/05/29/va_arg_cplus">可变参数及其陷阱</a></li>
+ 
+  <li><a href="/blog/2013/05/29/ipv6_in6addr_any">IPv6监听所有IP地址的问题</a></li>
+ 
+  <li><a href="/blog/2013/05/28/virtual_network_port_windows7">在DHCP中使用静态IP地址连接虚拟机</a></li>
+ 
+  <li><a href="/blog/2013/05/22/socket_inherit">防止句柄被子进程继承</a></li>
+ 
+  <li><a href="/blog/2013/05/22/dbus_debug">dbus调试方法</a></li>
+ 
+  <li><a href="/blog/2013/05/22/cname_github">给github博客绑定域名</a></li>
+ 
+  <li><a href="/blog/2013/05/22/LD_PRELOAD">LD_PRELOAD妙用</a></li>
+ 
+  <li><a href="/blog/2013/04/04/windows8_file">Windows 8文件操作</a></li>
+ 
+  <li><a href="/blog/2013/04/03/windows8_lib_base">Windows 8官方Sample框架解析</a></li>
+ 
+  <li><a href="/blog/2013/03/24/windows8_study5">Windows 8学习笔记5 基本控件</a></li>
+ 
+  <li><a href="/blog/2013/03/24/windows8_study4">Windows 8学习笔记4 页面导航</a></li>
+ 
+  <li><a href="/blog/2013/03/24/windows8_study3">Windows 8学习笔记3 生命周期</a></li>
+ 
+  <li><a href="/blog/2013/03/24/windows8_study2">Windows 8学习笔记2 Promise</a></li>
+ 
+  <li><a href="/blog/2013/03/24/windows8_study1">Windows 8学习笔记1 本地/Web会话</a></li>
+ 
+  <li><a href="/blog/2013/03/24/use_gif_image">使用PictureExWnd库渲染gif图片</a></li>
+ 
+  <li><a href="/blog/2013/03/24/use_gif_custom">自定义渲染gif实现全透明异型效果</a></li>
+ 
+  <li><a href="/blog/2013/03/24/use_flash">使用shockwaveflash库渲染flash</a></li>
+ 
+  <li><a href="/blog/2013/03/24/image_from_res">从资源中读取图片</a></li>
+ 
+  <li><a href="/blog/2013/03/17/sort_uniq_set">使用bash求交集并集</a></li>
+ 
+  <li><a href="/blog/2013/03/17/pthread_cond_wait_err">Posix条件变量的一个陷阱</a></li>
+ 
+  <li><a href="/blog/2013/03/17/programming_with_posix_threads">POSIX多线程程序设计 几种线程模型范例</a></li>
+ 
+  <li><a href="/blog/2013/03/17/match_two_words">grep/sed/awk匹配两个单词</a></li>
+ 
+  <li><a href="/blog/2013/03/17/flock_error">flock的陷阱</a></li>
+ 
+  <li><a href="/blog/2013/03/17/echo_enter">echo输出换行</a></li>
+ 
+  <li><a href="/blog/2013/03/17/bash_var_quotes">Bash使用变量时，缺少双引号导致的bug</a></li>
+ 
+  <li><a href="/blog/2013/03/17/bash_blackbox">屏蔽或挂钩特定的命令</a></li>
+ 
+  <li><a href="/blog/2013/01/30/fd_file_handle">fd,FILE*,HANDLE相互转换</a></li>
+ 
+  <li><a href="/blog/2013/01/29/get_time_offset">获得开机时间</a></li>
+ 
+  <li><a href="/blog/2013/01/29/get_exe_path">获得正在执行的程序路径</a></li>
+ 
+  <li><a href="/blog/2013/01/28/putty">PuTTY妙用</a></li>
+ 
+  <li><a href="/blog/2013/01/28/find_exec_shell_function">find -exec a shell function</a></li>
+ 
+  <li><a href="/blog/2013/01/28/bash_func_line_file">bash中打印行号，函数和文件名</a></li>
+ 
+  <li><a href="/blog/2012/12/30/winhttp_error">winhttp的陷阱</a></li>
+ 
+  <li><a href="/blog/2012/12/30/popen_deamon_script">popen调用脚本陷阱</a></li>
+ 
+  <li><a href="/blog/2012/12/09/set_nounset">Bash访问未定义变量报错</a></li>
+ 
+  <li><a href="/blog/2012/12/09/perl_validator_schema">perl使用Validator::Schema校验xml</a></li>
+ 
+  <li><a href="/blog/2012/12/09/perl_libxslt">perl使用XML::Libxslt转换xml</a></li>
+ 
+  <li><a href="/blog/2012/12/09/perl_libxml">perl使用XML::Libxml读写xml</a></li>
+ 
+  <li><a href="/blog/2012/12/09/install_disqus_on_jekyll">给Jekeyll添加评论系统</a></li>
+ 
+  <li><a href="/blog/2012/12/09/bash_test">bash两种比较符的区别</a></li>
+ 
+  <li><a href="/blog/2012/12/09/bash_functions">打印Bash函数调用栈</a></li>
+ 
+  <li><a href="/blog/2012/12/01/perl_xml">perl使用XML::XPath读取xml</a></li>
+ 
+  <li><a href="/blog/2012/11/21/xmlstarlet">xmlstarlet笔记</a></li>
+ 
+  <li><a href="/blog/2012/11/21/timer_manager">在单线程中管理多个定时器</a></li>
+ 
+  <li><a href="/blog/2012/11/21/bash_simple">Bash脚本简单化</a></li>
+ 
+  <li><a href="/blog/2012/11/20/trap_signal">脚本里捕获信号</a></li>
+ 
+  <li><a href="/blog/2012/11/20/popen_system">System,Popen的陷阱</a></li>
+ 
+  <li><a href="/blog/2012/11/20/pipefail">Shell管道失败后立即返回</a></li>
+ 
+  <li><a href="/blog/2012/11/20/linux_job_control">Linux 进程组</a></li>
+ 
+  <li><a href="/blog/2012/11/20/fopen_INTER">fread/fwrite信号中断处理</a></li>
+ 
+  <li><a href="/blog/2012/11/20/exit_sub_process">Linux正确的退出子进程</a></li>
+ 
+  <li><a href="/blog/2012/11/13/sed_study">sed学习笔记</a></li>
+ 
+  <li><a href="/blog/2012/11/13/find_sample">find的一些用法</a></li>
+ 
+  <li><a href="/blog/2012/11/13/bash_declare_option">Bash Declare妙用</a></li>
+ 
+  <li><a href="/blog/2012/11/12/zombie_process">僵尸进程及其预防</a></li>
+ 
+  <li><a href="/blog/2012/11/12/unix_tree_command">unix下的tree命令</a></li>
+ 
+  <li><a href="/blog/2012/11/12/find_xargs_file_util">两个有意思的小脚本</a></li>
+ 
+  <li><a href="/blog/2012/11/11/wget_progress">获得wget的进度</a></li>
+ 
+  <li><a href="/blog/2012/11/11/wait_all_process_linux">Linux下等待所有进程结束</a></li>
+ 
+  <li><a href="/blog/2012/11/10/js_drag_window">使用js来控制原生窗口的拖拽</a></li>
+ 
+  <li><a href="/blog/2012/11/10/cron_trigger_random">让cron在某个每天某个时间段随机触发的工具脚本</a></li>
+ 
+  <li><a href="/blog/2012/11/10/apt_get_use_proxy">apt-get 使用代理</a></li>
+ 
+  <li><a href="/blog/2012/11/07/show_window">进程互斥时，拉起已知GUI进程</a></li>
+ 
+  <li><a href="/blog/2012/11/07/js_drag">支持主流浏览器的JS拖拽</a></li>
+ 
+  <li><a href="/blog/2012/11/04/windows_handles_study">《Windows核心编程》内核对象学习笔记</a></li>
+ 
+  <li><a href="/blog/2012/11/03/jquery_index_table">jQuery获取table下的子节点误区</a></li>
+ 
+  <li><a href="/blog/2012/11/03/UpdateLayeredWindow_window">用UpdateLayeredWindow实现任意异形窗口</a></li>
+ 
+  <li><a href="/blog/2012/11/02/windows_enum_process">Windows 枚举进程</a></li>
+ 
+  <li><a href="/blog/2012/11/02/windows_create_process">Windows 创建进程经验小结</a></li>
+ 
+  <li><a href="/blog/2012/11/01/windows_res_util">Windows 图片处理的部分工具函数</a></li>
+ 
+  <li><a href="/blog/2012/11/01/SetWindowRgn_window">使用SetWindowRgn实现异型窗口</a></li>
+ 
+  <li><a href="/blog/2012/11/01/SetLayeredWindowAttributes_window">使用SetLayeredWindowAttributes绘制半透明/异性窗口</a></li>
+ 
+  <li><a href="/blog/2012/10/31/unicode_mbsc">C++ Unicode SBCS 函数对照表</a></li>
+ 
+  <li><a href="/blog/2012/10/31/std_find_if">使用std::find_if根据某一字段进行精确查找</a></li>
+ 
+  <li><a href="/blog/2012/10/31/class_mem_func_ptr">类成员函数指针小用</a></li>
+ 
+  <li><a href="/blog/2012/10/30/wformat">检查printf等函数的格式字符串和参数类型的匹配</a></li>
+ 
+  <li><a href="/blog/2012/10/29/winhttp_tips">异步Winhttp 使用及其注意点</a></li>
+ 
+  <li><a href="/blog/2012/10/29/Log_interface">简单的日志接口</a></li>
+ 
+  <li><a href="/blog/2012/10/26/goagent_build">使用GAE、GoAgent搭建代理搭建代理</a></li>
+ 
+  <li><a href="/blog/2012/10/26/chrome_plugin_doc">Chrome插件开发学习笔记</a></li>
+ 
+  <li><a href="/blog/2012/10/25/title_widget_wtl">在标题栏添加控件实现</a></li>
+ 
+  <li><a href="/blog/2012/10/25/sock_ipv4_6_unix_base">封装Ipv4/6/Unix Socket的接口</a></li>
+ 
+  <li><a href="/blog/2012/10/25/jquery_util_base">Jquery的一些常用小技巧</a></li>
+ 
+  <li><a href="/blog/2012/10/25/deflate_inflate_wrapper">deflate/inflate算法封装</a></li>
+ 
+  <li><a href="/blog/2012/10/25/change_thread_name_window">修改Windows线程的名称</a></li>
+ 
+  <li><a href="/blog/2012/10/25/cdhtmldialog_include_res">CDHtmlDialog使用的html包含其他文件</a></li>
+ 
+  <li><a href="/blog/2012/10/24/mem_traits">内存萃取接口</a></li>
+ 
+  <li><a href="/blog/2012/10/24/mem_fragment_manage">内存碎片序列化</a></li>
+ 
+  <li><a href="/blog/2012/10/24/mem_cfile">基于文件接口的内存流</a></li>
+ 
+  <li><a href="/blog/2012/10/24/linux_timer">Linux下的定时器</a></li>
+ 
+  <li><a href="/blog/2012/10/24/atexit_ex">AtExit改进版本</a></li>
+ 
+  <li><a href="/blog/2012/10/20/wtl_vs2008">VS2008 Express配置WTL</a></li>
+ 
+  <li><a href="/blog/2012/10/20/wtl_simple_dialog">用WTL实现一个简单的Dialog模板</a></li>
+ 
+  <li><a href="/blog/2012/10/20/wtl_free_resource">WTL免费开发环境</a></li>
+ 
+  <li><a href="/blog/2012/10/20/wtl_for_mfc">WTL匹配MFC的接口</a></li>
+ 
+  <li><a href="/blog/2012/10/20/jekyll_category">为Jekyll博客添加category分类</a></li>
+ 
+  <li><a href="/blog/2012/10/20/icon2bitmap">Icon转换成Bitmap</a></li>
+ 
+  <li><a href="/blog/2012/10/20/cbitmap_util">CBitmap工具函数</a></li>
+ 
+  <li><a href="/blog/2012/10/19/wtl_bug">WTL多线程向导的bug</a></li>
+ 
+  <li><a href="/blog/2012/10/19/workarea_change_message">工作区大小变化的相关消息</a></li>
+ 
+  <li><a href="/blog/2012/10/19/tray_menu">托盘菜单基本用法</a></li>
+ 
+  <li><a href="/blog/2012/10/19/focus_sth">焦点相关的部分tips</a></li>
+ 
+  <li><a href="/blog/2012/10/19/Tooptip_sample">ToolTip基本用法</a></li>
+ 
+  <li><a href="/blog/2012/10/19/PostMessage-right">PostMessage权限问题</a></li>
+ 
+  <li><a href="/blog/2012/10/19/Menu_sample">菜单基本用法</a></li>
+ 
+  <li><a href="/blog/2012/10/19/Gdi_object_to_release">Gdi对象释放对照表</a></li>
+ 
+  <li><a href="/blog/2012/10/19/Close_messagebox">后台关闭MessageBox</a></li>
+ 
+  <li><a href="/blog/2012/10/18/winhttp_sample">Winhttp练笔</a></li>
+ 
+  <li><a href="/blog/2012/10/18/tolua_plus_hello_world">Tolua++入门</a></li>
+ 
+  <li><a href="/blog/2012/10/18/lua_op_bin_data">Lua操作二进制</a></li>
+ 
+  <li><a href="/blog/2012/10/18/insert_js_by_chrome_firedebg">通过Chrome或Firedebug插件一段js</a></li>
+ 
+  <li><a href="/blog/2012/10/18/getsockname">获得socket连接使用的IP地址</a></li>
+ 
+  <li><a href="/blog/2012/10/18/call_dll_in_lua">Lua直接调用Dll中的函数</a></li>
+ 
+  <li><a href="/blog/2012/10/18/build_lua">自行编译Lua注意事项</a></li>
+ 
+  <li><a href="/blog/2012/10/18/_endthread__endthreadex">_endthread和_endthreadex陷阱</a></li>
+ 
+  <li><a href="/blog/2012/10/18/MsgWaitForMultipleObjectsEx_trap">MsgWaitForMultipleObjectsEx发送垃圾消息的问题</a></li>
+ 
+  <li><a href="/blog/2012/10/18/CloseDesktop_trap">CloseDesktop及其陷阱</a></li>
+ 
+  <li><a href="/blog/2012/10/17/string_util">string 工具函数</a></li>
+ 
+  <li><a href="/blog/2012/10/17/ftruncate_file">修改文件大小</a></li>
+ 
+  <li><a href="/blog/2012/10/17/file_util_posix">Posix文件工具函数</a></li>
+ 
+  <li><a href="/blog/2012/10/17/enum_files">枚举目录</a></li>
+ 
+  <li><a href="/blog/2012/10/17/curl_sample">Curl小牛试刀</a></li>
+ 
+  <li><a href="/blog/2012/10/17/common_makefile">一个通用的Makefile</a></li>
+ 
+  <li><a href="/blog/2012/10/17/auto_ptr">一个通用的智能指针</a></li>
+ 
+  <li><a href="/blog/2012/10/17/FILE_std_util">std FILE工具函数</a></li>
+ 
+  <li><a href="/blog/2012/10/16/vi_autocmd">VI自动化命令(autocmd)</a></li>
+ 
+  <li><a href="/blog/2012/10/16/messagebox_wtl">用WTL实现自定义MessageBox</a></li>
+ 
+  <li><a href="/blog/2012/10/16/layout_wtl">用WTL实现的Layout</a></li>
+ 
+  <li><a href="/blog/2012/10/16/custom_dialog">自定义对话框</a></li>
+ 
+  <li><a href="/blog/2012/10/15/vi_config">VI配置</a></li>
+ 
+  <li><a href="/blog/2012/10/15/find_man">find命令中文手册</a></li>
+ 
+  <li><a href="/blog/2012/10/14/markdown1">Markdown 快速入门</a></li>
+ 
+  <li><a href="/blog/2012/10/14/bash4">Bash学习-陷阱</a></li>
+ 
+  <li><a href="/blog/2012/10/14/Regex">正则表达式30分钟入门教程</a></li>
+ 
+  <li><a href="/blog/2012/10/13/bash3">Bash学习-字符串操作</a></li>
+ 
+  <li><a href="/blog/2012/10/13/bash2">Bash学习-入门2</a></li>
+ 
+  <li><a href="/blog/2012/10/13/bash1">Bash学习-入门</a></li>
+ 
+  <li><a href="/blog/2012/10/12/google-code-prettify">google-code-prettify简介</a></li>
+ 
+  <li><a href="/blog/2012/10/11/vim_ctrl_v">解决Windows下GVim Ctrl+V不能使用的bug</a></li>
+ 
+  <li><a href="/blog/2012/10/11/mediawiki_plugin">MediaWiki常用插件</a></li>
+ 
+  <li><a href="/blog/2012/10/11/markdown_resource">Markdown学习资料</a></li>
+ 
+  <li><a href="/blog/2012/10/11/bike_road">骑行路线规划</a></li>
+ 
+  <li><a href="/blog/2012/10/08/mediawiki_env_build">搭建一个简单的Mediawiki环境</a></li>
+ 
+  <li><a href="/blog/2012/10/07/github_tips">搭建Github Page注意点</a></li>
+ 
+  <li><a href="/blog/2012/10/07/Windows_jekyll">Windows上搭建Jekyll测试平台</a></li>
+ 
+  <li><a href="/blog/2012/10/06/test">你好，世界 master</a></li>
+ 
+</ol>
+ 
+ 
+<div id=float_top_right>
+
+<script>
+(function() {
+  var cx = '000743863249122818147:j_aeulgywie';
+  var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//www.google.com/cse/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+<gcse:search></gcse:search>
+
+<h4>&nbsp;分类浏览</h4>
+<ol>
+    
+    <li>
+    <a href="/categories/other/" title="查看此类别的所有文章">
+        other(20)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/www/" title="查看此类别的所有文章">
+        www(10)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/bash/" title="查看此类别的所有文章">
+        bash(42)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wtl/" title="查看此类别的所有文章">
+        wtl(14)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/cpp/" title="查看此类别的所有文章">
+        cpp(43)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/network/" title="查看此类别的所有文章">
+        network(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/windows/" title="查看此类别的所有文章">
+        windows(15)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/lua/" title="查看此类别的所有文章">
+        lua(4)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/js/" title="查看此类别的所有文章">
+        js(6)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/wingui/" title="查看此类别的所有文章">
+        wingui(18)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/linux/" title="查看此类别的所有文章">
+        linux(17)</a>
+    </li>
+    
+    <li>
+    <a href="/categories/game/" title="查看此类别的所有文章">
+        game(3)</a>
+    </li>
+    
+</ol>
+</div>
+
+    
+
+ 
+
+
+                </td>
+                <td style="width: 210px; ">
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
