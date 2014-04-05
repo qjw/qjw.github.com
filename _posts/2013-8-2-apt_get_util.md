@@ -38,6 +38,8 @@ category: other
 	apt-get install netcat
 	apt-get install rrdtool
 	apt-get install rdesktop grdesktop
+	apt-get install gtkvncviewer gvncviewer
+	apt-get install qemu-system-x86 qemu-system-x86-64
 	
 ---
 	
