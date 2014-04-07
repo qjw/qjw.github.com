@@ -46,6 +46,8 @@ category: other
 	apt-get install chromium-browser
 	apt-get install chmsee #chm reader
 	apt-get install g2ipmsg # 飞鸽传书
+	apt-get install filezilla
+	apt-get install meld
 	
 ---
 	
@@ -68,3 +70,18 @@ category: other
 	c7="\[\e[37m\]"
 	PS1="$c0$c1\w $c2$c3<\u@\h> $c4$c5$c6$c7\T $c1$c2\$ $c_1";
 	export PS1
+
+## Git Diff配置
+
+	apt-get install meld
+	git config --global diff.external meld
+	git config --global diff.external diff.py
+
+---
+
+	#!/usr/bin/python
+
+	import sys
+	import os
+
+	os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))
