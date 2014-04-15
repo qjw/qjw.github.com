@@ -36,5 +36,136 @@ system函数在内部会临时忽略(SIG_IGN)SIGINT和SIGQUIT信号，同时阻�
 
 对于其他手动调用的wait函数，也必须在实现阻塞SIGCHLD信号。
 
+**经测试，最新的popen也阻塞了SIGCHLD信号，在pclose中接触阻塞**
+
+以下代码，若去掉pclose一行，那么Sigfunc不会出发。否则则会触发
+
+	#include <unistd.h>
+	#include <signal.h>
+	#include <cstdio>
+	#include <cstdlib>
+	#include <cstring>
+	#include <errno.h>
+	#include <cassert>
+
+	void SigFunc(int no)
+	{
+		printf("recv no '%d'",no);
+	}
+
+	int main()
+	{
+		signal(SIGCHLD, SigFunc);
+		FILE* fp_ = popen("true","r");
+		pclose(fp_);
+		return 0;
+	}
+
+##Sample
+
+	#include <unistd.h>
+	#include <signal.h>
+	#include <cstdio>
+	#include <cstdlib>
+	#include <cstring>
+	#include <errno.h>
+	#include <cassert>
+
+	int Popen(const char* cmd_line)
+	{
+		FILE* fp_ = popen(cmd_line,"r");
+		assert(fp_);
+		char buf_[4096];
+		fread(buf_,sizeof(buf_),1,fp_);
+		return pclose(fp_);
+	}
+
+	int MyPopen(const char* cmd_line)
+	{
+		int ret = 0;
+		__sighandler_t old_handler;
+		old_handler = signal(SIGCHLD, SIG_DFL);
+		ret = Popen(cmd_line);
+		signal(SIGCHLD, old_handler);
+		return ret;
+	}
+
+	int MySystem(const char *cmd_line)
+	{
+		int ret = 0;
+		__sighandler_t old_handler;
+		old_handler = signal(SIGCHLD, SIG_DFL);
+		ret = system(cmd_line);
+		signal(SIGCHLD, old_handler);
+		return ret;
+	}
+
+	void SigFunc(int no)
+	{
+
+	}
+
+	int main()
+	{
+		signal(SIGCHLD, SIG_IGN);
+
+		if(system("true") != 0)
+			printf("system error %d|%s\n",errno,strerror(errno));
+		else
+			printf("system succuss\n");
+
+		if(MySystem("true") != 0)
+			printf("MySystem error %d|%s\n",errno,strerror(errno));
+		else
+			printf("MySystem succuss\n");
+	
+		//--------------------------------------------------------
+		if(Popen("echo -n test") != 0)
+			printf("Popen error %d|%s\n",errno,strerror(errno));
+		else
+			printf("Popen succuss\n");
+
+		if(MyPopen("echo -n test") != 0)
+			printf("MyPopen error %d|%s\n",errno,strerror(errno));
+		else
+			printf("MyPopen succuss\n");
+
+		//--------------------------------------------------------
+		signal(SIGCHLD, SigFunc);
+		if(system("true") != 0)
+			printf("system error %d|%s\n",errno,strerror(errno));
+		else
+			printf("system succuss\n");
+
+		if(MySystem("true") != 0)
+			printf("MySystem error %d|%s\n",errno,strerror(errno));
+		else
+			printf("MySystem succuss\n");
+	
+		//--------------------------------------------------------
+		if(Popen("echo -n test") != 0)
+			printf("Popen error %d|%s\n",errno,strerror(errno));
+		else
+			printf("Popen succuss\n");
+
+		if(MyPopen("echo -n test") != 0)
+			printf("MyPopen error %d|%s\n",errno,strerror(errno));
+		else
+			printf("MyPopen succuss\n");
+
+		return 0;
+	}
+
+---
+
+	system error 10|No child processes
+	MySystem succuss
+	Popen error 10|No child processes
+	MyPopen succuss
+	system succuss
+	MySystem succuss
+	Popen succuss
+	MyPopen succuss
+
 
 
