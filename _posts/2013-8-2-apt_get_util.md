@@ -85,3 +85,10 @@ category: other
 	import os
 
 	os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))
+
+## Flash配置
+
+使用Linux Mint发现百度云无法在线看视频，但是youku确可以。
+
+默认安装的flash 插件是**mint-flashplugin** ，换成**adobe-flashplugin**即可。
+
