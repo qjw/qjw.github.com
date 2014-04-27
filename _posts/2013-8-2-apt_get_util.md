@@ -17,7 +17,7 @@ category: other
 	apt-get install libmudflap0 libmudflap0-4.4-dev
 	apt-get install vim ctags diffutils patch file
 	apt-get install subversion git
-	apt-get install python2.6 lua5.1 sun-java6-jre nodejs
+	apt-get install python2.6 lua5.1 nodejs
 	apt-get install wget curl tcpdump dnsutils nmap telnet
 	apt-get install netcat-traditional lftp iputils-ping
 	apt-get install smbfs #@support windows share file system
@@ -91,4 +91,17 @@ category: other
 使用Linux Mint发现百度云无法在线看视频，但是youku确可以。
 
 默认安装的flash 插件是**mint-flashplugin** ，换成**adobe-flashplugin**即可。
+
+
+## Java配置
+
+**部分软件必须要安装jdk才能运行**,若只安装jre将无法启动，例如android studio
+
+	apt-get install openjdk-7-jre openjdk-7-jdk openjdk-6-jre openjdk-6-jdk
+
+## 32位支持
+
+**让Linux 64支持32程序**
+
+	apt-get install ia32-libs libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1
 
