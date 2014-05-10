@@ -27,11 +27,15 @@ category: js
 > 
 > 4。不在资源里引用HTML，直接在本地文件里使用。可以在CDHtmlDialog的继承类里添加一个函数来处理。 
 
+## 注意
 
+若资源类型不一致，例如html、js、css放在资源的HTML目录下，png放在资源PNG目录下。那么直接使用res:/#123可能无法引用到正确的资源。
+
+这时可以使用**res:/PNG/#123**。
 
    
 ---
 
 #参考
 1. <http://topic.csdn.net/t/20050522/14/4026416.html>
-
+1. <http://www.cnblogs.com/lucc/archive/2010/11/24/1886087.html>
