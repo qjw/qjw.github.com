@@ -47,7 +47,8 @@ category: other
 	apt-get install chmsee #chm reader
 	apt-get install g2ipmsg # 飞鸽传书
 	apt-get install filezilla
-	apt-get install meld
+	apt-get install meld # git merge
+	apt-get install sublime-text # text editor
 	
 ---
 	
