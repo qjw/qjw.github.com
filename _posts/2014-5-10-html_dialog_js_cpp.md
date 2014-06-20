@@ -110,6 +110,21 @@ category: windows
 	//调用globalObject.Test
 	CWebBrowserBase::InvokeMethod(globalObject.pdispVal, L"Test", &ret, params, 0);
 
+##Tab键和粘贴
+在某些系统中，快捷键无法使用，这是因为外部对话框直接“拿走”了这些快捷键,参考<http://www.experts-exchange.com/Software/Internet_Email/Web_Browsers/Q_24711581.html>，<http://blog.csdn.net/tr0j4n/article/details/4565953>.
+
+####WebBrowser   Keystroke   Problems     
+lot   of   people   have   noticed   that   when   they're   hosting   the   WebBrowser   control   in   MFC,   ATL,   or   standard   C++   applications,   they   sometimes   run   into   trouble   with   certain   keys.   These   keystroke   problems   usually   occur   when   typing   into   intrinsic   controls   such   as   text   boxes   that   reside   on   Web   pages   loaded   by   the   WebBrowser   control.   Usually   these   keys   are   accelerator   keys   such   as   Backspace,   Delete,   and   Tab.   The   problem   is   that   the   intrinsic   controls   on   a   Web   page   do   not   automatically   receive   these   accelerator   keys.   When   the   WebBrowser   control   receives   an   accelerator   key   message,   it   does   not   automatically   pass   it   to   child   controls   on   a   Web   page.   Therefore,   you   must   somehow   let   the   WebBrowser   control   know   that   it   should   pass   these   messages   to   controls   on   your   Web   page.           The   solution   is   always   the   same   whether   you   are   hosting   the   control   in   MFC,   ATL,   or   standard   C++:   call   the   TranslateAcclerator   method   of   the   IOleInPlaceActiveObject   interface   that   is   implemented   by   the   WebBrowser   control.   But   where   and   how   you   should   do   this   is   often   unclear.   Let's   see   how   to   work   around   keystroke   problems   in   MFC,   ATL,   and   standard   C++   applications   that   are   hosting   the   WebBrowser   control.   
+
+具体改法是在MFC的PreTranslateMessage加入如下代码
+
+	BOOL   CMyView::PreTranslateMessage(MSG*   pMsg)   
+	{   
+	    if   (IsDialogMessage(pMsg))   
+		    return   TRUE;   
+	    else   
+		    return   CWnd::PreTranslateMessage(pMsg);   
+	}   
 
 ##参考
 1. <http://www.cnblogs.com/kzang/archive/2012/12/02/2798556.html>
