@@ -24,7 +24,7 @@ category: linux
 	    pci="${pci%/*}"                                                                
 	    pci="${pci##*/}"
 	    echo "${pci} ${name} ${mac}"                                                   
-	done
+	done  
 
 ##参考
 1. <http://wangxu.me/site/node/39>
