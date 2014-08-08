@@ -90,6 +90,25 @@ test.sh 如下
 	
 不过，若后台进程有stdout写入会出现错误
 
+	#!/bin/bash
+
+	loop()
+	{
+	    while true
+	    do
+		sleep 1
+		echo fuck
+	    done
+	}
+
+	ls -l
+
+	(
+	loop
+	) >&- &
+	
+----
+
 	./test.sh: 第 8 行: echo: 写错误: 错误的文件描述符
 	./test.sh: 第 8 行: echo: 写错误: 错误的文件描述符
 	./test.sh: 第 8 行: echo: 写错误: 错误的文件描述符
