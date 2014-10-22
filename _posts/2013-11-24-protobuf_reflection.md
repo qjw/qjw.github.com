@@ -137,5 +137,9 @@ category: cpp
 		delete msg_;
 	}
 	
+##注意
+
+在反序列化时，**ParseFromCodedStream**不要一次性给太多数据，这个报文需要多少数据，就给多少数据，否则会画蛇添足，导致反序列化失败
+	
 ##参考
 1. <http://blog.csdn.net/solstice/article/details/6300108>
