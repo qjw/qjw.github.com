@@ -110,3 +110,4 @@ category: other
 1. Freeware MagicISO Virtual CD/DVD-ROM(MagicDisc) Overview <http://www.magiciso.com/tutorials/miso-magicdisc-overview.htm>
 1. FreeCommander - freeware file manager <http://www.freecommander.com/>
 1. TCC/LE: Free Windows CMD Replacement Shell <http://jpsoft.com/tccle-cmd-replacement.html%E2%80%8E>
+1. Spacesniffer: a freeWare that lets you understand how folders and files are structured on your disks.<http://www.uderzo.it/main_products/space_sniffer/>
