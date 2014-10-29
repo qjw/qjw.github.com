@@ -221,8 +221,56 @@ category: cpp
       CefBrowserHost::CreateBrowser(info, g_handler.get(),
           g_handler->GetStartupURL(), settings, NULL);
 
+##Linux
 
+编译可以参考根目录下的build.sh
+
+	#!/bin/bash
+	if [ -z "$1" ]; then
+	  echo "ERROR: Please specify a build target: Debug or Release"
+	else
+	  make -j8 cefclient cefsimple BUILDTYPE=$1
+	  if [ $? -eq 0 ]; then
+	    echo "Giving SUID permissions to chrome-sandbox..."
+	    echo "(using sudo so you may be asked for your password)"
+	    sudo -- chown root:root "out/$1/chrome-sandbox" &&
+	    sudo -- chmod 4755 "out/$1/chrome-sandbox"
+	  fi
+	fi
+
+我直接make Debug=1也可以编译过
+
+若有如下的错误，
+
+	cefclient/cefclient_gtk.cpp:8:23: fatal error: gtk/gtkgl.h: 没有那个文件或目录
+	 #include <gtk/gtkgl.h>
+		               ^
+		               
+安装以下库
+
+	sudo apt-get install libgtkgl2.0-dev libgtkglext1-dev
+	
+若找不到 libudev.so.0
+
+	/usr/bin/ld: warning: libudev.so.0, needed by Debug/libcef.so, \
+	 not found (try using -rpath or -rpath-link)
+	 
+做个软连接过去即可
+
+	<king@king-HP-Compaq-6530b-FP587PA-AB2> 11:49:02 $ find /lib -name "libudev.so*"
+	/lib/x86_64-linux-gnu/libudev.so.1.3.5
+	/lib/x86_64-linux-gnu/libudev.so.1
+	/lib/i386-linux-gnu/libudev.so.1.3.5
+	/lib/i386-linux-gnu/libudev.so.1
+	<king@king-HP-Compaq-6530b-FP587PA-AB2> 11:49:39 $ ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/libudev.so.0
+
+编译成功后，若无法运行
+
+	sudo -- chown root:root "out/Debug/chrome-sandbox"
+	sudo -- chmod 4755 "out/Debug/chrome-sandbox"
 
 ##参考
 1. <http://www.cnblogs.com/liulun/p/3681241.html>
+1. <http://www.cnblogs.com/haippy/archive/2013/06/10/3131354.html>
+1. <http://www.cnblogs.com/haippy/archive/2013/06/10/3131253.html>
 
