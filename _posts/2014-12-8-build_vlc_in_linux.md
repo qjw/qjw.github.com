@@ -14,7 +14,7 @@ category: linux
 	git clone git://git.videolan.org/vlc.git
 	cd vlc
 	./bootstrap
-	
+
 也可以直接下载源码包，经测试，会快很多。
 
 ##安装依赖库
@@ -26,36 +26,36 @@ category: linux
 	cd native
 	../bootstrap
 	make
-	
+
 ##编译
 
 运行命令**./configure --help**，根据你的功能需要，配置选项。例如
 
-	./configure --disable-sout \                                                                                                                                                                                      
-		--enable-static=false \                                                        
-		--disable-nls \                                                                
-		--disable-debug \                                                              
-		--disable-gprof \                                                              
-		--disable-cprof \                                                              
-		--disable-coverage \                                                           
-		--disable-lua \                                                                
-		--disable-httpd \                                                              
-		--disable-dc1394 \                                                             
-		--disable-dv1394 \                                                             
-		--disable-dvdread \                                                            
-		--disable-dvdnav \                                                             
-		--disable-bluray \                                                             
-		--disable-smbclient \                                                          
-		--disable-sftp \                                                               
-		--disable-vcd \                                                                
-		--disable-vcdx \                                                               
-		--disable-screen \                                                             
-		--disable-vnc \                                                                
-		--disable-freerdp \                                                            
-		--disable-chromaprint \                                                        
+	./configure --disable-sout \
+		--enable-static=false \
+		--disable-nls \
+		--disable-debug \
+		--disable-gprof \
+		--disable-cprof \
+		--disable-coverage \
+		--disable-lua \
+		--disable-httpd \
+		--disable-dc1394 \
+		--disable-dv1394 \
+		--disable-dvdread \
+		--disable-dvdnav \
+		--disable-bluray \
+		--disable-smbclient \
+		--disable-sftp \
+		--disable-vcd \
+		--disable-vcdx \
+		--disable-screen \
+		--disable-vnc \
+		--disable-freerdp \
+		--disable-chromaprint \
 		--disable-chromecast
 	make
-	
+
 编译结束，会生成vlc、vlcstatic等可执行文件
 
 ##参考

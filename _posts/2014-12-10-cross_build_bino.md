@@ -20,10 +20,18 @@ bino for windows使用mingw编译，并且官方文档使用一个**[mxe](http:/
 						cmake flex gettext git g++ intltool \
 						libffi-dev libtool libltdl-dev libssl-dev \
 						libxml-parser-perl make openssl patch perl \
-						pkg-config scons sed unzip wget xz-utils
+						pkg-config scons sed unzip wget xz-utils texinfo
 						
 	# On 64-bit Debian, install also:
 	apt-get install g++-multilib libc6-dev-i386
+	
+笔者最初使用debian 7.0 wheey来编译，不过后面出现如下错误
+
+	make[3]: Leaving directory `/home/king/bino/po'
+	*** error: gettext infrastructure mismatch: using a Makefile.in.in from 
+	gettext version 0.19 but the autoconf macros are from gettext version 0.18
+
+后面修改/etc/apt/sources.lst，替换源为debian sid。然后apt-get dist-upgrade升级整个系统来规避。
 
 ##搭建bino编译环境
 
@@ -33,6 +41,9 @@ bino for windows使用mingw编译，并且官方文档使用一个**[mxe](http:/
 	$ git clone -b master https://github.com/mxe/mxe.git
 	$ cd mxe
 	$ make gettext pthreads ffmpeg libass openal glew qt nsis
+	
+	# 将mxe所有bin目录都加入PATH，而不止下面的mxe/usr/bin/
+	$ export PATH="/path/to/mxe/usr/bin:$PATH" 
 	
 ##编译bion
 

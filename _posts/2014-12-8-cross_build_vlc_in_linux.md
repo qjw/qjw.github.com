@@ -36,32 +36,32 @@ x64需要删除文件 rm -f ../i686-w64-mingw32/bin/moc ../i686-w64-mingw32/bin/
 	mkdir win32 && cd win32
 	export PKG_CONFIG_LIBDIR=$HOME/vlc/contrib/i686-w64-mingw32/lib/pkgconfig
 	../configure --help  #确认选项
-	../configure --host=i686-w64-mingw32 \                                             
-		--disable-sout \                                                               
-		--enable-static=false \                                                        
-		--disable-nls \                                                                
-		--disable-debug \                                                              
-		--disable-gprof \                                                              
-		--disable-cprof \                                                              
-		--disable-coverage \                                                           
-		--disable-lua \                                                                
-		--disable-httpd \                                                              
-		--disable-dc1394 \                                                             
-		--disable-dv1394 \                                                             
-		--disable-dvdread \                                                            
-		--disable-dvdnav \                                                             
-		--disable-bluray \                                                             
-		--disable-smbclient \                                                          
-		--disable-sftp \                                                               
-		--disable-vcd \                                                                
-		--disable-vcdx \                                                               
-		--disable-screen \                                                             
-		--disable-vnc \                                                                
-		--disable-freerdp \                                                            
-		--disable-chromaprint \                                                        
-		--disable-chromecast \                                                         
-		--disable-taglib \                                                             
-		--disable-upnp \                                                                                                                                                                                              
+	../configure --host=i686-w64-mingw32 \
+		--disable-sout \
+		--enable-static=false \
+		--disable-nls \
+		--disable-debug \
+		--disable-gprof \
+		--disable-cprof \
+		--disable-coverage \
+		--disable-lua \
+		--disable-httpd \
+		--disable-dc1394 \
+		--disable-dv1394 \
+		--disable-dvdread \
+		--disable-dvdnav \
+		--disable-bluray \
+		--disable-smbclient \
+		--disable-sftp \
+		--disable-vcd \
+		--disable-vcdx \
+		--disable-screen \
+		--disable-vnc \
+		--disable-freerdp \
+		--disable-chromaprint \
+		--disable-chromecast \
+		--disable-taglib \
+		--disable-upnp \
 		--disable-qt
 	make
 	
