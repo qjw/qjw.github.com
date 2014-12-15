@@ -29,6 +29,8 @@ category: linux
 
 x64需要删除文件 rm -f ../i686-w64-mingw32/bin/moc ../i686-w64-mingw32/bin/uic ../i686-w64-mingw32/bin/rcc
 
+注意：**若使用prebuilt库，合适的版本很重要，若编译各种奇奇怪怪的问题，可以考虑换一个prebuilt压缩包**
+
 ##编译
 跳到根目录
 
@@ -67,7 +69,22 @@ x64需要删除文件 rm -f ../i686-w64-mingw32/bin/moc ../i686-w64-mingw32/bin/
 	
 vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也不知道问题在哪里
 
+##精简dll尺寸
+
+为了减少尺寸，首先应该裁剪一些不需要的功能，这样就可以砍掉大部分plugin的dll。
+
+其次，在configure时，默认的编译选项是"**-g -O2**"。我们可以在configure之前设置环境变量CFLAGS、CXXFLAGS，取消-g选项。
+
+	export CFLAGS="-O2"
+	export CXXFLAGS="-O2"
+	
+不过笔者亲测，发现dll还是很多，若使用官方prebuilt的库。比如libavcodec就有40多M，若-g甚至到了50M。尝试很多办法，都没有讲大小缩下去。最后发现官方prebuilt的库都包含完整调试信息。所以直接干掉就行了。
+
+	find vlc/win32 -name "*.dll" -type f | xargs -i strip --strip-all {}
+
+
 ##参考
 1. <https://wiki.videolan.org/Win32Compile/>	
 1. <https://wiki.videolan.org/Win32Compile_Under_Fedora>
 1. <https://forum.videolan.org/viewtopic.php?f=14&t=106846>
+1. <http://blog.chinaunix.net/uid-24774106-id-3526766.html>
