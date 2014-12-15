@@ -82,9 +82,58 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 
 	find vlc/win32 -name "*.dll" -type f | xargs -i strip --strip-all {}
 
+##编译ActiveX插件
+
+最新的vlc（2.\*.\*)已经将浏览器插件作为一个独立的工程实现，所以为了编译，先单独下载源码。安装一些依赖的库
+
+	git clone git://git.videolan.org/npapi-vlc.git
+	apt-get install libwine-dev
+	
+	cd npapi-vlc
+	./autogen.sh
+	
+	# 在vlc编译环境目录下查找libvlc.pc所在目录
+	export PKG_CONFIG_LIBDIR=/home/king/vlc/win32/_win32/lib/pkgconfig/
+	# 写死，我不需要编译firefox和chrome的插件
+	export FETCH_NPAPI_FALSE="#"
+	# 根据vlc编译环境来设置
+	export LIBVLC_CFLAGS="-I/home/king/vlc/include/ -O2"
+	# 同样查找libvlc.dll来设置
+	export LIBVLC_LIBS="-L/home/king/vlc/win32/lib/.libs/ -lvlc"
+	# 只编译activex。npapi需要去google code下载一些东西，那玩意被强了。
+	./configure --host=i686-w64-mingw32 --disable-npapi
+	make -j8
+	
+#### 常见问题
+
+	checking for LIBVLC... yes
+	Package libvlc was not found in the pkg-config search path.
+	Perhaps you should add the directory containing `libvlc.pc'
+	to the PKG_CONFIG_PATH environment variable
+	No package 'libvlc' found
+
+	king@debian:~/vlc/lib$ find /home/king/vlc -name libvlc.pc
+	/home/king/vlc/win32/lib/libvlc.pc
+	/home/king/vlc/win32/_win32/lib/pkgconfig/libvlc.pc
+	
+---
+
+	checking that generated files are newer than configure... done
+	configure: error: conditional "FETCH_NPAPI" was never defined.
+	Usually this means the macro was only invoked conditionally.
+
+	export FETCH_NPAPI_FALSE="#"
+	
+---
+
+	king@debian:~/npapi-vlc$ find . -name "*.dll"
+	./activex/.libs/axvlc.dll
+
 
 ##参考
 1. <https://wiki.videolan.org/Win32Compile/>	
 1. <https://wiki.videolan.org/Win32Compile_Under_Fedora>
 1. <https://forum.videolan.org/viewtopic.php?f=14&t=106846>
 1. <http://blog.chinaunix.net/uid-24774106-id-3526766.html>
+1. <https://forum.videolan.org/viewtopic.php?f=16&t=112839>
+1. <http://askubuntu.com/questions/114216/cannot-find-vlc-web-plugin-while-compiling-vlc-2-0-from-source>
