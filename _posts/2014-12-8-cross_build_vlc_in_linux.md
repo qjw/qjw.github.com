@@ -130,6 +130,61 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 	./activex/.libs/axvlc.dll
 
 
+##本朝特色自主研发
+
+#### 替换插件图标
+	king@debian:~/npapi-vlc$ find . -name "*.bmp" -o -name "*.ico"
+	./share/pixmaps/win32/fullscreen.bmp
+	./share/pixmaps/win32/defullscreen.bmp
+	./share/pixmaps/win32/volume-muted.bmp
+	./share/pixmaps/win32/vlc.ico
+	./share/pixmaps/win32/volume.bmp
+	./share/pixmaps/win32/pause.bmp
+	./share/pixmaps/win32/play.bmp
+	
+经查，这些默认的bmp是灰度的，若改成彩色，可以将其存储为24色RGB，并且不要包含色彩空间信息
+
+然后修改代码（*有多处类似的修改*）
+
+	--- a/activex/plugin.cpp
+	+++ b/activex/plugin.cpp
+	@@ -228,23 +228,23 @@ VLCPlugin::VLCPlugin(VLCPluginClass *p_class, LPUNKNOWN pUnkOuter) :
+	 {
+		 _ViewRC.hDeFullscreenBitmap =
+			 LoadImage(DllGetModule(), MAKEINTRESOURCE(3),
+	-                  IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
+	+                  IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+	
+####版本号
+
+	--- a/configure.ac
+	+++ b/configure.ac
+	@@ -2,19 +2,19 @@ dnl Autoconf settings for vlc
+	 
+	 AC_COPYRIGHT([Copyright 2002-2014 VLC authors and VideoLAN])
+	 
+	-AC_INIT(vlc, 3.0.0-git)
+	+AC_INIT(King, 1.0.0)
+	 VERSION_MAJOR=3
+	 VERSION_MINOR=0
+	 VERSION_REVISION=0
+	 VERSION_EXTRA=0
+	-VERSION_DEV=git
+	+VERSION_DEV=0
+	 
+	-PKGDIR="vlc"
+	+PKGDIR="King"
+	 AC_SUBST(PKGDIR)
+	 
+	 CONFIGURE_LINE="`echo "$0 $ac_configure_args" | sed -e 's/\\\/\\\\\\\/g'`"
+	-CODENAME="Vetinari"
+	-COPYRIGHT_YEARS="1996-2014"
+	+CODENAME="Test"
+	+COPYRIGHT_YEARS="2013-2014"
+	 
+	 AC_CONFIG_SRCDIR(src/libvlc.c)
+	 AC_CONFIG_AUX_DIR(autotools)
+	
 ##参考
 1. <https://wiki.videolan.org/Win32Compile/>	
 1. <https://wiki.videolan.org/Win32Compile_Under_Fedora>
