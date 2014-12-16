@@ -155,6 +155,32 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 	-                  IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS);
 	+                  IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
 	
+		 _ViewRC.hBackgroundIcon =
+			 (HICON) LoadImage(DllGetModule(), MAKEINTRESOURCE(8),
+	-                          IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
+	+                          IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+
+将中央的图标可以支持任意尺寸，（*注意：若ico有多张图片，那么GetIconInfo获取的大小不准确*）
+
+	--- a/common/win32_fullscreen.cpp
+	+++ b/common/win32_fullscreen.cpp
+	@@ -655,9 +655,13 @@ LRESULT VLCHolderWnd::WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
+				 HDC hDC = BeginPaint(hWnd(), &PaintStruct);
+				 RECT rect;
+				 GetClientRect(hWnd(), &rect);
+	-            int IconX = ((rect.right - rect.left) - GetSystemMetrics(SM_CXICON))/2;
+	-            int IconY = ((rect.bottom - rect.top) - GetSystemMetrics(SM_CYICON))/2;
+	-            DrawIcon(hDC, IconX, IconY, RC().hBackgroundIcon);
+	+
+	+            ICONINFO icon_info_;
+	+            ::GetIconInfo(RC().hBackgroundIcon,&icon_info_);
+	+
+	+            int IconX = ((rect.right - rect.left) - icon_info_.xHotspot)/2;
+	+            int IconY = ((rect.bottom - rect.top) - icon_info_.yHotspot)/2;
+	+            DrawIconEx(hDC, IconX, IconY, RC().hBackgroundIcon,icon_info_.xHotspot,icon_info_.yHotspot,0,NULL,DI_NORMAL);
+				 EndPaint(hWnd(), &PaintStruct);
+				 break;	
+
 ####版本号
 
 	--- a/configure.ac
