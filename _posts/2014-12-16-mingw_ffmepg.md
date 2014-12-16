@@ -20,7 +20,12 @@ category: linux
 
 ##编译
 
+
 下载源码<http://ffmpeg.org/releases/ffmpeg-2.5.tar.bz2>，解压（tar jvfx ffmpeg-2.5.tar.bz2）。
+
+原生编译直接./configure && make 即可。
+
+交叉编译需要设置一些参数，如下
 
 	./configure \
 	--enable-cross-compile \
