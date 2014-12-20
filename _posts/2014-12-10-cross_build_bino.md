@@ -18,7 +18,7 @@ bino for windows使用mingw编译，并且官方文档使用一个**[mxe](http:/
 
 	apt-get install autoconf automake bash bison bzip2 \
 						cmake flex gettext git g++ intltool \
-						libffi-dev libtool libltdl-dev libssl-dev \
+						libffi-dev libtool libtool-bin libltdl-dev libssl-dev \
 						libxml-parser-perl make openssl patch perl \
 						pkg-config scons sed unzip wget xz-utils texinfo
 						
