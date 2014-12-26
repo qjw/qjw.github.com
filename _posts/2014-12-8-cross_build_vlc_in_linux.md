@@ -210,7 +210,22 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 	 
 	 AC_CONFIG_SRCDIR(src/libvlc.c)
 	 AC_CONFIG_AUX_DIR(autotools)
+
+## 编译npapi插件
+
+为了支持chrome，firefox等浏览器，需要使用npapi插件，编译之前，需要先下载npapi的sdk。代码在google code，不幸的是被强了。
+
+翻墙下载代码**svn checkout http://npapi-sdk.googlecode.com/svn/trunk/ npapi-sdk-read-only**
+
+放置在某目录，例如/home/king/npapi_sdk
+
+然后设置环境变量
+
+	export MOZILLA_CFLAGS="-I/home/king/npapi_sdk/headers/ -g2"
+	./configure --host=i686-w64-mingw32  #不要--disable-npapi
+	make -j8
 	
+
 ##参考
 1. <https://wiki.videolan.org/Win32Compile/>	
 1. <https://wiki.videolan.org/Win32Compile_Under_Fedora>
