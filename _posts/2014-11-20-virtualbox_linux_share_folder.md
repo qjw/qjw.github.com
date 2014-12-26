@@ -37,7 +37,8 @@ category: other
 
 ##手动挂载
 
-    sudo mount -t vboxsf -o umask=000,rw,gid=100,uid=1000 kingqiu /mnt/king/
+    sudo mount -t vboxsf -o rw,gid=100,uid=1000 kingqiu /mnt/king/
+	sudo mount -t cifs //192.168.1.5/share /home/share -o username=usr,password=pwd,rw,gid=100,uid=1000
 
 其中的gid，uid，umask等不能省，否则非root用户将无法使用
 
