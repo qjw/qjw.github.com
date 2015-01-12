@@ -9,7 +9,7 @@ category: linux
 	#!/bin/bash
 	#安装依赖工具
 	apt-get install git libtool build-essential pkg-config autoconf
-	apt-get install subversion yasm cvs cmake
+	apt-get install subversion yasm cvs cmake libpcsclite-dev
 	#下载源码
 	git clone git://git.videolan.org/vlc.git
 	cd vlc
