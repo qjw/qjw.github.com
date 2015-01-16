@@ -44,6 +44,22 @@ bino for windows使用mingw编译，并且官方文档使用一个**[mxe](http:/
 
 	# 将mxe所有bin目录都加入PATH，而不止下面的mxe/usr/bin/
 	$ export PATH="/path/to/mxe/usr/bin:$PATH"
+	
+mxe会自动下载并且编译好，为了加快下载，或者在编译时可以继续下载别的程序，可以
+
+	make --jobs=4 --keep-going
+	
+mxe默认编译成静态库，若希望编译成动态库，可以
+
+	make MXE_TARGETS='i686-w64-mingw32.shared'
+	
+参见根目录Makefile
+
+	MXE_TRIPLETS       := i686-w64-mingw32 x86_64-w64-mingw32
+	MXE_LIB_TYPES      := shared
+	MXE_TARGET_LIST    := $(foreach TRIPLET,$(MXE_TRIPLETS),\
+							  $(addprefix $(TRIPLET).,$(MXE_LIB_TYPES)))
+	MXE_TARGETS        := i686-w64-mingw32.shared
 
 ##编译bion
 
