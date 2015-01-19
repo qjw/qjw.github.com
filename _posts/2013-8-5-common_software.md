@@ -64,6 +64,8 @@ category: other
 1. Windows Template Library (WTL) | Free software downloads at SourceForge.net <http://sourceforge.net/projects/wtl/>
 1. CHM <http://download.microsoft.com/download/0/A/9/0A939EF6-E31C-430F-A3DF-DFAE7960D564/htmlhelp.exe>
 1. ProcessMonitor <http://technet.microsoft.com/zh-cn/sysinternals/bb896645.aspx>
+1. WinSpy++ WinSpy++ is a handy programmer's utility which can be used to select and view the properties of any window in the system. <http://www.catch22.net/software/winspy-17>
+1. hexedit <http://www.catch22.net/software/hexedit>
 
 ##Office
 1. LibreOffice <http://www.libreoffice.org/>
