@@ -210,6 +210,41 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 	 
 	 AC_CONFIG_SRCDIR(src/libvlc.c)
 	 AC_CONFIG_AUX_DIR(autotools)
+	 
+####插件描述
+
+	#define COMPANY_STR "VLCVlan"
+	#define PROGRAM_STR "VLCVlanPlugin"
+	#define DESCRIPTION "VLCVlan ActiveX Plugin and IE Web Plugin"
+	
+这里会在ie插件管理器中显示
+
+####避免和vlc原来的冲突
+
+axvlc.idl，axvlc.inf.in
+
+	[
+	  uuid(9BE31822-FDAD-461B-AD51-BE1D1C159921),
+	  helpstring("VLC control"),
+	  control
+	]
+	coclass VLCPlugin2
+	{
+		[default] interface IVLCControl2;
+		interface IVLCControl;
+		[default, source] dispinterface DVLCEvents;
+	};
+
+---
+	
+	[axvlc.dll]
+	FileVersion=@VERSION_MAJOR@,@VERSION_MINOR@,@VERSION_REVISION@,0
+	clsid={9BE31822-FDAD-461B-AD51-BE1D1C159921}
+	RegisterServer=no
+	Hook=runinstaller
+	
+若使用cab，cab中的guid也需要跟着改
+
 
 ## 编译npapi插件
 
@@ -233,3 +268,4 @@ vlc的界面是qt写的，那货用linux交叉编译，死活编译不过，也�
 1. <http://blog.chinaunix.net/uid-24774106-id-3526766.html>
 1. <https://forum.videolan.org/viewtopic.php?f=16&t=112839>
 1. <http://askubuntu.com/questions/114216/cannot-find-vlc-web-plugin-while-compiling-vlc-2-0-from-source>
+1. <http://jeremiah.blog.51cto.com/539865/115943>
