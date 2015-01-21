@@ -256,7 +256,8 @@ axvlc.idl，axvlc.inf.in
 
 然后设置环境变量
 
-	export MOZILLA_CFLAGS="-I/home/king/npapi_sdk/headers/ -g2"
+	export MOZILLA_CFLAGS="-I/home/king/npapi-sdk/headers/ -g2"
+	export CFLAGS="-I/home/king/npapi-sdk/headers/ -g2"
 	./configure --host=i686-w64-mingw32  #不要--disable-npapi
 	make -j8
 	
