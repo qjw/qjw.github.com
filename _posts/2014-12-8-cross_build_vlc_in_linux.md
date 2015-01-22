@@ -260,7 +260,38 @@ axvlc.idl，axvlc.inf.in
 	export CFLAGS="-I/home/king/npapi-sdk/headers/ -g2"
 	./configure --host=i686-w64-mingw32  #不要--disable-npapi
 	make -j8
-	
+
+####本朝特色自主研发
+
+同activex的插件，npapi/vlcplugin_win.cpp中读取图片的代码也需要同步更新
+
+	VlcPluginWin::VlcPluginWin(NPP instance, NPuint16_t mode) :
+		VlcPluginBase(instance, mode), _NPWndProc(0),
+		_WindowsManager(DllGetModule(), _ViewRC, &get_options())
+	{
+		_ViewRC.hDeFullscreenBitmap =
+			LoadImage(DllGetModule(), MAKEINTRESOURCE(3),
+					  IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+
+		_ViewRC.hPlayBitmap =
+			LoadImage(DllGetModule(), MAKEINTRESOURCE(4),
+					  IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+					  
+
+npapi使用**type="application/x-vlc-plugin"**来定位（和activex的guid不同）插件，所以需要修改npapi/vlcshell.cpp
+
+	static char mimetype[] =
+		/* MPEG-1 and MPEG-2 */
+		"audio/mpeg:mp2,mp3,mpga,mpega:MPEG audio;"
+		"audio/x-mpeg:mp2,mp3,mpga,mpega:MPEG audio;"
+		"video/mpeg:mpg,mpeg,mpe:MPEG video;"
+		"video/x-mpeg:mpg,mpeg,mpe:MPEG video;"
+		
+在firefox中的插件管理器可以看到一堆属性，这些定义在npapi/package/npvlc_rc.rc.in和npapi/package/vlc.r.in中。需要注意的是，下面三个要匹配更新
+
+	VALUE "MIMEType", "audio/mpeg|audio/x-mpeg|video/mpeg|video/x-mpeg|video/mpeg-system
+	VALUE "FileExtents", "mp2,mp3,mpga,mpega|mp2,mp3,mpga,mpega|mpg,mpeg,mpe
+	VALUE "FileOpenName","MPEG audio|MPEG audio|MPEG video|MPEG video
 
 ##参考
 1. <https://wiki.videolan.org/Win32Compile/>	
