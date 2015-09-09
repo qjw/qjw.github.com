@@ -52,9 +52,11 @@ category: other
 1. Source Insight Program Editor and Analyzer <http://www.sourceinsight.com/>
 1. Astah <http://astah.net/>
 1. FreeMind <http://freemind.sourceforge.net/>
+1. XMind: Professional &amp; Powerful Mind Mapping Software <http://www.xmind.net/>
 1. Winmerge <http://winmerge.org/>
+1. IntelliJ IDEA [The Most Intelligent Java IDE](https://www.jetbrains.com/idea/)
 
-##Windows Develop
+##Develop
 1. Process Explorer <http://technet.microsoft.com/en-us/sysinternals/bb896653.aspx>
 1. Process Hacker | Free Security &amp; Utilities software downloads at SourceForge.net <http://sourceforge.net/projects/processhacker/>
 1. DebugView <http://technet.microsoft.com/en-us/sysinternals/bb896647>
@@ -66,6 +68,12 @@ category: other
 1. ProcessMonitor <http://technet.microsoft.com/zh-cn/sysinternals/bb896645.aspx>
 1. WinSpy++ WinSpy++ is a handy programmer's utility which can be used to select and view the properties of any window in the system. <http://www.catch22.net/software/winspy-17>
 1. hexedit <http://www.catch22.net/software/hexedit>
+1. nsis <http://sourceforge.net/projects/nsis/>
+1. inno setup <http://www.jrsoftware.org/isinfo.php>
+1. Mysql workbench [MySQL Workbench provides DBAs and developers an integrated tools environment for:Database Design & Modeling/SQL Development/Database Administration/Database Migration](http://dev.mysql.com/downloads/workbench/)
+1. Wampserver [php/mysql/apache all in one](http://www.wampserver.com/)
+1. XAMPP [XAMPP is an easy to install Apache distribution containing MySQL, PHP, and Perl. Just download and start the installer. It's that easy.](https://www.apachefriends.org/download.html)
+1. SQLite Expert [SQLite Expert: The expert way to SQLite](http://www.sqliteexpert.com/)
 
 ##Office
 1. LibreOffice <http://www.libreoffice.org/>
@@ -74,6 +82,12 @@ category: other
 1. FoxitReader <http://www.foxitsoftware.cn/downloads/>
 1. PDFMate PDF Tools - PDF Converter Pro, PDF Converter for Mac, Free PDF Converter, and Free PDF Merger <http://www.pdfmate.com/>
 1. PDF Password Remover - Download Now <http://www.pdfpasswordremover.com/>
+1. MarkdownPad 2 <http://markdownpad.com/>
+1. bullzip [Create PDF files from your Microsoft Windows® applications](http://www.bullzip.com/)
+1. PDF-XChange Viewer [a free PDF editor/reader that allows you to view and edit PDFs](http://pdf-xchange-viewer.en.softonic.com/)
+1. 有道云笔记 <http://note.youdao.com/>
+1. 印象笔记 <https://evernote.com/intl/zh-cn/>
+1. Kindle for pc <https://www.amazon.com/gp/digital/fiona/kcp-landing-page?ie=UTF8&ref_=klp_mn>
 
 ##Media
 1. 千千静听 <http://qianqian.baidu.com/>
@@ -82,6 +96,10 @@ category: other
 1. qq影音 <http://player.qq.com/>
 1. MediaCoder中文网 <http://mediacoder.com.cn/download>
 1. The Official ImgBurn Website <http://www.imgburn.com/?act=download>
+1. P2PSearcher <http://www.p2psearcher.org/>
+1. VLC <http://www.videolan.org/>
+1. MPC-HC <https://mpc-hc.org/>
+1. 爱奇艺 <http://store.iqiyi.com/web/iqiyi/detail/qisuyingyin.action>
 
 ##Image
 1. Picasa <http://picasa.google.com/intl/zh-CN/>
@@ -102,7 +120,6 @@ category: other
 ##Other
 1. Oracle VM VirtualBox <https://www.virtualbox.org/>
 1. VMware Player: Run Windows 8, Chrome OS on a Virtual PC <http://www.vmware.com/products/player/>
-1. XMind: Professional &amp; Powerful Mind Mapping Software <http://www.xmind.net/>
 1. Foxmail <http://foxmail.com.cn/>
 1. Google 地球 <http://www.google.com/earth/index.html>
 1. Beyond Compare <http://www.scootersoftware.com/>
