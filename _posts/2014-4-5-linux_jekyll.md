@@ -11,7 +11,7 @@ category: www
 	aptitude install rails
 	aptitude install ruby1.9.1 ruby1.9.1-dev
 	gem install rdiscount
-	jekyll --server
+	jekyll server
 
 
 gem install rdiscount有可能失败，这是因为被墙的缘故，重试，或者手动下载离线安装解决问题

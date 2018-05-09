@@ -40,15 +40,45 @@ category: other
 	apt-get install rdesktop grdesktop #mstsc
 	apt-get install gtkvncviewer gvncviewer #vnc client
 	apt-get install qemu-system-x86 qemu-system-x86-64
-	apt-get install mupdf evince poppler-data #pdf reader
+	apt-get install mupdf evince poppler-data xpdf #pdf reader
 	apt-get install gnome-mplayer vlc #video player
 	apt-get install eclipse eclipse-cdt
+
 	apt-get install chromium-browser
 	apt-get install chmsee #chm reader
 	apt-get install g2ipmsg # 飞鸽传书
+
+	apt-get install libreoffice
+	apt-get install firefox
 	apt-get install filezilla
 	apt-get install meld # git merge
 	apt-get install sublime-text # text editor
+	apt-get install sqlitebrowser # for sqlite gui tools
+	apt-get install mysql-workbench # for mysql gui tools
+	apt-get install vlc # vlc media player
+	apt-get install smplayer kmplayer gnome-mpv
+	apt-get install virtualbox
+	apt-get install gimp
+	apt-get install thunderbird # Email, RSS and newsgroup client with integrated spam filter
+
+	apt-get install transmission uget
+	apt-get install ghex
+	apt-get install stardict
+	apt-get install imagemagick
+	apt-get install retext
+
+	apt-get install remmina # remote desktop client for GNOME desktop environment
+	apt-get install rdesktop grdesktop # RDP client for Windows NT/2000 Terminal Server
+
+	# wps for linux
+	# pycharm for linux
+	# intellij for linux
+	# chrome for linux
+	# sogou pinyin for linux
+	# Sublime Text for linux
+	# heidiSQL for wine
+	# notepad++ for wine
+
 	
 ---
 	
